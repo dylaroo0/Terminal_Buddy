@@ -1,3 +1,6 @@
+use daemon;
+
 fn main() {
-    println!("Hello, world!");
+    println!("Terminal Buddy Daemon Starting...");
+    daemon::start();
 }

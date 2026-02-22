@@ -3696,6 +3696,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "terminal-buddy"
+version = "0.1.0"
+dependencies = [
+ "daemon",
+]
+
+[[package]]
 name = "termios"
 version = "0.2.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
