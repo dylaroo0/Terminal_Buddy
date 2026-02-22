@@ -1,0 +1,175 @@
+# Universal Discovery Questionnaire
+# Phase 1: Deep Understanding - Initial Discovery (All Domains)
+
+domain: universal
+version: "1.0"
+description: "Initial discovery questionnaire that applies to ALL project types"
+
+sections:
+  - id: initial_discovery
+    title: "Initial Discovery"
+    stage: 1
+    questions:
+      - id: domain_industry
+        question: "What domain or industry is this project in?"
+        type: text_with_suggestions
+        suggestions:
+          - "Software development"
+          - "Music production"
+          - "Manufacturing"
+          - "Healthcare"
+          - "Therapy/Counseling"
+          - "Education"
+          - "Creative/Design"
+          - "Research"
+          - "Business services"
+          - "Other (describe)"
+        required: true
+        triggers_domain_questionnaire: true
+        
+      - id: core_vision
+        question: "What's the core vision? Describe in your own words."
+        type: long_text
+        required: true
+        prompt: "Don't worry about structure - just tell me what you're trying to build/achieve"
+        
+      - id: current_state
+        question: "What exists already vs what needs to be built?"
+        type: structured
+        fields:
+          - exists: "long_text"
+          - needs_building: "long_text"
+          - completion_percentage: "number (0-100)"
+          
+      - id: success_criteria
+        question: "What's the ultimate success criteria? How will you know this project succeeded?"
+        type: long_text
+        required: true
+        
+      - id: project_origin
+        question: "Who initiated this project and why?"
+        type: structured
+        fields:
+          - initiator: "text"
+          - motivation: "long_text"
+          - urgency: "single_select[critical, high, medium, low]"
+
+  - id: stakeholder_analysis
+    title: "Stakeholder Analysis"
+    stage: 2
+    questions:
+      - id: end_users
+        question: "Who are the END USERS?"
+        type: structured
+        fields:
+          - demographics: "text"
+          - needs: "list"
+          - pain_points: "list"
+          - technical_level: "single_select[novice, intermediate, advanced, mixed]"
+          
+      - id: decision_makers
+        question: "Who makes DECISIONS on this project?"
+        type: list
+        fields_per_item:
+          - name_role: "text"
+          - decision_authority: "text"
+          - priorities: "list"
+          
+      - id: funding_source
+        question: "Who PAYS for this? What are budget constraints?"
+        type: structured
+        fields:
+          - funding_source: "text"
+          - budget_range: "text"
+          - constraints: "list"
+        optional: true
+        
+      - id: beneficiaries
+        question: "Who BENEFITS from success? (Beyond end users)"
+        type: list
+        
+      - id: gatekeepers
+        question: "Who are the GATEKEEPERS? (Legal, compliance, approval chains)"
+        type: list
+        optional: true
+
+  - id: constraints_requirements
+    title: "Constraints & Requirements"
+    stage: 3
+    questions:
+      - id: timeline
+        question: "What's your timeline?"
+        type: structured
+        fields:
+          - target_completion: "date"
+          - milestones: "list"
+          - hard_deadlines: "list"
+          - flexibility: "single_select[fixed, some_flexibility, very_flexible]"
+          
+      - id: resources
+        question: "What resources do you have available?"
+        type: structured
+        fields:
+          - team_size: "number"
+          - key_skills: "list"
+          - missing_skills: "list"
+          - tools_available: "list"
+          
+      - id: constraints
+        question: "What constraints must we work within?"
+        type: multi_select_with_details
+        options:
+          - "Budget limitations"
+          - "Timeline pressure"
+          - "Technology restrictions"
+          - "Regulatory requirements"
+          - "Team capacity"
+          - "Geographic limitations"
+          - "Existing system compatibility"
+          - "Other"
+          
+      - id: risks
+        question: "What are your biggest concerns or risks?"
+        type: list
+
+  - id: validation_checkpoint
+    title: "Understanding Validation"
+    stage: 4
+    questions:
+      - id: understanding_check
+        question: "Based on what you've shared, here's my understanding of your project..."
+        type: validation
+        format: "system_generates_summary"
+        responses:
+          - "Yes, you GET it"
+          - "Not quite - here's what you missed..."
+          - "I need to think about [gap you identified]..."
+        loop_until: "Yes, you GET it"
+
+# Gap Discovery Rules (Universal)
+universal_gap_triggers:
+  - condition: "gatekeepers not exists and domain contains Healthcare OR domain contains Therapy"
+    gap: "Healthcare/therapy domains typically require regulatory gatekeepers - verify compliance needs"
+    
+  - condition: "success_criteria vague"
+    gap: "Success criteria seems vague - recommend defining measurable outcomes"
+    
+  - condition: "timeline.target_completion < 3_months and completion_percentage < 20"
+    gap: "Aggressive timeline with low completion - recommend scope review"
+    
+  - condition: "resources.missing_skills.length > resources.key_skills.length"
+    gap: "More missing skills than available - significant resourcing challenge"
+    
+  - condition: "risks.length == 0"
+    gap: "No risks identified - recommend risk assessment exercise"
+
+# Research Triggers (Universal)
+universal_research_triggers:
+  - condition: "domain detected"
+    research: "Industry best practices for {domain}, common pitfalls, success patterns"
+    
+  - condition: "constraints contains Regulatory requirements"
+    research: "Regulatory landscape for {domain}, compliance requirements, certification needs"
+    
+  - condition: "beneficiaries includes society or public"
+    research: "Social impact considerations for {domain}, ethical frameworks"

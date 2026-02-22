@@ -1,0 +1,95 @@
+# Genesis Project Configuration
+# Universal Project Architect System
+
+project:
+  name: "genesis"
+  display_name: "Genesis - Universal Project Architect"
+  version: "0.1.0"
+  status: "development"
+  
+# Phase 1: Discovery System Configuration
+discovery:
+  max_validation_loops: 5
+  min_gap_discovery: 2  # Minimum gaps to identify
+  research_depth: "comprehensive"  # basic, standard, comprehensive
+  
+# Supported Domains (Initial)
+domains:
+  enabled:
+    - software
+    - music_production
+  planned:
+    - manufacturing
+    - therapy_counseling
+    - healthcare
+    - creative
+
+# Integration Points
+integrations:
+  bmad:
+    enabled: true
+    path: "/home/dylaroo/_bmad/"
+    modules:
+      - BMM  # BMad Method
+      - BMB  # BMad Builder (BoMB)
+      - BMGD # Game Development
+      - CIS  # Creative Innovation Suite
+      
+  emad:
+    enabled: true
+    path: "/home/dylaroo/Desktop/Projects/EMAD-main/"
+    agents:
+      - meta_orchestrator
+      - agent_creator
+      - analyst
+      
+  agentscope:
+    enabled: true
+    retry_attempts: 3
+    timeout_seconds: 300
+    
+  memvid:
+    enabled: true
+    version: "0.1.3"  # Update when v2 releases
+    storage_path: "./memory/"
+    
+# Output Configuration
+output:
+  formats:
+    project_dna: "json"
+    workflows: "yaml"
+    documentation: "markdown"
+    diagrams: "mermaid"
+    
+  paths:
+    project_dna: "./outputs/project-dna/"
+    workflows: "./outputs/workflows/"
+    teams: "./outputs/teams/"
+    memory: "./outputs/memory/"
+
+# Research Configuration
+research:
+  web_search:
+    enabled: true
+    max_queries_per_domain: 10
+    rate_limit_delay: 1  # seconds
+    
+  sources:
+    - industry_best_practices
+    - competitive_analysis
+    - regulatory_compliance
+    - specialist_research
+    - technology_trends
+
+# Agent Creation Configuration
+agent_creation:
+  use_bomb: true
+  research_specialists: true
+  validate_before_create: true
+  min_expertise_match: 0.7  # 70% match to reuse existing
+
+# Logging
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+  file: "./logs/genesis.log"
+  console: true

@@ -1,0 +1,159 @@
+# Software Development Domain Questionnaire
+# Phase 1: Deep Understanding - Domain-Specific Deep Dive
+
+domain: software
+version: "1.0"
+description: "Comprehensive questionnaire for software development projects"
+
+sections:
+  - id: architecture
+    title: "Architecture & Technology"
+    questions:
+      - id: tech_stack
+        question: "What is your current or planned technology stack?"
+        type: multi_select
+        options:
+          - frontend: ["React", "Vue", "Angular", "Svelte", "Vanilla JS", "Other"]
+          - backend: ["Node.js", "Python", "Go", "Rust", "Java", "Other"]
+          - database: ["PostgreSQL", "MySQL", "MongoDB", "Redis", "SQLite", "Other"]
+          - infrastructure: ["AWS", "GCP", "Azure", "Vercel", "Self-hosted", "Other"]
+        required: true
+        
+      - id: architecture_pattern
+        question: "What architecture pattern are you using or considering?"
+        type: single_select
+        options:
+          - "Monolithic"
+          - "Microservices"
+          - "Serverless"
+          - "Event-driven"
+          - "Modular monolith"
+          - "Undecided"
+        follow_up:
+          condition: "Undecided"
+          question: "Would you like help evaluating architecture options?"
+          
+      - id: scale_requirements
+        question: "What are your scale/performance requirements?"
+        type: structured
+        fields:
+          - expected_users: "number"
+          - concurrent_users: "number"
+          - requests_per_second: "number"
+          - data_volume: "text"
+        optional: true
+        
+      - id: integrations
+        question: "What external systems/APIs do you need to integrate with?"
+        type: list
+        min_items: 0
+        
+  - id: development_process
+    title: "Development Process"
+    questions:
+      - id: methodology
+        question: "What development methodology do you use?"
+        type: single_select
+        options:
+          - "Agile/Scrum"
+          - "Kanban"
+          - "Waterfall"
+          - "XP (Extreme Programming)"
+          - "No formal methodology"
+          - "Undecided"
+          
+      - id: team_structure
+        question: "Describe your current team structure"
+        type: structured
+        fields:
+          - team_size: "number"
+          - roles: "list"
+          - location: "single_select[remote, hybrid, in-office]"
+        optional: true
+        
+      - id: ci_cd
+        question: "Do you have CI/CD pipelines in place?"
+        type: binary_decision
+        options: ["Yes - describe", "No - would like guidance", "No - not needed"]
+        
+      - id: testing_strategy
+        question: "What's your testing strategy?"
+        type: multi_select
+        options:
+          - "Unit tests"
+          - "Integration tests"
+          - "E2E tests"
+          - "Manual testing only"
+          - "No formal testing"
+          
+  - id: security_compliance
+    title: "Security & Compliance"
+    questions:
+      - id: security_requirements
+        question: "What security requirements apply to your project?"
+        type: multi_select
+        options:
+          - "Authentication/Authorization"
+          - "Data encryption"
+          - "GDPR compliance"
+          - "SOC 2"
+          - "HIPAA"
+          - "PCI DSS"
+          - "None specific"
+          
+      - id: sensitive_data
+        question: "What types of sensitive data will you handle?"
+        type: multi_select
+        options:
+          - "Personal Identifiable Information (PII)"
+          - "Financial data"
+          - "Health information"
+          - "Credentials/secrets"
+          - "None"
+          
+  - id: deployment
+    title: "Deployment & Operations"
+    questions:
+      - id: deployment_environment
+        question: "Where will this be deployed?"
+        type: multi_select
+        options:
+          - "Cloud (public)"
+          - "Cloud (private)"
+          - "On-premise"
+          - "Edge/IoT"
+          - "Desktop app"
+          - "Mobile app"
+          
+      - id: monitoring
+        question: "What monitoring/observability do you need?"
+        type: multi_select
+        options:
+          - "Application performance monitoring"
+          - "Error tracking"
+          - "Log aggregation"
+          - "Metrics/dashboards"
+          - "Alerting"
+          - "Not sure yet"
+
+# Gap Discovery Triggers
+gap_triggers:
+  - condition: "security_requirements contains HIPAA and sensitive_data not contains Health information"
+    gap: "HIPAA compliance selected but health data not identified - verify data classification"
+    
+  - condition: "expected_users > 10000 and architecture_pattern == Monolithic"
+    gap: "High scale with monolithic architecture may cause bottlenecks - consider scalability strategy"
+    
+  - condition: "testing_strategy not contains Unit tests and methodology == Agile/Scrum"
+    gap: "Agile without unit tests risks quality - recommend test-first approach"
+    
+  - condition: "integrations.length > 5 and ci_cd == No - not needed"
+    gap: "Multiple integrations without CI/CD increases deployment risk"
+
+# Research Triggers
+research_triggers:
+  - condition: "tech_stack.backend contains Rust"
+    research: "Rust backend patterns, async runtime options, deployment strategies"
+    
+  - condition: "security_requirements contains SOC 2"
+    research: "SOC 2 compliance requirements, audit preparation, evidence collection"

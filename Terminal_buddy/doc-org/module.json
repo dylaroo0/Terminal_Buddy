@@ -1,0 +1,17 @@
+{
+  "id": "doc-org",
+  "name": "Documentation & Organization System",
+  "scope": "portable",
+  "version": "1.0.2",
+  "description": "Portable documentation + organization backbone (timestamps, session logs, handoffs, PROJECT_STATUS discipline).",
+  "installs": {
+    "coreSystem": {
+      "source": "./payload/bmad-agent/core-system",
+      "target": "doc-org-system"
+    },
+    "configPatch": {
+      "target": "bmad-agent/bmad-config.json",
+      "mode": "merge"
+    }
+  }
+}

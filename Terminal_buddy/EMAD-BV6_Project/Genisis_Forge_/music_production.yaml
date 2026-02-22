@@ -1,0 +1,202 @@
+# Music Production Domain Questionnaire
+# Phase 1: Deep Understanding - Domain-Specific Deep Dive
+
+domain: music_production
+version: "1.0"
+description: "Comprehensive questionnaire for music production projects (DAWs, tools, pedagogy)"
+
+sections:
+  - id: project_type
+    title: "Project Type & Goals"
+    questions:
+      - id: music_project_type
+        question: "What type of music production project is this?"
+        type: single_select
+        options:
+          - "DAW (Digital Audio Workstation)"
+          - "Plugin/VST development"
+          - "Audio processing tool"
+          - "Music education platform"
+          - "Production workflow tool"
+          - "Sound design tool"
+          - "Other music software"
+        required: true
+        
+      - id: target_users
+        question: "Who is your target user?"
+        type: multi_select
+        options:
+          - "Beginners learning music production"
+          - "Hobbyist producers"
+          - "Semi-professional producers"
+          - "Professional producers/engineers"
+          - "Mixing engineers"
+          - "Mastering engineers"
+          - "Sound designers"
+          - "Musicians/composers"
+          
+      - id: genre_focus
+        question: "Any specific genre focus?"
+        type: multi_select
+        options:
+          - "Electronic/EDM"
+          - "Hip-hop/Trap"
+          - "Rock/Metal"
+          - "Pop"
+          - "Classical/Orchestral"
+          - "Jazz"
+          - "Ambient/Experimental"
+          - "Genre-agnostic"
+          
+  - id: technical_requirements
+    title: "Technical Architecture"
+    questions:
+      - id: platform
+        question: "What platforms will this run on?"
+        type: multi_select
+        options:
+          - "Linux"
+          - "Windows"
+          - "macOS"
+          - "Web browser"
+          - "iOS"
+          - "Android"
+        required: true
+        
+      - id: audio_framework
+        question: "What audio framework/technology will you use?"
+        type: multi_select
+        options:
+          - "JUCE (C++)"
+          - "Web Audio API"
+          - "PortAudio"
+          - "RtAudio"
+          - "FAUST"
+          - "Pure Data"
+          - "SuperCollider"
+          - "Custom DSP"
+          - "Undecided"
+          
+      - id: plugin_support
+        question: "What plugin formats need to be supported?"
+        type: multi_select
+        options:
+          - "VST3"
+          - "VST2 (legacy)"
+          - "AU (Audio Units)"
+          - "LV2"
+          - "CLAP"
+          - "AAX"
+          - "None (standalone only)"
+          
+      - id: latency_requirements
+        question: "What are your latency requirements?"
+        type: single_select
+        options:
+          - "Ultra-low (<5ms) - live performance"
+          - "Low (<10ms) - real-time recording"
+          - "Standard (<20ms) - typical production"
+          - "Flexible - offline processing okay"
+          
+  - id: workflow_patterns
+    title: "Workflow & UX"
+    questions:
+      - id: workflow_inspiration
+        question: "What existing DAW workflows inspire your design?"
+        type: multi_select
+        options:
+          - "Ableton Live (session/arrangement)"
+          - "FL Studio (pattern-based)"
+          - "Logic Pro (traditional timeline)"
+          - "Pro Tools (professional mixing)"
+          - "Bitwig (modular)"
+          - "Reaper (customizable)"
+          - "Reason (rack-based)"
+          - "Novel approach"
+          
+      - id: key_features
+        question: "What are your key differentiating features?"
+        type: list
+        min_items: 1
+        
+      - id: ai_integration
+        question: "How will AI be integrated?"
+        type: multi_select
+        options:
+          - "AI co-pilot/assistant"
+          - "Intelligent mixing suggestions"
+          - "Auto-arrangement"
+          - "Sound design assistance"
+          - "Music theory help"
+          - "Adaptive tutorials"
+          - "No AI integration"
+          
+  - id: pedagogy
+    title: "Teaching & Learning (if applicable)"
+    condition: "target_users contains Beginners OR music_project_type == Music education platform"
+    questions:
+      - id: teaching_approach
+        question: "What teaching approach will you use?"
+        type: multi_select
+        options:
+          - "Progressive skill building"
+          - "Project-based learning"
+          - "Theory-first approach"
+          - "Learn by doing"
+          - "Genre-specific paths"
+          - "Adaptive difficulty"
+          
+      - id: music_theory_depth
+        question: "How deep should music theory integration go?"
+        type: single_select
+        options:
+          - "None - focus on tools only"
+          - "Basic - keys, chords, rhythm"
+          - "Intermediate - modes, progressions, arrangement"
+          - "Advanced - jazz theory, orchestration"
+          - "Adaptive to user level"
+          
+      - id: accessibility
+        question: "What accessibility considerations apply?"
+        type: multi_select
+        options:
+          - "Non-readers (can't read sheet music)"
+          - "Visual impairments"
+          - "Hearing impairments"
+          - "Motor impairments"
+          - "Cognitive accessibility"
+          - "No specific requirements"
+
+# Gap Discovery Triggers
+gap_triggers:
+  - condition: "platform contains Linux and audio_framework contains JUCE"
+    gap: "JUCE on Linux requires careful ALSA/JACK/PipeWire consideration - audio backend strategy needed"
+    
+  - condition: "plugin_support contains VST3 and plugin_support contains LV2 and plugin_support contains CLAP"
+    gap: "Multiple plugin formats increase complexity significantly - consider phased support"
+    
+  - condition: "target_users contains Beginners and teaching_approach not exists"
+    gap: "Targeting beginners without defined pedagogy approach - recommend structured learning design"
+    
+  - condition: "ai_integration contains AI co-pilot and audio_framework not contains Python"
+    gap: "AI integration typically requires Python - consider architecture for C++/Python bridge"
+    
+  - condition: "latency_requirements == Ultra-low (<5ms) and platform contains Web browser"
+    gap: "Ultra-low latency in browser is challenging - Web Audio has inherent latency constraints"
+    
+  - condition: "workflow_inspiration contains Ableton Live and music_project_type == DAW"
+    gap: "Session view implementation is complex - recommend studying Live's clip launching deeply"
+
+# Research Triggers
+research_triggers:
+  - condition: "audio_framework contains JUCE"
+    research: "JUCE audio plugin development, cross-platform audio, DSP optimization"
+    
+  - condition: "teaching_approach contains Adaptive difficulty"
+    research: "Music pedagogy adaptive learning, skill progression models, gamification in education"
+    
+  - condition: "plugin_support contains CLAP"
+    research: "CLAP plugin format, implementation guides, CLAP vs VST3 differences"
+    
+  - condition: "ai_integration contains Intelligent mixing suggestions"
+    research: "AI mixing tools, audio ML models, feature extraction for audio analysis"

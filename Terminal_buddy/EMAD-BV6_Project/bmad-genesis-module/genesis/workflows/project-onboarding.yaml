@@ -1,0 +1,283 @@
+id: genesis-onboarding
+name: "Genesis Protocol: Full Project Initialization"
+description: "End-to-end flow: Audit → Build Team → Plan Workflow → Market Strategy"
+version: 1.0.0
+module: genesis
+
+# ================================================================
+# WORKFLOW INPUTS
+# ================================================================
+inputs:
+  - name: "project_path"
+    type: "string"
+    description: "Path to the project folder (or 'none' for a new idea)"
+    required: false
+    default: "none"
+  
+  - name: "user_intent"
+    type: "text"
+    description: "Brief description of what you want to build"
+    required: true
+    prompt: "Describe your project idea in 2-3 sentences"
+
+# ================================================================
+# WORKFLOW CONFIGURATION
+# ================================================================
+config:
+  save_outputs: true
+  output_path: "_bmad-output/genesis/planning"
+  memory_enabled: true
+  fault_tolerance: true
+  agent_retry_limit: 3
+
+# ================================================================
+# WORKFLOW STEPS
+# ================================================================
+steps:
+  # --------------------------------------------------------------
+  # STEP 1: DEEP AUDIT
+  # The Auditor scans the folder or analyzes the idea
+  # --------------------------------------------------------------
+  - step_id: audit_phase
+    name: "Project Analysis"
+    agent: genesis-auditor
+    action: "analyze_project"
+    description: "Analyzing project to extract DNA..."
+    
+    input_mapping:
+      path: "${project_path}"
+      intent: "${user_intent}"
+    
+    output_key: "dna_report"
+    output_file: "${project_name}_dna.json"
+    
+    validation:
+      required_fields:
+        - project_name
+        - maturity
+        - core_stack
+      
+    on_failure:
+      retry: true
+      max_retries: 2
+      message: "Failed to analyze project. Please provide more details."
+
+  # --------------------------------------------------------------
+  # STEP 2: TEAM CONSTRUCTION
+  # The Builder reads the DNA report and hires the agents
+  # --------------------------------------------------------------
+  - step_id: build_phase
+    name: "Team Generation"
+    agent: genesis-builder
+    action: "generate_structure"
+    description: "Building optimal agent team..."
+    
+    input_mapping:
+      project_dna: "${dna_report}"
+    
+    output_key: "team_config"
+    output_file: "${project_name}_team.yaml"
+    output_dir: "_bmad-output/genesis/teams"
+    
+    dependencies:
+      - audit_phase
+    
+    validation:
+      required_fields:
+        - team.name
+        - team.topology
+        - team.members
+    
+    on_failure:
+      fallback: "Use default minimal team"
+
+  # --------------------------------------------------------------
+  # STEP 3: WORKFLOW WEAVING
+  # The Weaver takes the team + DNA and writes the AgentScope plan
+  # --------------------------------------------------------------
+  - step_id: weave_phase
+    name: "Workflow Planning"
+    agent: genesis-weaver
+    action: "generate_plan"
+    description: "Creating execution workflow..."
+    
+    input_mapping:
+      project_dna: "${dna_report}"
+      team_structure: "${team_config}"
+    
+    output_key: "agentscope_plan"
+    output_file: "${project_name}_workflow.json"
+    
+    dependencies:
+      - audit_phase
+      - build_phase
+    
+    validation:
+      check_dag: true  # Verify no circular dependencies
+      check_agents: true  # Verify all agents exist
+    
+    on_failure:
+      message: "Failed to create workflow. Check team configuration."
+
+  # --------------------------------------------------------------
+  # STEP 4: MARKET ALIGNMENT
+  # The Strategist ensures the product is actually viable
+  # --------------------------------------------------------------
+  - step_id: market_phase
+    name: "Market Strategy"
+    agent: genesis-strategist
+    action: "analyze_fit"
+    description: "Validating market fit and GTM strategy..."
+    
+    input_mapping:
+      project_dna: "${dna_report}"
+    
+    output_key: "go_to_market_strategy"
+    output_file: "${project_name}_marketing.md"
+    
+    dependencies:
+      - audit_phase
+    
+    validation:
+      required_sections:
+        - target_audience
+        - channels
+        - content_strategy
+    
+    on_failure:
+      warning: "Marketing plan incomplete. Proceed with caution."
+
+  # --------------------------------------------------------------
+  # STEP 5: MEMORY STORAGE
+  # Save all outputs to Memvid for future reference
+  # --------------------------------------------------------------
+  - step_id: save_memory
+    name: "Memory Encoding"
+    action: "system.save_to_memvid"
+    description: "Encoding project context to Memvid memory..."
+    
+    input_mapping:
+      project_name: "${project_name}"
+      dna_report: "${dna_report}"
+      team_config: "${team_config}"
+      workflow: "${agentscope_plan}"
+    
+    output_file: "${project_name}_memory.mp4"
+    output_dir: "_bmad-output/genesis/memory"
+    
+    dependencies:
+      - audit_phase
+      - build_phase
+      - weave_phase
+    
+    on_failure:
+      warning: "Memory encoding failed. Outputs saved to JSON/YAML."
+
+  # --------------------------------------------------------------
+  # STEP 6: FINAL COMPILATION
+  # Generate summary report
+  # --------------------------------------------------------------
+  - step_id: compile_report
+    name: "Summary Report"
+    action: "system.generate_summary"
+    description: "Compiling Genesis summary report..."
+    
+    input_mapping:
+      all_outputs:
+        dna: "${dna_report}"
+        team: "${team_config}"
+        workflow: "${agentscope_plan}"
+        marketing: "${go_to_market_strategy}"
+    
+    output_file: "${project_name}_GENESIS_REPORT.md"
+    
+    template: |
+      # Genesis Report: ${project_name}
+      
+      Generated: ${timestamp}
+      
+      ## Project DNA
+      - **Maturity:** ${dna.maturity}
+      - **Stack:** ${dna.core_stack}
+      - **Missing Roles:** ${dna.missing_roles}
+      
+      ## Team Structure
+      - **Topology:** ${team.topology}
+      - **Team Size:** ${team.members.length}
+      - **Coordinator:** ${team.coordinator}
+      
+      ## Execution Plan
+      - **Total Tasks:** ${workflow.total_tasks}
+      - **Estimated Time:** ${workflow.estimated_total_time}
+      - **Critical Path:** ${workflow.critical_path_tasks.length} tasks
+      
+      ## Market Strategy
+      - **Target:** ${marketing.target_audience}
+      - **Channels:** ${marketing.channels.length}
+      
+      ## Next Steps
+      1. Review team structure in: `_bmad-output/genesis/teams/${project_name}_team.yaml`
+      2. Execute workflow: `*genesis-execute ${project_name}`
+      3. Access memory: `_bmad-output/genesis/memory/${project_name}_memory.mp4`
+      
+      ---
+      *Generated by BMad Genesis v1.0.0*
+    
+    dependencies:
+      - audit_phase
+      - build_phase
+      - weave_phase
+      - market_phase
+
+# ================================================================
+# WORKFLOW COMPLETION
+# ================================================================
+completion:
+  message: |
+    ✅ Genesis Protocol Complete!
+    
+    Your project "${project_name}" has been fully analyzed and planned.
+    
+    📁 Outputs saved to: _bmad-output/genesis/
+    
+    Next steps:
+    1. Review the Genesis Report
+    2. Examine team structure
+    3. Execute the workflow
+    
+    Type *genesis-execute to begin implementation.
+  
+  next_actions:
+    - label: "Execute Workflow"
+      command: "*genesis-execute"
+    - label: "Modify Team"
+      command: "*genesis-team --edit"
+    - label: "Export to GitHub"
+      command: "*genesis-export"
+
+# ================================================================
+# ERROR HANDLING
+# ================================================================
+error_handling:
+  on_critical_failure:
+    - Save partial outputs
+    - Generate error report
+    - Suggest manual intervention
+  
+  retry_strategy:
+    type: "exponential_backoff"
+    max_attempts: 3
+    base_delay: 2  # seconds
+  
+  fallback_agents:
+    genesis-auditor: "bmad-core/analyst"
+    genesis-builder: "bmad-core/architect"
+
+# ================================================================
+# METADATA
+# ================================================================
+metadata:
+  tags: ["genesis", "onboarding", "full-workflow"]
+  estimated_duration: "5-10 minutes"
+  requires_user_input: true
+  can_run_headless: false

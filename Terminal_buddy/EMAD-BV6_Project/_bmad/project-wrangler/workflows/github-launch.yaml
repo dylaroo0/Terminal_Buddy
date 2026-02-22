@@ -1,0 +1,14 @@
+name: "Launch to GitHub"
+description: "Turn a local folder into a published Repo."
+trigger: "launch-to-github"
+
+steps:
+  - id: 1_safety
+    agent: "forensic-specialist"
+    instruction: "Scan for .env files or secrets. Ensure we aren't leaking keys."
+  - id: 2_prep
+    agent: "content-specialist"
+    instruction: "Write a killer README.md explaining the project."
+  - id: 3_git
+    agent: "preservation-engineer"
+    instruction: "Initialize Git, Create Repo, Commit, and Push."
