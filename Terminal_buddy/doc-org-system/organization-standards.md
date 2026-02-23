@@ -268,8 +268,3 @@ def example():
 **Created**: 2026-01-07T00:00:00Z
 **Last Updated**: 2026-01-07T00:00:00Z
 **Maintained By**: Documentation Manager
-
----
-Last Modified: 2026-01-15 22:58:56
-File: /home/dylaroo/Desktop/The_Forge_System/doc-org/payload/bmad-agent/core-system/organization-standards.md
----

@@ -16,7 +16,7 @@
   },
   "dependencies": [],
   "confidence": 0.5,
-  "createdAt": "2026-02-22T12:53:33Z",
+  "createdAt": "2026-02-23T10:58:47Z",
   "version": "1.0.0",
   "coreSystem": {
     "documentationManager": {
@@ -28,5 +28,5 @@
       "standards": "doc-org-system/organization-standards.md"
     }
   },
-  "lastUpdated": "2026-02-22T12:53:33Z"
+  "lastUpdated": "2026-02-23T15:25:08Z"
 }

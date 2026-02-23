@@ -4,5 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-bincode = { workspace = true }
 serde = { workspace = true }
+chrono = { workspace = true }
+uuid = { workspace = true }
+rkyv = "0.8.15"

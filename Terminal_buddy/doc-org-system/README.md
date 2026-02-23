@@ -103,8 +103,3 @@ When you (an AI agent) work on a project:
 
 **Created**: 2026-01-07T00:00:00Z
 **Last Updated**: 2026-01-07T00:00:00Z
-
----
-Last Modified: 2026-01-15 22:58:56
-File: /home/dylaroo/Desktop/The_Forge_System/doc-org/payload/bmad-agent/core-system/README.md
----
