@@ -1,0 +1,15 @@
+{
+  "memoryPath": "~/.terminal-buddy/history.mv2",
+  "llmProvider": "openrouter",
+  "llmModel": "anthropic/claude-sonnet-4-5",
+  "appName": "Terminal Buddy",
+  "themeMode": "dark",
+  "primaryColor": "#3B82F6",
+  "features": {
+    "search": true,
+    "chat": true,
+    "dashboard": true,
+    "pdfViewer": false
+  },
+  "setupCompleted": false
+}

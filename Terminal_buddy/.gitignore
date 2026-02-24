@@ -80,3 +80,27 @@ EMAD-BV6_Project/
 .emad/
 emad-*.log
 emad-runner.pid
+
+# AI Agent Caches & Metadata
+.agent/
+.agents/
+.gemini/
+.github/
+.kilocode/
+.kilocodemodes
+.opencode/
+.qwen/
+
+
+# Skills & External Skill Collections
+skills/
+marketingskills-main/
+ui-ux-pro-max-skill/
+
+# Large or Secondary Projects
+Genisis_Forge_/
+terminal-buddy/buddy-health-app/
+
+# Design & Prompts
+ui-design-prompts/
+

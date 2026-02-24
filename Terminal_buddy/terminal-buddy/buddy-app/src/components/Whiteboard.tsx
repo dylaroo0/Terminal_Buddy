@@ -4,15 +4,15 @@ import 'tldraw/tldraw.css';
 
 interface WhiteboardProps {
   className?: string;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onSave?: (data: any) => void;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onLoad?: (data: any) => void;
   mode?: 'journal' | 'workflow' | 'design';
 }
 
-export const Whiteboard: React.FC<WhiteboardProps> = ({ 
-  className = '', 
-  onSave,
-  onLoad,
+export const Whiteboard: React.FC<WhiteboardProps> = ({
+  className = '',
   mode = 'journal'
 }) => {
   // Custom styling based on mode

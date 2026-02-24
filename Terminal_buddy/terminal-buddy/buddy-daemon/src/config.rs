@@ -37,6 +37,8 @@ pub struct AiConfig {
 pub struct StorageConfig {
     pub data_dir: String,
     pub max_storage_gb: u64,
+    /// Path to Memvid .mv2 memory file
+    pub memory_path: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -104,6 +106,7 @@ impl Default for StorageConfig {
         Self {
             data_dir,
             max_storage_gb: 10,
+            memory_path: None,
         }
     }
 }
