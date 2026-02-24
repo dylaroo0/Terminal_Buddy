@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Terminal Buddy</title>
+  <link rel="stylesheet" href="/src/App.css" />
+  <style>
+    /* Global dyslexia-friendly defaults */
+    body {
+      font-family: 'Atkinson Hyperlegible', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      letter-spacing: 0.01em;
+      color: #F1F5F9;
+      background-color: #0F172A;
+    }
+    
+    /* Ensure high contrast for accessibility */
+    * {
+      -webkit-user-select: auto;
+      -moz-user-select: auto;
+      -ms-user-select: auto;
+      user-select: auto;
+    }
+    
+    /* Focus rings for keyboard navigation */
+    :focus-visible {
+      outline: 2px solid #3B82F6;
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body class="min-h-screen">
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+</html>

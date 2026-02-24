@@ -1,0 +1,61 @@
+{
+    "name": "Minimal Focus",
+    "description": "Terminal Buddy Creator Corner template optimized for distraction-free reading, accessibility, and focus.",
+    "version": "1.0.0",
+    "author": "Creator Corner",
+    "design_tokens": {
+        "typography": {
+            "ui_font": "Atkinson Hyperlegible, sans-serif",
+            "terminal_font": "JetBrains Mono, monospace",
+            "min_size": "16px",
+            "heading_size": "24px",
+            "line_height_ui": "1.6",
+            "line_height_terminal": "1.4"
+        },
+        "colors": {
+            "bg_deep": "#0F172A",
+            "bg_surface": "#1E293B",
+            "primary": "#3B82F6",
+            "primary_hover": "#2563EB",
+            "text_primary": "#F1F5F9",
+            "text_secondary": "#94A3B8",
+            "text_terminal": "#E2E8F0",
+            "success": "#22C55E",
+            "warning": "#F59E0B",
+            "error": "#EF4444",
+            "border": "#334155"
+        }
+    },
+    "accessibility": {
+        "wcag_compliance": "AAA",
+        "min_text_size_px": 16,
+        "focus_rings": "visible_primary_offset",
+        "dyslexia_friendly_fonts": true,
+        "reduced_motion_supported": true,
+        "keyboard_navigation": true
+    },
+    "components": {
+        "CommandCard": {
+            "type": "shadcn",
+            "elements": [
+                "Card",
+                "Button",
+                "Badge"
+            ],
+            "features": {
+                "show_explain_button": true,
+                "show_rerun_button": true,
+                "interactive_hover": true
+            }
+        },
+        "SessionList": {
+            "type": "custom",
+            "layout": "journal",
+            "features": {
+                "show_timestamp": true,
+                "show_status_badge": true,
+                "group_by_date": true
+            }
+        }
+    }
+}

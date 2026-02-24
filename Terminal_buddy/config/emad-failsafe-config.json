@@ -1,0 +1,44 @@
+{
+  "failsafe_1_uninitialized_detection": {
+    "enabled": true,
+    "name": "Uninitialized EMAD Detection",
+    "check_interval_seconds": 300,
+    "initialization_timeout_hours": 24,
+    "file_change_threshold": 3,
+    "auto_enable_conditions": {
+      "new_project_detection": true,
+      "git_init_detection": true,
+      "multiple_changes_without_emad": true
+    },
+    "response_actions": {
+      "show_notification": true,
+      "prompt_initialization": true,
+      "pause_monitoring": false,
+      "auto_start_emad": false
+    }
+  },
+  "failsafe_2_post_completion_detection": {
+    "enabled": true,
+    "name": "Post-Completion Development Detection",
+    "check_interval_seconds": 600,
+    "completion_grace_period_hours": 2,
+    "significant_change_threshold": 5,
+    "auto_enable_conditions": {
+      "high_priority_completion": true,
+      "multiple_completion_cycles": true,
+      "user_confusion_indicators": true
+    },
+    "response_actions": {
+      "alert_post_completion": true,
+      "prompt_status_clarification": true,
+      "offer_reopen_options": true,
+      "suggest_feature_branch": true
+    }
+  },
+  "general": {
+    "log_level": "INFO",
+    "notification_method": "console",
+    "persistence_enabled": true,
+    "performance_monitoring": true
+  }
+}

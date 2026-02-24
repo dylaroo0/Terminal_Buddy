@@ -1,0 +1,30 @@
+[package]
+name = "buddy-app"
+version = "0.1.0"
+description = "Terminal Buddy - A journal for your terminal that explains itself"
+authors = ["dylaroo"]
+edition = "2021"
+
+[lib]
+name = "buddy_app_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+tauri-plugin-opener = "2"
+tauri-plugin-shell = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tokio = { version = "1", features = ["full"] }
+anyhow = "1"
+thiserror = "1"
+tracing = "0.1"
+tracing-subscriber = "0.3"
+chrono = { version = "0.4", features = ["serde"] }
+toml = "0.8"
+dirs = "5"
+reqwest = { version = "0.12", features = ["json"] }
+

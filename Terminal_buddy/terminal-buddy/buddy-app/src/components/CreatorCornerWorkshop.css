@@ -1,0 +1,190 @@
+/* Creator Corner Workshop Styles */
+.creator-corner-workshop {
+  font-family: 'Atkinson Hyperlegible', sans-serif;
+}
+
+.creator-corner-workshop h2 {
+  color: #F1F5F9;
+  font-weight: 700;
+}
+
+.creator-corner-workshop p {
+  color: #94A3B8;
+}
+
+/* Step Indicator */
+.creator-corner-workshop .step-indicator {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.creator-corner-workshop .step-dot {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  background-color: #334155;
+  border: 2px solid #334155;
+  color: #94A3B8;
+}
+
+.creator-corner-workshop .step-dot.active,
+.creator-corner-workshop .step-dot.completed {
+  background-color: #3B82F6;
+  border-color: #3B82F6;
+  color: #F1F5F9;
+}
+
+.creator-corner-workshop .step-line {
+  height: 2px;
+  background-color: #334155;
+  flex: 1;
+  margin: 0 8px;
+}
+
+.creator-corner-workshop .step-line.completed {
+  background-color: #3B82F6;
+}
+
+/* Template Selector */
+.creator-corner-workshop .template-card {
+  background: #1E293B;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 16px;
+  transition: all 0.3s ease;
+}
+
+.creator-corner-workshop .template-card:hover {
+  background: #334155;
+  border-color: #3B82F6;
+}
+
+.creator-corner-workshop .template-card.active {
+  background: #334155;
+  border-color: #3B82F6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+}
+
+/* Accessibility Tweaks */
+.creator-corner-workshop .accessibility-control {
+  background: #1E293B;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.creator-corner-workshop .control-group {
+  margin-bottom: 12px;
+}
+
+.creator-corner-workshop .control-label {
+  display: block;
+  margin-bottom: 8px;
+  color: #F1F5F9;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.creator-corner-workshop .control-options {
+  display: flex;
+  gap: 8px;
+}
+
+.creator-corner-workshop .control-btn {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid #334155;
+  background: #1E293B;
+  color: #94A3B8;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.creator-corner-workshop .control-btn:hover {
+  background: #334155;
+  color: #F1F5F9;
+}
+
+.creator-corner-workshop .control-btn.active {
+  background: #3B82F6;
+  color: #F1F5F9;
+  border-color: #3B82F6;
+}
+
+/* Preview Panel */
+.creator-corner-workshop .preview-panel {
+  background: #0F172A;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.creator-corner-workshop .preview-header {
+  background: #1E293B;
+  padding: 12px 16px;
+  border-bottom: 1px solid #334155;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.creator-corner-workshop .preview-title {
+  color: #F1F5F9;
+  font-weight: 600;
+}
+
+.creator-corner-workshop .preview-content {
+  padding: 20px;
+  min-height: 300px;
+  background: #0F172A;
+}
+
+/* Buttons */
+.creator-corner-workshop .btn {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.creator-corner-workshop .btn--primary {
+  background: #3B82F6;
+  color: #F1F5F9;
+  border: none;
+}
+
+.creator-corner-workshop .btn--primary:hover {
+  background: #2563EB;
+}
+
+.creator-corner-workshop .btn--outline {
+  background: transparent;
+  color: #F1F5F9;
+  border: 1px solid #334155;
+}
+
+.creator-corner-workshop .btn--outline:hover {
+  background: #334155;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .creator-corner-workshop .step-indicator {
+    flex-wrap: wrap;
+  }
+  
+  .creator-corner-workshop .step-dot {
+    margin-bottom: 8px;
+  }
+  
+  .creator-corner-workshop .step-line {
+    display: none;
+  }
+}

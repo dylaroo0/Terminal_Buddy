@@ -1,0 +1,32 @@
+[package]
+name = "buddy-daemon"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "buddy-daemon"
+path = "src/main.rs"
+
+[dependencies]
+shared = { path = "../shared" }
+rmcp = { workspace = true }
+tokio = { workspace = true, features = ["rt-multi-thread", "macros"] }
+portable-pty = { workspace = true }
+sysinfo = { workspace = true }
+notify = { workspace = true }
+rusqlite = { workspace = true }
+zstd = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+schemars = { workspace = true }
+anyhow = { workspace = true }
+thiserror = { workspace = true }
+uuid = { workspace = true, features = ["v4", "serde"] }
+chrono = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+toml = { workspace = true }
+dirs = { workspace = true }
+reqwest = { version = "0.13.2", features = ["json"] }
+async-trait = { workspace = true }
+rkyv = "0.8.15"

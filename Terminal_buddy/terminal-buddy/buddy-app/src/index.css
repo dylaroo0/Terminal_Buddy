@@ -1,0 +1,3 @@
+/* Terminal Buddy — Entry Point Styles */
+/* All styles are in App.css — this file exists to satisfy the main.tsx import */
+@import './App.css';

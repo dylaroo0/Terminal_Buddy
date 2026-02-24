@@ -75,3 +75,8 @@ package/
 # BMAD - will be reinstalled properly
 _bmad/
 EMAD-BV6_Project/
+
+# EMAD system files
+.emad/
+emad-*.log
+emad-runner.pid
