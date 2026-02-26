@@ -1,5 +1,8 @@
 # Forge Documentation & Organization System
 
+> **Reviewed & Consolidated:** 2026-02-25
+> **Type:** Universal Project Organization Agent
+
 ## Overview
 This folder defines the **Forge-wide** documentation + organization backbone: universal agents and standards that are **always active** across projects.
 

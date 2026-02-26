@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Settings, Palette, Layout, Zap, Mic, User, Star, Download, Upload, Plus, X, Sparkles, Brain } from 'lucide-react';
 import { CreatorWhiteboard } from './CreatorWhiteboard';
 

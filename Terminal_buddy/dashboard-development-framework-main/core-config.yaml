@@ -1,0 +1,95 @@
+version: 1.0.0
+framework: dashboard-method
+markdownExploder: true
+
+dashboard-requirements:
+  requirementsFile: docs/dashboard-requirements.md
+  requirementsVersion: v1
+  requirementsSharded: false
+  requirementsShardedLocation: docs/requirements
+
+dashboard-architecture:
+  architectureFile: docs/dashboard-architecture.md
+  architectureVersion: v1
+  architectureSharded: false
+  architectureShardedLocation: docs/architecture
+
+dashboard-design:
+  mockupsFile: docs/dashboard-mockups.md
+  designSystemFile: docs/design-system.md
+  componentLibraryLocation: docs/components
+
+dashboard-development:
+  componentSpecLocation: docs/components
+  componentImplementationLocation: src/components
+  testLocation: tests
+  documentationLocation: docs
+
+devLoadAlwaysFiles:
+  - docs/dashboard-architecture.md
+  - docs/coding-standards.md
+  - docs/component-guidelines.md
+  - docs/testing-standards.md
+
+devDebugLog: .ai/dashboard-debug-log.md
+dashboardComponentLocation: src/components
+dashboardPageLocation: src/pages
+dashboardServiceLocation: src/services
+
+quality-gates:
+  requirementsApproval: true
+  architectureReview: true
+  designValidation: true
+  componentTesting: true
+  integrationTesting: true
+  performanceValidation: true
+  accessibilityTesting: true
+  securityValidation: true
+  deploymentReadiness: true
+
+technology-preferences:
+  frontend:
+    primary: react
+    framework: refine
+    alternatives: [vue, streamlit, dash]
+    ui-library: shadcn-ui
+    ui-alternatives: [material-ui, ant-design]
+    charts: recharts
+    state-management: zustand
+    styling: tailwindcss
+  
+  backend:
+    primary: supabase
+    api: supabase-rest
+    alternatives: [fastapi, express, flask, django]
+    database: postgresql
+    cache: redis
+    queue: celery
+    realtime: supabase-realtime
+    auth: supabase-auth
+    storage: supabase-storage
+  
+  deployment:
+    primary: vercel
+    alternatives: [netlify, cloudflare-pages]
+    containerization: docker
+    orchestration: docker-compose
+    cloud: aws
+    edge: cloudflare
+    monitoring: prometheus
+
+slashPrefix: Dashboard
+
+workflow-templates:
+  simple: simple-dashboard-workflow.yaml
+  standard: dashboard-development-workflow.yaml
+  complex: complex-dashboard-workflow.yaml
+  realtime: realtime-dashboard-workflow.yaml
+  refine: refine-dashboard-workflow.yaml
+
+refine-integration:
+  setup-template: refine-project-setup-tmpl.yaml
+  supabase-template: supabase-integration-tmpl.yaml
+  shadcn-setup-hours: 2-4
+  recommended-stack: [react, refine, shadcn-ui, supabase, vercel]
+  optional-enhancements: [cloudflare, typescript, tailwindcss]

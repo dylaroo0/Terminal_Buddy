@@ -1,0 +1,12 @@
+[Dolphin]
+HeaderColumnWidths=348,92,178,178,178,235,92,358,126,129,146,138,92
+PreviewsShown=false
+SortOrder=1
+SortRole=creationtime
+Timestamp=2026,2,25,7,6,8.18
+Version=4
+ViewMode=1
+VisibleRoles=Details_text,Details_size,Details_modificationtime,Details_creationtime,Details_accesstime,Details_type,Details_tags,Details_path,Details_extension,Details_destination,Details_originUrl,Details_permissions,Details_owner,CustomizedDetails
+
+[Settings]
+HiddenFilesShown=true

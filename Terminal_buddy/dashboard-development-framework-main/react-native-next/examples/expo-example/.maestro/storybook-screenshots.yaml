@@ -1,0 +1,683 @@
+appId: host.exp.Exponent
+name: Take screenshots of all Storybook stories
+---
+- stopApp: host.exp.Exponent
+
+# Story ControlExamples-ControlExample - Example
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=controlexamples-controlexample--example'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'controlexamples-controlexample--example'
+- takeScreenshot: '.maestro/screenshots/ControlExamples-ControlExample---Example'
+
+# Story ControlExamples-Array - Basic
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=controlexamples-array--basic'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'controlexamples-array--basic'
+- takeScreenshot: '.maestro/screenshots/ControlExamples-Array---Basic'
+
+# Story ControlExamples-Boolean - Basic
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=controlexamples-boolean--basic'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'controlexamples-boolean--basic'
+- takeScreenshot: '.maestro/screenshots/ControlExamples-Boolean---Basic'
+
+# Story ControlExamples-Boolean - On
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=controlexamples-boolean--on'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'controlexamples-boolean--on'
+- takeScreenshot: '.maestro/screenshots/ControlExamples-Boolean---On'
+
+# Story ControlExamples-Color - Color Example
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=controlexamples-color--color-example'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'controlexamples-color--color-example'
+- takeScreenshot: '.maestro/screenshots/ControlExamples-Color---Color-Example'
+
+# Story ControlExamples-Date - Basic
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=controlexamples-date--basic'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'controlexamples-date--basic'
+- takeScreenshot: '.maestro/screenshots/ControlExamples-Date---Basic'
+
+# Story ControlExamples-Number - Basic
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=controlexamples-number--basic'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'controlexamples-number--basic'
+- takeScreenshot: '.maestro/screenshots/ControlExamples-Number---Basic'
+
+# Story ControlExamples-Number - Range
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=controlexamples-number--range'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'controlexamples-number--range'
+- takeScreenshot: '.maestro/screenshots/ControlExamples-Number---Range'
+
+# Story ControlExamples-Object - Basic
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=controlexamples-object--basic'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'controlexamples-object--basic'
+- takeScreenshot: '.maestro/screenshots/ControlExamples-Object---Basic'
+
+# Story ControlExamples-Radio - Basic
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=controlexamples-radio--basic'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'controlexamples-radio--basic'
+- takeScreenshot: '.maestro/screenshots/ControlExamples-Radio---Basic'
+
+# Story ControlExamples-Reproductions-SelectWithNumber - Basic
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=controlexamples-reproductions-selectwithnumber--basic'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'controlexamples-reproductions-selectwithnumber--basic'
+- takeScreenshot: '.maestro/screenshots/ControlExamples-Reproductions-SelectWithNumber---Basic'
+
+# Story ControlExamples-Select - Basic
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=controlexamples-select--basic'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'controlexamples-select--basic'
+- takeScreenshot: '.maestro/screenshots/ControlExamples-Select---Basic'
+
+# Story ControlExamples-Select - With Labels
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=controlexamples-select--with-labels'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'controlexamples-select--with-labels'
+- takeScreenshot: '.maestro/screenshots/ControlExamples-Select---With-Labels'
+
+# Story ControlExamples-Select - With Mapping
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=controlexamples-select--with-mapping'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'controlexamples-select--with-mapping'
+- takeScreenshot: '.maestro/screenshots/ControlExamples-Select---With-Mapping'
+
+# Story ControlExamples-Text - Basic
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=controlexamples-text--basic'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'controlexamples-text--basic'
+- takeScreenshot: '.maestro/screenshots/ControlExamples-Text---Basic'
+
+# Story ControlExamples-WebCompatibility - Defined
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=controlexamples-webcompatibility--defined'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'controlexamples-webcompatibility--defined'
+- takeScreenshot: '.maestro/screenshots/ControlExamples-WebCompatibility---Defined'
+
+# Story ControlExamples-WebCompatibility - Undefined
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=controlexamples-webcompatibility--undefined'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'controlexamples-webcompatibility--undefined'
+- takeScreenshot: '.maestro/screenshots/ControlExamples-WebCompatibility---Undefined'
+
+# Story InteractionExample - Scrolling
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=interactionexample--scrolling'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'interactionexample--scrolling'
+- takeScreenshot: '.maestro/screenshots/InteractionExample---Scrolling'
+
+# Story InteractionExample - Static
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=interactionexample--static'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'interactionexample--static'
+- takeScreenshot: '.maestro/screenshots/InteractionExample---Static'
+
+# Story InteractionExample - Touchable
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=interactionexample--touchable'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'interactionexample--touchable'
+- takeScreenshot: '.maestro/screenshots/InteractionExample---Touchable'
+
+# Story DeepControls - Basic
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=deepcontrols--basic'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'deepcontrols--basic'
+- takeScreenshot: '.maestro/screenshots/DeepControls---Basic'
+
+# Story ActionExample-Actions - Basic
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=actionexample-actions--basic'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'actionexample-actions--basic'
+- takeScreenshot: '.maestro/screenshots/ActionExample-Actions---Basic'
+
+# Story BackgroundExample-BackgroundCsf - Basic
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=backgroundexample-backgroundcsf--basic'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'backgroundexample-backgroundcsf--basic'
+- takeScreenshot: '.maestro/screenshots/BackgroundExample-BackgroundCsf---Basic'
+
+# Story HiddenControls - Basic
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=hiddencontrols--basic'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'hiddencontrols--basic'
+- takeScreenshot: '.maestro/screenshots/HiddenControls---Basic'
+
+# Story InputExample-TextInput - Basic
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=inputexample-textinput--basic'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'inputexample-textinput--basic'
+- takeScreenshot: '.maestro/screenshots/InputExample-TextInput---Basic'
+
+# Story LoginDocsExample-Button - Disabled
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=logindocsexample-button--disabled'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'logindocsexample-button--disabled'
+- takeScreenshot: '.maestro/screenshots/LoginDocsExample-Button---Disabled'
+
+# Story LoginDocsExample-Button - Loading
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=logindocsexample-button--loading'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'logindocsexample-button--loading'
+- takeScreenshot: '.maestro/screenshots/LoginDocsExample-Button---Loading'
+
+# Story LoginDocsExample-Button - Long Title
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=logindocsexample-button--long-title'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'logindocsexample-button--long-title'
+- takeScreenshot: '.maestro/screenshots/LoginDocsExample-Button---Long-Title'
+
+# Story LoginDocsExample-Button - Primary
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=logindocsexample-button--primary'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'logindocsexample-button--primary'
+- takeScreenshot: '.maestro/screenshots/LoginDocsExample-Button---Primary'
+
+# Story LoginDocsExample-Button - Secondary
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=logindocsexample-button--secondary'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'logindocsexample-button--secondary'
+- takeScreenshot: '.maestro/screenshots/LoginDocsExample-Button---Secondary'
+
+# Story LoginDocsExample-Button - Secondary Disabled
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=logindocsexample-button--secondary-disabled'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'logindocsexample-button--secondary-disabled'
+- takeScreenshot: '.maestro/screenshots/LoginDocsExample-Button---Secondary-Disabled'
+
+# Story LoginDocsExample-Button - Secondary Loading
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=logindocsexample-button--secondary-loading'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'logindocsexample-button--secondary-loading'
+- takeScreenshot: '.maestro/screenshots/LoginDocsExample-Button---Secondary-Loading'
+
+# Story LoginDocsExample-LoginForm - Default
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=logindocsexample-loginform--default'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'logindocsexample-loginform--default'
+- takeScreenshot: '.maestro/screenshots/LoginDocsExample-LoginForm---Default'
+
+# Story LoginDocsExample-LoginForm - Email Error Only
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=logindocsexample-loginform--email-error-only'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'logindocsexample-loginform--email-error-only'
+- takeScreenshot: '.maestro/screenshots/LoginDocsExample-LoginForm---Email-Error-Only'
+
+# Story LoginDocsExample-LoginForm - Loading
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=logindocsexample-loginform--loading'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'logindocsexample-loginform--loading'
+- takeScreenshot: '.maestro/screenshots/LoginDocsExample-LoginForm---Loading'
+
+# Story LoginDocsExample-LoginForm - Long Errors
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=logindocsexample-loginform--long-errors'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'logindocsexample-loginform--long-errors'
+- takeScreenshot: '.maestro/screenshots/LoginDocsExample-LoginForm---Long-Errors'
+
+# Story LoginDocsExample-LoginForm - Password Error Only
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=logindocsexample-loginform--password-error-only'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'logindocsexample-loginform--password-error-only'
+- takeScreenshot: '.maestro/screenshots/LoginDocsExample-LoginForm---Password-Error-Only'
+
+# Story LoginDocsExample-LoginForm - With Errors
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=logindocsexample-loginform--with-errors'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'logindocsexample-loginform--with-errors'
+- takeScreenshot: '.maestro/screenshots/LoginDocsExample-LoginForm---With-Errors'
+
+# Story LoginDocsExample-TextInput - Default
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=logindocsexample-textinput--default'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'logindocsexample-textinput--default'
+- takeScreenshot: '.maestro/screenshots/LoginDocsExample-TextInput---Default'
+
+# Story LoginDocsExample-TextInput - Empty State
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=logindocsexample-textinput--empty-state'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'logindocsexample-textinput--empty-state'
+- takeScreenshot: '.maestro/screenshots/LoginDocsExample-TextInput---Empty-State'
+
+# Story LoginDocsExample-TextInput - Filled
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=logindocsexample-textinput--filled'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'logindocsexample-textinput--filled'
+- takeScreenshot: '.maestro/screenshots/LoginDocsExample-TextInput---Filled'
+
+# Story LoginDocsExample-TextInput - Long Error Message
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=logindocsexample-textinput--long-error-message'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'logindocsexample-textinput--long-error-message'
+- takeScreenshot: '.maestro/screenshots/LoginDocsExample-TextInput---Long-Error-Message'
+
+# Story LoginDocsExample-TextInput - Long Label
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=logindocsexample-textinput--long-label'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'logindocsexample-textinput--long-label'
+- takeScreenshot: '.maestro/screenshots/LoginDocsExample-TextInput---Long-Label'
+
+# Story LoginDocsExample-TextInput - Password
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=logindocsexample-textinput--password'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'logindocsexample-textinput--password'
+- takeScreenshot: '.maestro/screenshots/LoginDocsExample-TextInput---Password'
+
+# Story LoginDocsExample-TextInput - Playground
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=logindocsexample-textinput--playground'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'logindocsexample-textinput--playground'
+- takeScreenshot: '.maestro/screenshots/LoginDocsExample-TextInput---Playground'
+
+# Story LoginDocsExample-TextInput - With Error
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=logindocsexample-textinput--with-error'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'logindocsexample-textinput--with-error'
+- takeScreenshot: '.maestro/screenshots/LoginDocsExample-TextInput---With-Error'
+
+# Story LoginDocsExample-TextInput - With Label
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=logindocsexample-textinput--with-label'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'logindocsexample-textinput--with-label'
+- takeScreenshot: '.maestro/screenshots/LoginDocsExample-TextInput---With-Label'
+
+# Story NestingExample-ChatMessage - Message First
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=nestingexample-chatmessage--message-first'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'nestingexample-chatmessage--message-first'
+- takeScreenshot: '.maestro/screenshots/NestingExample-ChatMessage---Message-First'
+
+# Story NestingExample-ChatMessage - Message Second
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=nestingexample-chatmessage--message-second'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'nestingexample-chatmessage--message-second'
+- takeScreenshot: '.maestro/screenshots/NestingExample-ChatMessage---Message-Second'
+
+# Story NestingExample-Message-bubble-a very long name for a title that just keeps going and going - First
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=nestingexample-message-bubble-a-very-long-name-for-a-title-that-just-keeps-going-and-going--first'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'nestingexample-message-bubble-a-very-long-name-for-a-title-that-just-keeps-going-and-going--first'
+- takeScreenshot: '.maestro/screenshots/NestingExample-Message-bubble-a-very-long-name-for-a-title-that-just-keeps-going-and-going---First'
+
+# Story NestingExample-Message-bubble-a very long name for a title that just keeps going and going - Second Story
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=nestingexample-message-bubble-a-very-long-name-for-a-title-that-just-keeps-going-and-going--second'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'nestingexample-message-bubble-a-very-long-name-for-a-title-that-just-keeps-going-and-going--second'
+- takeScreenshot: '.maestro/screenshots/NestingExample-Message-bubble-a-very-long-name-for-a-title-that-just-keeps-going-and-going---Second-Story'
+
+# Story NestingExample-Message-bubble - First
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=nestingexample-message-bubble--first'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'nestingexample-message-bubble--first'
+- takeScreenshot: '.maestro/screenshots/NestingExample-Message-bubble---First'
+
+# Story NestingExample-Message-bubble - Second Story
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=nestingexample-message-bubble--second'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'nestingexample-message-bubble--second'
+- takeScreenshot: '.maestro/screenshots/NestingExample-Message-bubble---Second-Story'
+
+# Story NestingExample-Message-Reactions - Message One
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=nestingexample-message-reactions--message-one'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'nestingexample-message-reactions--message-one'
+- takeScreenshot: '.maestro/screenshots/NestingExample-Message-Reactions---Message-One'
+
+# Story NestingExample-Message-Reactions - Message Two
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=nestingexample-message-reactions--message-two'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'nestingexample-message-reactions--message-two'
+- takeScreenshot: '.maestro/screenshots/NestingExample-Message-Reactions---Message-Two'
+
+# Story NestingExample-MessageInput - Basic
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=nestingexample-messageinput--basic'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'nestingexample-messageinput--basic'
+- takeScreenshot: '.maestro/screenshots/NestingExample-MessageInput---Basic'
+
+# Story NotesExample - Notes Example
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=notesexample--notes-example'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'notesexample--notes-example'
+- takeScreenshot: '.maestro/screenshots/NotesExample---Notes-Example'
+
+# Story react-native-ui-src-Layout - Basic
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=react-native-ui-src-layout--basic'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'react-native-ui-src-layout--basic'
+- takeScreenshot: '.maestro/screenshots/react-native-ui-src-Layout---Basic'
+
+# Story react-native-ui-src-Layout - Overflow Addons Example
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=react-native-ui-src-layout--overflow-addons-example'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'react-native-ui-src-layout--overflow-addons-example'
+- takeScreenshot: '.maestro/screenshots/react-native-ui-src-Layout---Overflow-Addons-Example'
+
+# Story react-native-ui-src-Layout - Overflow Sidebar Example
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=react-native-ui-src-layout--overflow-sidebar-example'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'react-native-ui-src-layout--overflow-sidebar-example'
+- takeScreenshot: '.maestro/screenshots/react-native-ui-src-Layout---Overflow-Sidebar-Example'
+
+# Story react-native-ui-UI-SearchResults - Default
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=react-native-ui-ui-searchresults--default'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'react-native-ui-ui-searchresults--default'
+- takeScreenshot: '.maestro/screenshots/react-native-ui-UI-SearchResults---Default'
+
+# Story react-native-ui-UI-Sidebar-Explorer - Simple
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=react-native-ui-ui-sidebar-explorer--simple'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'react-native-ui-ui-sidebar-explorer--simple'
+- takeScreenshot: '.maestro/screenshots/react-native-ui-UI-Sidebar-Explorer---Simple'
+
+# Story react-native-ui-UI-Sidebar-Sidebar - Empty
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=react-native-ui-ui-sidebar-sidebar--empty'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'react-native-ui-ui-sidebar-sidebar--empty'
+- takeScreenshot: '.maestro/screenshots/react-native-ui-UI-Sidebar-Sidebar---Empty'
+
+# Story react-native-ui-UI-Sidebar-Sidebar - Index Error
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=react-native-ui-ui-sidebar-sidebar--index-error'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'react-native-ui-ui-sidebar-sidebar--index-error'
+- takeScreenshot: '.maestro/screenshots/react-native-ui-UI-Sidebar-Sidebar---Index-Error'
+
+# Story react-native-ui-UI-Sidebar-Sidebar - Loading
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=react-native-ui-ui-sidebar-sidebar--loading'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'react-native-ui-ui-sidebar-sidebar--loading'
+- takeScreenshot: '.maestro/screenshots/react-native-ui-UI-Sidebar-Sidebar---Loading'
+
+# Story react-native-ui-UI-Sidebar-Sidebar - Loading With Ref Error
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=react-native-ui-ui-sidebar-sidebar--loading-with-ref-error'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'react-native-ui-ui-sidebar-sidebar--loading-with-ref-error'
+- takeScreenshot: '.maestro/screenshots/react-native-ui-UI-Sidebar-Sidebar---Loading-With-Ref-Error'
+
+# Story react-native-ui-UI-Sidebar-Sidebar - Loading With Refs
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=react-native-ui-ui-sidebar-sidebar--loading-with-refs'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'react-native-ui-ui-sidebar-sidebar--loading-with-refs'
+- takeScreenshot: '.maestro/screenshots/react-native-ui-UI-Sidebar-Sidebar---Loading-With-Refs'
+
+# Story react-native-ui-UI-Sidebar-Sidebar - Scrolled
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=react-native-ui-ui-sidebar-sidebar--scrolled'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'react-native-ui-ui-sidebar-sidebar--scrolled'
+- takeScreenshot: '.maestro/screenshots/react-native-ui-UI-Sidebar-Sidebar---Scrolled'
+
+# Story react-native-ui-UI-Sidebar-Sidebar - Searching
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=react-native-ui-ui-sidebar-sidebar--searching'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'react-native-ui-ui-sidebar-sidebar--searching'
+- takeScreenshot: '.maestro/screenshots/react-native-ui-UI-Sidebar-Sidebar---Searching'
+
+# Story react-native-ui-UI-Sidebar-Sidebar - Simple
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=react-native-ui-ui-sidebar-sidebar--simple'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'react-native-ui-ui-sidebar-sidebar--simple'
+- takeScreenshot: '.maestro/screenshots/react-native-ui-UI-Sidebar-Sidebar---Simple'
+
+# Story react-native-ui-UI-Sidebar-Sidebar - Statuses Collapsed
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=react-native-ui-ui-sidebar-sidebar--statuses-collapsed'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'react-native-ui-ui-sidebar-sidebar--statuses-collapsed'
+- takeScreenshot: '.maestro/screenshots/react-native-ui-UI-Sidebar-Sidebar---Statuses-Collapsed'
+
+# Story react-native-ui-UI-Sidebar-Sidebar - Statuses Open
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=react-native-ui-ui-sidebar-sidebar--statuses-open'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'react-native-ui-ui-sidebar-sidebar--statuses-open'
+- takeScreenshot: '.maestro/screenshots/react-native-ui-UI-Sidebar-Sidebar---Statuses-Open'
+
+# Story react-native-ui-UI-Sidebar-Sidebar - With Ref Empty
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=react-native-ui-ui-sidebar-sidebar--with-ref-empty'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'react-native-ui-ui-sidebar-sidebar--with-ref-empty'
+- takeScreenshot: '.maestro/screenshots/react-native-ui-UI-Sidebar-Sidebar---With-Ref-Empty'
+
+# Story react-native-ui-UI-Sidebar-Sidebar - With Refs
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=react-native-ui-ui-sidebar-sidebar--with-refs'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'react-native-ui-ui-sidebar-sidebar--with-refs'
+- takeScreenshot: '.maestro/screenshots/react-native-ui-UI-Sidebar-Sidebar---With-Refs'
+
+# Story react-native-ui-UI-Sidebar-Tree - Dark
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=react-native-ui-ui-sidebar-tree--dark'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'react-native-ui-ui-sidebar-tree--dark'
+- takeScreenshot: '.maestro/screenshots/react-native-ui-UI-Sidebar-Tree---Dark'
+
+# Story react-native-ui-UI-Sidebar-Tree - Full
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=react-native-ui-ui-sidebar-tree--full'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'react-native-ui-ui-sidebar-tree--full'
+- takeScreenshot: '.maestro/screenshots/react-native-ui-UI-Sidebar-Tree---Full'
+
+# Story react-native-ui-UI-Sidebar-Tree - Single Story Components
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=react-native-ui-ui-sidebar-tree--single-story-components'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'react-native-ui-ui-sidebar-tree--single-story-components'
+- takeScreenshot: '.maestro/screenshots/react-native-ui-UI-Sidebar-Tree---Single-Story-Components'
+
+# Story react-native-ui-UI-Sidebar-Tree - Story with a storyName
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=react-native-ui-ui-sidebar-tree--with-story-names'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'react-native-ui-ui-sidebar-tree--with-story-names'
+- takeScreenshot: '.maestro/screenshots/react-native-ui-UI-Sidebar-Tree---Story-with-a-storyName'
+
+# Story react-native-ui-UI-Sidebar-TreeNode - Expandable
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=react-native-ui-ui-sidebar-treenode--expandable'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'react-native-ui-ui-sidebar-treenode--expandable'
+- takeScreenshot: '.maestro/screenshots/react-native-ui-UI-Sidebar-TreeNode---Expandable'
+
+# Story react-native-ui-UI-Sidebar-TreeNode - Expandable Long Name
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=react-native-ui-ui-sidebar-treenode--expandable-long-name'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'react-native-ui-ui-sidebar-treenode--expandable-long-name'
+- takeScreenshot: '.maestro/screenshots/react-native-ui-UI-Sidebar-TreeNode---Expandable-Long-Name'
+
+# Story react-native-ui-UI-Sidebar-TreeNode - Nested
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=react-native-ui-ui-sidebar-treenode--nested'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'react-native-ui-ui-sidebar-treenode--nested'
+- takeScreenshot: '.maestro/screenshots/react-native-ui-UI-Sidebar-TreeNode---Nested'
+
+# Story react-native-ui-UI-Sidebar-TreeNode - Selection
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=react-native-ui-ui-sidebar-treenode--selection'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'react-native-ui-ui-sidebar-treenode--selection'
+- takeScreenshot: '.maestro/screenshots/react-native-ui-UI-Sidebar-TreeNode---Selection'
+
+# Story react-native-ui-UI-Sidebar-TreeNode - Selection With Long Name
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=react-native-ui-ui-sidebar-treenode--selection-with-long-name'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'react-native-ui-ui-sidebar-treenode--selection-with-long-name'
+- takeScreenshot: '.maestro/screenshots/react-native-ui-UI-Sidebar-TreeNode---Selection-With-Long-Name'
+
+# Story react-native-ui-UI-Sidebar-TreeNode - Types
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=react-native-ui-ui-sidebar-treenode--types'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'react-native-ui-ui-sidebar-treenode--types'
+- takeScreenshot: '.maestro/screenshots/react-native-ui-UI-Sidebar-TreeNode---Types'
+
+# Story react-native-ui-UI-StorybookLogo - Image Element Logo
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=react-native-ui-ui-storybooklogo--image-element-logo'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'react-native-ui-ui-storybooklogo--image-element-logo'
+- takeScreenshot: '.maestro/screenshots/react-native-ui-UI-StorybookLogo---Image-Element-Logo'
+
+# Story react-native-ui-UI-StorybookLogo - Image Logo
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=react-native-ui-ui-storybooklogo--image-logo'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'react-native-ui-ui-storybooklogo--image-logo'
+- takeScreenshot: '.maestro/screenshots/react-native-ui-UI-StorybookLogo---Image-Logo'
+
+# Story react-native-ui-UI-StorybookLogo - Image Source Logo
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=react-native-ui-ui-storybooklogo--image-source-logo'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'react-native-ui-ui-storybooklogo--image-source-logo'
+- takeScreenshot: '.maestro/screenshots/react-native-ui-UI-StorybookLogo---Image-Source-Logo'
+
+# Story react-native-ui-UI-StorybookLogo - Image Url Logo
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=react-native-ui-ui-storybooklogo--image-url-logo'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'react-native-ui-ui-storybooklogo--image-url-logo'
+- takeScreenshot: '.maestro/screenshots/react-native-ui-UI-StorybookLogo---Image-Url-Logo'
+
+# Story react-native-ui-UI-StorybookLogo - Title Logo
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=react-native-ui-ui-storybooklogo--title-logo'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'react-native-ui-ui-storybooklogo--title-logo'
+- takeScreenshot: '.maestro/screenshots/react-native-ui-UI-StorybookLogo---Title-Logo'
+
+# Story SafeAreaExample-SafeAreaInside - Basic
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=safeareaexample-safeareainside--basic'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'safeareaexample-safeareainside--basic'
+- takeScreenshot: '.maestro/screenshots/SafeAreaExample-SafeAreaInside---Basic'
+
+# Story SafeAreaExample-SafeAreaInside - List Basic
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=safeareaexample-safeareainside--list-basic'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'safeareaexample-safeareainside--list-basic'
+- takeScreenshot: '.maestro/screenshots/SafeAreaExample-SafeAreaInside---List-Basic'
+
+# Story SafeAreaExample-SafeAreaOutside - Basic
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=safeareaexample-safeareaoutside--basic'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'safeareaexample-safeareaoutside--basic'
+- takeScreenshot: '.maestro/screenshots/SafeAreaExample-SafeAreaOutside---Basic'
+
+# Story SafeAreaExample-SafeAreaOutside - List Basic
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=safeareaexample-safeareaoutside--list-basic'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'safeareaexample-safeareaoutside--list-basic'
+- takeScreenshot: '.maestro/screenshots/SafeAreaExample-SafeAreaOutside---List-Basic'
+
+# Story SafeAreaExample-UsableArea - No Safe Area
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=safeareaexample-usablearea--no-safe-area'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'safeareaexample-usablearea--no-safe-area'
+- takeScreenshot: '.maestro/screenshots/SafeAreaExample-UsableArea---No-Safe-Area'
+
+# Story SafeAreaExample-UsableArea - Safe Area
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=safeareaexample-usablearea--safe-area'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'safeareaexample-usablearea--safe-area'
+- takeScreenshot: '.maestro/screenshots/SafeAreaExample-UsableArea---Safe-Area'
+
+# Story TestCase - Basic
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=testcase--basic'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'testcase--basic'
+- takeScreenshot: '.maestro/screenshots/TestCase---Basic'
+
+# Story TestCase2 - Basic
+- openLink: 'exp://127.0.0.1:8081/--/?STORYBOOK_STORY_ID=testcase2--basic'
+- waitForAnimationToEnd
+- assertVisible:
+    id: 'testcase2--basic'
+- takeScreenshot: '.maestro/screenshots/TestCase2---Basic'

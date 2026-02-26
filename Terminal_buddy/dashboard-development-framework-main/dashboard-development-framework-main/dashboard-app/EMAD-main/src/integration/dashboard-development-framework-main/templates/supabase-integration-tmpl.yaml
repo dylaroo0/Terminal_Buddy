@@ -1,0 +1,1314 @@
+template:
+  id: supabase-integration-template
+  name: Supabase Integration Specification
+  version: 1.0
+  output:
+    format: markdown
+    filename: docs/supabase-integration.md
+    title: "Supabase Integration: {{project_name}}"
+
+workflow:
+  mode: interactive
+  elicitation: advanced-elicitation
+
+sections:
+  - id: integration-overview
+    title: Integration Overview
+    type: structured-text
+    instruction: |
+      Provide overview of Supabase integration requirements:
+      - Project context and dashboard type
+      - Data requirements and real-time needs
+      - Authentication and authorization requirements
+      - Integration complexity level
+    template: |
+      ## Supabase Integration for {{project_name}}
+      
+      **Dashboard Type**: {{dashboard_type}}
+      **Data Requirements**: {{data_requirements}}
+      **Real-time Needs**: {{realtime_needs}}
+      **Auth Requirements**: {{auth_requirements}}
+    elicit: true
+
+  - id: database-design
+    title: Database Schema Design
+    type: structured-content
+    instruction: Design PostgreSQL database schema for dashboard
+    elicit: true
+    sections:
+      - id: core-tables
+        title: Core Database Tables
+        instruction: |
+          Design the essential database tables for your dashboard:
+          
+          **User Management Tables:**
+          ```sql
+          -- User profiles (extends Supabase auth.users)
+          create table user_profiles (
+            id uuid references auth.users primary key,
+            email text unique not null,
+            full_name text,
+            avatar_url text,
+            role text default 'user' check (role in ('admin', 'user', 'viewer')),
+            department text,
+            preferences jsonb default '{}',
+            created_at timestamp with time zone default now(),
+            updated_at timestamp with time zone default now()
+          );
+          ```
+          
+          **Dashboard-Specific Tables:**
+          Define tables specific to your dashboard domain:
+          - Data entity tables (customers, products, orders, etc.)
+          - Configuration tables (settings, preferences)
+          - Analytics/metrics tables
+          - Audit/logging tables
+          
+          **Example Industry-Specific Schemas:**
+          
+          **E-commerce Dashboard:**
+          ```sql
+          create table products (
+            id uuid default gen_random_uuid() primary key,
+            name text not null,
+            description text,
+            price decimal(10,2),
+            category text,
+            stock_quantity integer default 0,
+            created_at timestamp with time zone default now()
+          );
+          
+          create table orders (
+            id uuid default gen_random_uuid() primary key,
+            user_id uuid references auth.users,
+            total_amount decimal(10,2),
+            status text default 'pending',
+            created_at timestamp with time zone default now()
+          );
+          ```
+          
+          **Analytics Dashboard:**
+          ```sql
+          create table analytics_events (
+            id uuid default gen_random_uuid() primary key,
+            event_type text not null,
+            event_data jsonb,
+            user_id uuid references auth.users,
+            session_id text,
+            timestamp timestamp with time zone default now()
+          );
+          
+          create table metrics (
+            id uuid default gen_random_uuid() primary key,
+            metric_name text not null,
+            metric_value decimal,
+            dimensions jsonb,
+            recorded_at timestamp with time zone default now()
+          );
+          ```
+          
+          Define your specific database tables and relationships.
+        elicit: true
+
+      - id: row-level-security
+        title: Row Level Security (RLS) Configuration
+        instruction: |
+          Configure PostgreSQL Row Level Security for data protection:
+          
+          **Enable RLS on All Tables:**
+          ```sql
+          -- Enable RLS on user_profiles
+          alter table user_profiles enable row level security;
+          
+          -- Enable RLS on business tables
+          alter table products enable row level security;
+          alter table orders enable row level security;
+          alter table analytics_events enable row level security;
+          ```
+          
+          **User Profile Security Policies:**
+          ```sql
+          -- Users can only view/edit their own profile
+          create policy "Users can view own profile" on user_profiles
+            for select using (auth.uid() = id);
+            
+          create policy "Users can update own profile" on user_profiles
+            for update using (auth.uid() = id);
+            
+          -- Admins can view all profiles
+          create policy "Admins can view all profiles" on user_profiles
+            for select using (
+              exists (
+                select 1 from user_profiles 
+                where id = auth.uid() and role = 'admin'
+              )
+            );
+          ```
+          
+          **Business Data Security Policies:**
+          ```sql
+          -- Example: Orders policy (users see own orders, admins see all)
+          create policy "Users can view own orders" on orders
+            for select using (user_id = auth.uid());
+            
+          create policy "Admins can view all orders" on orders
+            for select using (
+              exists (
+                select 1 from user_profiles 
+                where id = auth.uid() and role = 'admin'
+              )
+            );
+          ```
+          
+          **Role-Based Access Patterns:**
+          - **Admin**: Full access to all data
+          - **Manager**: Department/team-level access
+          - **User**: Personal data only
+          - **Viewer**: Read-only access to allowed data
+          
+          Define your specific RLS policies and access patterns.
+        elicit: true
+
+      - id: real-time-subscriptions
+        title: Real-time Subscriptions Setup
+        instruction: |
+          Configure real-time subscriptions for live dashboard updates:
+          
+          **Enable Real-time Replication:**
+          ```sql
+          -- Add tables to real-time publication
+          alter publication supabase_realtime add table user_profiles;
+          alter publication supabase_realtime add table orders;
+          alter publication supabase_realtime add table analytics_events;
+          alter publication supabase_realtime add table metrics;
+          ```
+          
+          **Real-time Use Cases:**
+          - **Live Metrics**: Real-time analytics and KPI updates
+          - **Order Status**: Live order status changes
+          - **User Activity**: Real-time user presence and activity
+          - **Notifications**: Instant alerts and notifications
+          - **Collaborative Features**: Multi-user dashboard editing
+          
+          **Frontend Real-time Implementation:**
+          ```tsx
+          // Real-time subscription in React component
+          useEffect(() => {
+            const subscription = supabase
+              .channel('dashboard-updates')
+              .on('postgres_changes', 
+                { event: '*', schema: 'public', table: 'orders' },
+                (payload) => {
+                  // Handle real-time order updates
+                  updateOrdersData(payload);
+                }
+              )
+              .subscribe();
+          
+            return () => subscription.unsubscribe();
+          }, []);
+          ```
+          
+          **Performance Considerations:**
+          - Limit real-time subscriptions to essential data
+          - Use filters to reduce unnecessary updates
+          - Implement proper cleanup on component unmount
+          - Consider batching updates for high-frequency data
+          
+          Define your real-time subscription requirements and implementation.
+        elicit: true
+
+  - id: authentication-authorization
+    title: Authentication and Authorization
+    type: structured-content
+    instruction: Configure Supabase Auth for dashboard access
+    elicit: true
+    sections:
+      - id: auth-providers
+        title: Authentication Providers Setup
+        instruction: |
+          Configure authentication methods for your dashboard:
+          
+          **Email/Password Authentication:**
+          ```tsx
+          // Sign up with email/password
+          const { data, error } = await supabase.auth.signUp({
+            email: 'user@example.com',
+            password: 'secure-password',
+            options: {
+              data: {
+                full_name: 'John Doe',
+                role: 'user'
+              }
+            }
+          });
+          
+          // Sign in with email/password
+          const { data, error } = await supabase.auth.signInWithPassword({
+            email: 'user@example.com',
+            password: 'secure-password'
+          });
+          ```
+          
+          **OAuth Providers (Optional):**
+          Configure OAuth for enterprise integration:
+          
+          **Google OAuth:**
+          ```tsx
+          const { data, error } = await supabase.auth.signInWithOAuth({
+            provider: 'google',
+            options: {
+              redirectTo: 'https://your-dashboard.com/auth/callback'
+            }
+          });
+          ```
+          
+          **Microsoft Azure AD:**
+          ```tsx
+          const { data, error } = await supabase.auth.signInWithOAuth({
+            provider: 'azure',
+            options: {
+              redirectTo: 'https://your-dashboard.com/auth/callback',
+              scopes: 'email openid profile'
+            }
+          });
+          ```
+          
+          **Magic Link Authentication:**
+          ```tsx
+          const { data, error } = await supabase.auth.signInWithOtp({
+            email: 'user@example.com',
+            options: {
+              emailRedirectTo: 'https://your-dashboard.com/auth/callback'
+            }
+          });
+          ```
+          
+          Choose and configure your authentication methods.
+        elicit: true
+
+      - id: role-based-access
+        title: Role-Based Access Control
+        instruction: |
+          Implement role-based access control for dashboard features:
+          
+          **User Roles Definition:**
+          ```sql
+          -- Create roles enum
+          create type user_role as enum ('admin', 'manager', 'user', 'viewer');
+          
+          -- Update user_profiles table
+          alter table user_profiles 
+          alter column role type user_role using role::user_role;
+          ```
+          
+          **Permission Matrix:**
+          | Feature | Admin | Manager | User | Viewer |
+          |---------|--------|---------|------|--------|
+          | View Dashboard | ✅ | ✅ | ✅ | ✅ |
+          | Edit Own Data | ✅ | ✅ | ✅ | ❌ |
+          | View Team Data | ✅ | ✅ | ❌ | ❌ |
+          | Manage Users | ✅ | ❌ | ❌ | ❌ |
+          | System Settings | ✅ | ❌ | ❌ | ❌ |
+          | Export Data | ✅ | ✅ | ✅ | ❌ |
+          
+          **Frontend Authorization Hooks:**
+          ```tsx
+          // Custom hook for role-based access
+          export const usePermissions = () => {
+            const { user } = useAuth();
+            const [profile, setProfile] = useState(null);
+          
+            useEffect(() => {
+              if (user) {
+                fetchUserProfile(user.id).then(setProfile);
+              }
+            }, [user]);
+          
+            return {
+              canViewAdminPanel: profile?.role === 'admin',
+              canManageUsers: profile?.role === 'admin',
+              canViewTeamData: ['admin', 'manager'].includes(profile?.role),
+              canEditData: ['admin', 'manager', 'user'].includes(profile?.role)
+            };
+          };
+          
+          // Usage in components
+          const Dashboard = () => {
+            const { canViewAdminPanel, canManageUsers } = usePermissions();
+            
+            return (
+              <div>
+                {canViewAdminPanel && <AdminPanel />}
+                {canManageUsers && <UserManagement />}
+                <DashboardContent />
+              </div>
+            );
+          };
+          ```
+          
+          **Route Protection:**
+          ```tsx
+          // Protected route component
+          const ProtectedRoute = ({ children, requiredRole }) => {
+            const { user, profile } = useAuth();
+            const hasPermission = checkUserPermission(profile?.role, requiredRole);
+            
+            if (!user) return <Navigate to="/login" />;
+            if (!hasPermission) return <Navigate to="/unauthorized" />;
+            
+            return children;
+          };
+          
+          // Route configuration
+          <Route path="/admin" element={
+            <ProtectedRoute requiredRole="admin">
+              <AdminDashboard />
+            </ProtectedRoute>
+          } />
+          ```
+          
+          Define your role-based access control requirements.
+        elicit: true
+
+  - id: data-integration
+    title: Data Integration and APIs
+    type: structured-content
+    instruction: Configure data sources and external integrations
+    elicit: true
+    sections:
+      - id: supabase-api-integration
+        title: Supabase REST API Integration
+        instruction: |
+          Configure Supabase REST API for dashboard data operations:
+          
+          **Refine Supabase Data Provider:**
+          ```tsx
+          import { dataProvider } from '@refinedev/supabase';
+          import { supabaseClient } from './supabase';
+          
+          export const dataProviderConfig = dataProvider(supabaseClient);
+          
+          // Usage in Refine app
+          <Refine
+            dataProvider={dataProviderConfig}
+            resources={[
+              {
+                name: 'orders',
+                list: '/orders',
+                create: '/orders/create',
+                edit: '/orders/edit/:id',
+                show: '/orders/show/:id'
+              },
+              {
+                name: 'products',
+                list: '/products',
+                create: '/products/create',
+                edit: '/products/edit/:id'
+              }
+            ]}
+          />
+          ```
+          
+          **Custom API Hooks:**
+          ```tsx
+          // Custom hook for dashboard metrics
+          export const useDashboardMetrics = () => {
+            const [metrics, setMetrics] = useState(null);
+            const [loading, setLoading] = useState(true);
+          
+            useEffect(() => {
+              const fetchMetrics = async () => {
+                const { data, error } = await supabase
+                  .from('analytics_events')
+                  .select('*')
+                  .gte('timestamp', new Date(Date.now() - 24 * 60 * 60 * 1000));
+                
+                if (!error) {
+                  setMetrics(processMetricsData(data));
+                }
+                setLoading(false);
+              };
+          
+              fetchMetrics();
+            }, []);
+          
+            return { metrics, loading };
+          };
+          ```
+          
+          **Advanced Queries:**
+          ```tsx
+          // Complex aggregation queries
+          const getDashboardStats = async () => {
+            const { data, error } = await supabase
+              .rpc('get_dashboard_stats', {
+                start_date: '2024-01-01',
+                end_date: '2024-12-31'
+              });
+            
+            return { data, error };
+          };
+          
+          // Corresponding PostgreSQL function
+          create or replace function get_dashboard_stats(
+            start_date date,
+            end_date date
+          )
+          returns json
+          language sql
+          as $$
+            select json_build_object(
+              'total_orders', count(*),
+              'total_revenue', sum(total_amount),
+              'avg_order_value', avg(total_amount)
+            )
+            from orders
+            where created_at between start_date and end_date;
+          $$;
+          ```
+          
+          Configure your Supabase API integration patterns.
+        elicit: true
+
+      - id: external-api-integration
+        title: External API Integration
+        instruction: |
+          Configure external data sources and third-party APIs:
+          
+          **Supabase Edge Functions for External APIs:**
+          ```typescript
+          // Edge Function: /functions/fetch-external-data/index.ts
+          import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
+          import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+          
+          serve(async (req) => {
+            const { apiKey, endpoint } = await req.json();
+            
+            // Fetch data from external API
+            const externalData = await fetch(endpoint, {
+              headers: { 'Authorization': `Bearer ${apiKey}` }
+            }).then(res => res.json());
+            
+            // Store in Supabase
+            const supabase = createClient(
+              Deno.env.get('SUPABASE_URL')!,
+              Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+            );
+            
+            const { data, error } = await supabase
+              .from('external_data')
+              .insert({ source: 'api', data: externalData });
+            
+            return new Response(JSON.stringify({ success: !error }));
+          });
+          ```
+          
+          **Scheduled Data Synchronization:**
+          ```sql
+          -- Create table for sync jobs
+          create table sync_jobs (
+            id uuid default gen_random_uuid() primary key,
+            source_name text not null,
+            last_sync timestamp with time zone,
+            next_sync timestamp with time zone,
+            status text default 'pending',
+            config jsonb
+          );
+          
+          -- Example sync configuration
+          insert into sync_jobs (source_name, config) values 
+          ('salesforce', '{"endpoint": "https://api.salesforce.com", "frequency": "hourly"}'),
+          ('analytics', '{"endpoint": "https://api.analytics.com", "frequency": "daily"}');
+          ```
+          
+          **Frontend Integration:**
+          ```tsx
+          // Hook for external data integration
+          export const useExternalData = (source: string) => {
+            const [data, setData] = useState(null);
+            const [syncing, setSyncing] = useState(false);
+          
+            const triggerSync = async () => {
+              setSyncing(true);
+              try {
+                await supabase.functions.invoke('fetch-external-data', {
+                  body: { source }
+                });
+                // Refresh data after sync
+                await fetchData();
+              } finally {
+                setSyncing(false);
+              }
+            };
+          
+            return { data, syncing, triggerSync };
+          };
+          ```
+          
+          **Common Integration Patterns:**
+          - **CRM Integration**: Salesforce, HubSpot customer data
+          - **Analytics Integration**: Google Analytics, Mixpanel
+          - **Payment Integration**: Stripe, PayPal transaction data
+          - **Marketing Integration**: Mailchimp, Campaign Monitor
+          - **ERP Integration**: SAP, Oracle business data
+          
+          Define your external API integration requirements.
+        elicit: true
+
+  - id: file-storage
+    title: File Storage and Media Management
+    type: structured-content
+    instruction: Configure Supabase Storage for file handling
+    elicit: true
+    sections:
+      - id: storage-configuration
+        title: Storage Bucket Configuration
+        instruction: |
+          Configure Supabase Storage for dashboard file management:
+          
+          **Create Storage Buckets:**
+          ```sql
+          -- Create buckets for different file types
+          insert into storage.buckets (id, name, public) values 
+          ('avatars', 'avatars', true),
+          ('documents', 'documents', false),
+          ('reports', 'reports', false),
+          ('uploads', 'uploads', false);
+          ```
+          
+          **Storage Policies:**
+          ```sql
+          -- Avatar uploads (public read, authenticated write)
+          create policy "Avatar uploads are publicly accessible" on storage.objects
+            for select using (bucket_id = 'avatars');
+          
+          create policy "Users can upload their own avatar" on storage.objects
+            for insert with check (
+              bucket_id = 'avatars' and 
+              auth.uid()::text = (storage.foldername(name))[1]
+            );
+          
+          -- Document storage (private, role-based access)
+          create policy "Documents are private" on storage.objects
+            for select using (
+              bucket_id = 'documents' and
+              auth.uid()::text = (storage.foldername(name))[1]
+            );
+          ```
+          
+          **Frontend File Upload:**
+          ```tsx
+          // File upload component
+          export const FileUpload = ({ bucket, onUpload }) => {
+            const [uploading, setUploading] = useState(false);
+          
+            const uploadFile = async (file: File) => {
+              setUploading(true);
+              try {
+                const fileExt = file.name.split('.').pop();
+                const fileName = `${Date.now()}.${fileExt}`;
+                const filePath = `${user.id}/${fileName}`;
+          
+                const { data, error } = await supabase.storage
+                  .from(bucket)
+                  .upload(filePath, file);
+          
+                if (!error) {
+                  onUpload(data.path);
+                }
+              } finally {
+                setUploading(false);
+              }
+            };
+          
+            return (
+              <input
+                type="file"
+                onChange={(e) => uploadFile(e.target.files[0])}
+                disabled={uploading}
+              />
+            );
+          };
+          ```
+          
+          Configure your file storage requirements and policies.
+        elicit: true
+
+      - id: image-optimization
+        title: Image Optimization and CDN
+        instruction: |
+          Configure image optimization for dashboard performance:
+          
+          **Supabase Image Transformation:**
+          ```tsx
+          // Generate optimized image URLs
+          export const getOptimizedImageUrl = (
+            bucket: string, 
+            path: string, 
+            options: { width?: number, height?: number, quality?: number } = {}
+          ) => {
+            const { data } = supabase.storage.from(bucket).getPublicUrl(path, {
+              transform: {
+                width: options.width,
+                height: options.height,
+                quality: options.quality || 80
+              }
+            });
+            
+            return data.publicUrl;
+          };
+          
+          // Usage in components
+          const Avatar = ({ userId, size = 64 }) => {
+            const avatarUrl = getOptimizedImageUrl('avatars', `${userId}/avatar.jpg`, {
+              width: size,
+              height: size,
+              quality: 90
+            });
+            
+            return <img src={avatarUrl} width={size} height={size} />;
+          };
+          ```
+          
+          **Progressive Image Loading:**
+          ```tsx
+          // Progressive image component
+          export const ProgressiveImage = ({ src, placeholder, alt }) => {
+            const [imageLoaded, setImageLoaded] = useState(false);
+            
+            return (
+              <div className="relative">
+                <img
+                  src={placeholder}
+                  alt={alt}
+                  className={`transition-opacity ${imageLoaded ? 'opacity-0' : 'opacity-100'}`}
+                />
+                <img
+                  src={src}
+                  alt={alt}
+                  onLoad={() => setImageLoaded(true)}
+                  className={`absolute inset-0 transition-opacity ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+                />
+              </div>
+            );
+          };
+          ```
+          
+          Define your image optimization and CDN requirements.
+        elicit: true
+
+  - id: performance-optimization
+    title: Performance Optimization
+    type: structured-content
+    instruction: Optimize Supabase integration for dashboard performance
+    elicit: true
+    sections:
+      - id: query-optimization
+        title: Database Query Optimization
+        instruction: |
+          Optimize database queries for dashboard performance:
+          
+          **Indexing Strategy:**
+          ```sql
+          -- Add indexes for common dashboard queries
+          create index idx_orders_user_id on orders(user_id);
+          create index idx_orders_created_at on orders(created_at);
+          create index idx_orders_status on orders(status);
+          create index idx_analytics_events_timestamp on analytics_events(timestamp);
+          create index idx_analytics_events_user_id on analytics_events(user_id);
+          
+          -- Composite indexes for complex queries
+          create index idx_orders_user_status_date on orders(user_id, status, created_at);
+          ```
+          
+          **Query Optimization Patterns:**
+          ```tsx
+          // Use select() to limit columns
+          const { data } = await supabase
+            .from('orders')
+            .select('id, total_amount, status, created_at')  // Only needed columns
+            .eq('user_id', userId)
+            .order('created_at', { ascending: false })
+            .limit(50);
+          
+          // Use pagination for large datasets
+          const { data } = await supabase
+            .from('analytics_events')
+            .select('*')
+            .range(startIndex, endIndex)
+            .order('timestamp', { ascending: false });
+          
+          // Use aggregation functions
+          const { data } = await supabase
+            .from('orders')
+            .select('total_amount.sum(), count()')
+            .eq('status', 'completed');
+          ```
+          
+          **Materialized Views for Complex Analytics:**
+          ```sql
+          -- Create materialized view for dashboard metrics
+          create materialized view dashboard_metrics as
+          select 
+            date_trunc('day', created_at) as date,
+            count(*) as order_count,
+            sum(total_amount) as total_revenue,
+            avg(total_amount) as avg_order_value
+          from orders
+          where status = 'completed'
+          group by date_trunc('day', created_at)
+          order by date;
+          
+          -- Refresh materialized view (can be scheduled)
+          refresh materialized view dashboard_metrics;
+          ```
+          
+          Define your query optimization strategy.
+        elicit: true
+
+      - id: caching-strategy
+        title: Caching and Data Management
+        instruction: |
+          Implement caching strategies for improved performance:
+          
+          **React Query Integration with Supabase:**
+          ```tsx
+          import { useQuery, useQueryClient } from '@tanstack/react-query';
+          
+          // Cached dashboard metrics
+          export const useDashboardMetrics = () => {
+            return useQuery({
+              queryKey: ['dashboard-metrics'],
+              queryFn: async () => {
+                const { data, error } = await supabase
+                  .from('dashboard_metrics')
+                  .select('*')
+                  .order('date', { ascending: false })
+                  .limit(30);
+                
+                if (error) throw error;
+                return data;
+              },
+              staleTime: 5 * 60 * 1000, // 5 minutes
+              cacheTime: 10 * 60 * 1000, // 10 minutes
+            });
+          };
+          
+          // Real-time cache invalidation
+          useEffect(() => {
+            const subscription = supabase
+              .channel('cache-invalidation')
+              .on('postgres_changes', 
+                { event: '*', schema: 'public', table: 'orders' },
+                () => {
+                  queryClient.invalidateQueries(['dashboard-metrics']);
+                }
+              )
+              .subscribe();
+          
+            return () => subscription.unsubscribe();
+          }, [queryClient]);
+          ```
+          
+          **Local Storage for User Preferences:**
+          ```tsx
+          // Persist dashboard state locally
+          export const usePersistentDashboardState = () => {
+            const [dashboardConfig, setDashboardConfig] = useState(() => {
+              const saved = localStorage.getItem('dashboard-config');
+              return saved ? JSON.parse(saved) : defaultConfig;
+            });
+          
+            useEffect(() => {
+              localStorage.setItem('dashboard-config', JSON.stringify(dashboardConfig));
+            }, [dashboardConfig]);
+          
+            return [dashboardConfig, setDashboardConfig];
+          };
+          ```
+          
+          **Database Connection Pooling:**
+          ```typescript
+          // Supabase client configuration for optimal performance
+          export const supabase = createClient(
+            process.env.SUPABASE_URL!,
+            process.env.SUPABASE_ANON_KEY!,
+            {
+              db: {
+                schema: 'public',
+              },
+              auth: {
+                autoRefreshToken: true,
+                persistSession: true,
+              },
+              global: {
+                headers: { 'x-my-custom-header': 'dashboard-app' },
+              },
+            }
+          );
+          ```
+          
+          Define your caching and performance optimization strategy.
+        elicit: true
+
+  - id: monitoring-analytics
+    title: Monitoring and Analytics
+    type: structured-content
+    instruction: Configure monitoring and usage analytics
+    elicit: true
+    sections:
+      - id: supabase-monitoring
+        title: Supabase Built-in Monitoring
+        instruction: |
+          Utilize Supabase's built-in monitoring capabilities:
+          
+          **Database Performance Monitoring:**
+          - Monitor query performance in Supabase Dashboard
+          - Track slow queries and optimize indexes
+          - Monitor database storage and connection usage
+          - Set up alerts for performance thresholds
+          
+          **Real-time Monitoring:**
+          - Track real-time subscription usage
+          - Monitor WebSocket connection health
+          - Analyze real-time message throughput
+          
+          **Auth Monitoring:**
+          - Track user authentication patterns
+          - Monitor login success/failure rates
+          - Analyze user session duration
+          
+          **Storage Monitoring:**
+          - Track file upload/download patterns
+          - Monitor storage quota usage
+          - Analyze file access patterns
+          
+          **Custom Analytics Events:**
+          ```tsx
+          // Track dashboard usage analytics
+          export const trackDashboardEvent = async (eventType: string, eventData: any) => {
+            await supabase
+              .from('analytics_events')
+              .insert({
+                event_type: eventType,
+                event_data: eventData,
+                user_id: user?.id,
+                session_id: sessionStorage.getItem('session_id'),
+                timestamp: new Date().toISOString()
+              });
+          };
+          
+          // Usage tracking
+          useEffect(() => {
+            trackDashboardEvent('page_view', {
+              page: 'dashboard',
+              duration: performance.now()
+            });
+          }, []);
+          ```
+          
+          Configure your Supabase monitoring and analytics approach.
+        elicit: true
+
+      - id: error-tracking
+        title: Error Tracking and Debugging
+        instruction: |
+          Implement comprehensive error tracking for the dashboard:
+          
+          **Supabase Error Handling:**
+          ```tsx
+          // Centralized error handling
+          export const handleSupabaseError = (error: any, context: string) => {
+            console.error(`Supabase error in ${context}:`, error);
+            
+            // Log error to analytics
+            trackDashboardEvent('error', {
+              context,
+              error_message: error.message,
+              error_code: error.code,
+              stack_trace: error.stack
+            });
+            
+            // Show user-friendly error message
+            toast.error(getErrorMessage(error));
+          };
+          
+          // Usage in data fetching
+          const fetchDashboardData = async () => {
+            try {
+              const { data, error } = await supabase
+                .from('dashboard_metrics')
+                .select('*');
+              
+              if (error) {
+                handleSupabaseError(error, 'dashboard_data_fetch');
+                return;
+              }
+              
+              setData(data);
+            } catch (error) {
+              handleSupabaseError(error, 'dashboard_data_fetch');
+            }
+          };
+          ```
+          
+          **Real-time Error Monitoring:**
+          ```tsx
+          // Monitor real-time connection errors
+          useEffect(() => {
+            const subscription = supabase
+              .channel('dashboard-data')
+              .on('postgres_changes', 
+                { event: '*', schema: 'public', table: 'metrics' },
+                (payload) => {
+                  updateDashboardData(payload);
+                }
+              )
+              .on('system', { event: 'error' }, (error) => {
+                handleSupabaseError(error, 'realtime_subscription');
+              })
+              .subscribe();
+          
+            return () => subscription.unsubscribe();
+          }, []);
+          ```
+          
+          Define your error tracking and debugging strategy.
+        elicit: true
+
+  - id: security-compliance
+    title: Security and Compliance
+    type: structured-content
+    instruction: Configure security measures and compliance requirements
+    elicit: true
+    sections:
+      - id: data-security
+        title: Data Security Configuration
+        instruction: |
+          Implement comprehensive data security measures:
+          
+          **Environment Variables Security:**
+          ```bash
+          # Production environment variables (never commit these)
+          SUPABASE_URL=https://your-project.supabase.co
+          SUPABASE_ANON_KEY=your-anon-key
+          SUPABASE_SERVICE_ROLE_KEY=your-service-role-key  # Server-side only
+          
+          # Database connection string (if using direct connection)
+          DATABASE_URL=postgresql://postgres:password@db.project.supabase.co:5432/postgres
+          ```
+          
+          **API Security:**
+          ```sql
+          -- Enable audit logging
+          create table audit_logs (
+            id uuid default gen_random_uuid() primary key,
+            table_name text not null,
+            action text not null,
+            old_data jsonb,
+            new_data jsonb,
+            user_id uuid references auth.users,
+            timestamp timestamp with time zone default now()
+          );
+          
+          -- Audit trigger function
+          create or replace function audit_trigger()
+          returns trigger as $$
+          begin
+            insert into audit_logs (table_name, action, old_data, new_data, user_id)
+            values (
+              TG_TABLE_NAME,
+              TG_OP,
+              case when TG_OP = 'DELETE' then to_jsonb(old) else null end,
+              case when TG_OP in ('INSERT', 'UPDATE') then to_jsonb(new) else null end,
+              auth.uid()
+            );
+            return coalesce(new, old);
+          end;
+          $$ language plpgsql;
+          ```
+          
+          **Rate Limiting:**
+          ```tsx
+          // Client-side rate limiting
+          export const useRateLimit = (maxRequests: number, windowMs: number) => {
+            const [requests, setRequests] = useState<number[]>([]);
+            
+            const isAllowed = () => {
+              const now = Date.now();
+              const validRequests = requests.filter(time => now - time < windowMs);
+              return validRequests.length < maxRequests;
+            };
+            
+            const makeRequest = () => {
+              if (isAllowed()) {
+                setRequests(prev => [...prev.slice(-maxRequests + 1), Date.now()]);
+                return true;
+              }
+              return false;
+            };
+            
+            return { isAllowed, makeRequest };
+          };
+          ```
+          
+          Define your data security and protection measures.
+        elicit: true
+
+      - id: compliance-requirements
+        title: Compliance and Governance
+        instruction: |
+          Configure compliance measures for regulatory requirements:
+          
+          **GDPR Compliance:**
+          ```sql
+          -- Data retention policies
+          create table data_retention_policies (
+            table_name text primary key,
+            retention_period interval,
+            anonymization_fields text[]
+          );
+          
+          insert into data_retention_policies values
+          ('user_profiles', '7 years', '{}'),
+          ('analytics_events', '2 years', '{"user_id", "session_id"}'),
+          ('orders', '7 years', '{}');
+          
+          -- Data anonymization function
+          create or replace function anonymize_old_data()
+          returns void as $$
+          declare
+            policy record;
+          begin
+            for policy in select * from data_retention_policies loop
+              execute format(
+                'update %I set %s where created_at < now() - %L',
+                policy.table_name,
+                array_to_string(
+                  array(select format('%I = null', field) from unnest(policy.anonymization_fields) as field),
+                  ', '
+                ),
+                policy.retention_period
+              );
+            end loop;
+          end;
+          $$ language plpgsql;
+          ```
+          
+          **Data Export for Subject Rights:**
+          ```tsx
+          // GDPR data export functionality
+          export const exportUserData = async (userId: string) => {
+            const tables = ['user_profiles', 'orders', 'analytics_events'];
+            const userData: any = {};
+            
+            for (const table of tables) {
+              const { data } = await supabase
+                .from(table)
+                .select('*')
+                .eq('user_id', userId);
+              
+              userData[table] = data;
+            }
+            
+            // Generate export file
+            const blob = new Blob([JSON.stringify(userData, null, 2)], {
+              type: 'application/json'
+            });
+            
+            return blob;
+          };
+          ```
+          
+          **Access Logging:**
+          ```sql
+          -- Log all data access for compliance
+          create table access_logs (
+            id uuid default gen_random_uuid() primary key,
+            user_id uuid references auth.users,
+            resource_type text,
+            resource_id text,
+            action text,
+            ip_address inet,
+            user_agent text,
+            timestamp timestamp with time zone default now()
+          );
+          ```
+          
+          Define your compliance and governance requirements.
+        elicit: true
+
+  - id: deployment-configuration
+    title: Deployment Configuration
+    type: structured-content
+    instruction: Configure Supabase for production deployment
+    sections:
+      - id: environment-setup
+        title: Production Environment Setup
+        instruction: |
+          Configure Supabase for production deployment:
+          
+          **Production Supabase Project:**
+          - Create separate Supabase projects for development, staging, and production
+          - Configure custom domains if needed
+          - Set up SSL certificates and security headers
+          - Configure backup and disaster recovery
+          
+          **Environment Configuration:**
+          ```bash
+          # Production environment variables
+          SUPABASE_URL=https://your-prod-project.supabase.co
+          SUPABASE_ANON_KEY=your-prod-anon-key
+          
+          # Development environment variables
+          SUPABASE_URL=https://your-dev-project.supabase.co
+          SUPABASE_ANON_KEY=your-dev-anon-key
+          ```
+          
+          **Database Migration Strategy:**
+          ```bash
+          # Use Supabase CLI for migrations
+          supabase migration new create_initial_schema
+          supabase db push --linked
+          
+          # Automated migration in CI/CD
+          - name: Deploy database changes
+            run: |
+              supabase link --project-ref ${{ secrets.SUPABASE_PROJECT_ID }}
+              supabase db push --linked
+          ```
+          
+          **Production Optimization:**
+          - Configure connection pooling settings
+          - Set up read replicas if needed
+          - Configure backup schedules
+          - Set up monitoring and alerting
+          
+          Document your production deployment configuration.
+
+      - id: monitoring-setup
+        title: Production Monitoring Setup
+        instruction: |
+          Configure comprehensive monitoring for production:
+          
+          **Supabase Dashboard Monitoring:**
+          - Set up custom dashboards for key metrics
+          - Configure alerts for error rates and performance
+          - Monitor database connection usage
+          - Track storage and bandwidth consumption
+          
+          **Custom Health Checks:**
+          ```tsx
+          // Health check endpoint
+          export const healthCheck = async () => {
+            try {
+              // Test database connection
+              const { data: dbHealth } = await supabase
+                .from('user_profiles')
+                .select('count')
+                .limit(1);
+              
+              // Test real-time connection
+              const channel = supabase.channel('health-check');
+              await new Promise((resolve, reject) => {
+                channel
+                  .on('system', { event: 'ready' }, resolve)
+                  .on('system', { event: 'error' }, reject)
+                  .subscribe();
+              });
+              
+              return {
+                status: 'healthy',
+                database: 'connected',
+                realtime: 'connected',
+                timestamp: new Date().toISOString()
+              };
+            } catch (error) {
+              return {
+                status: 'unhealthy',
+                error: error.message,
+                timestamp: new Date().toISOString()
+              };
+            }
+          };
+          ```
+          
+          **Alerting Configuration:**
+          - Set up alerts for high error rates
+          - Monitor response time degradation
+          - Track unusual traffic patterns
+          - Configure escalation procedures
+          
+          Define your production monitoring and alerting strategy.
+
+  - id: next-steps
+    title: Implementation Next Steps
+    type: structured-content
+    instruction: Provide clear next steps for Supabase integration
+    sections:
+      - id: immediate-tasks
+        title: Immediate Implementation Tasks
+        instruction: |
+          **Phase 1: Foundation (Week 1)**
+          1. Create Supabase project and configure basic settings
+          2. Set up development environment with Supabase CLI
+          3. Implement core database schema and RLS policies
+          4. Configure authentication providers
+          5. Set up basic Refine data provider integration
+          
+          **Phase 2: Core Features (Week 2)**
+          1. Implement user management and role-based access
+          2. Set up real-time subscriptions for live updates
+          3. Configure file storage and upload functionality
+          4. Implement basic CRUD operations
+          5. Add error handling and logging
+          
+          **Phase 3: Advanced Features (Week 3)**
+          1. Optimize database queries and add indexes
+          2. Implement caching strategies
+          3. Set up external API integrations
+          4. Configure monitoring and analytics
+          5. Implement security measures and compliance features
+          
+          **Phase 4: Production Readiness (Week 4)**
+          1. Set up production environment and deployment
+          2. Configure monitoring and alerting
+          3. Implement backup and disaster recovery
+          4. Performance testing and optimization
+          5. Security audit and penetration testing
+          
+          Prioritize tasks based on your specific project requirements.
+
+      - id: success-criteria
+        title: Success Criteria and Validation
+        instruction: |
+          **Technical Validation:**
+          - [ ] Supabase project created and configured
+          - [ ] Database schema implemented with proper RLS
+          - [ ] Authentication working with all required providers
+          - [ ] Real-time subscriptions functioning correctly
+          - [ ] File storage configured and working
+          - [ ] Refine data provider integration complete
+          - [ ] Performance benchmarks met
+          - [ ] Security measures implemented and tested
+          
+          **Functional Validation:**
+          - [ ] All dashboard CRUD operations working
+          - [ ] User roles and permissions functioning
+          - [ ] Real-time updates working as expected
+          - [ ] File upload/download working
+          - [ ] External API integrations functional
+          - [ ] Error handling providing useful feedback
+          - [ ] Monitoring and analytics collecting data
+          
+          **Production Readiness:**
+          - [ ] Production environment configured
+          - [ ] Database migrations working
+          - [ ] Monitoring and alerting set up
+          - [ ] Backup and recovery tested
+          - [ ] Security audit completed
+          - [ ] Performance testing passed
+          - [ ] Documentation complete
+          
+          Define your specific success criteria and validation requirements.

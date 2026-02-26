@@ -18,35 +18,11 @@ interface JournalWhiteboardProps {
   className?: string;
 }
 
-export const JournalWhiteboard: React.FC<JournalWhiteboardProps> = ({ 
+export const JournalWhiteboard: React.FC<JournalWhiteboardProps> = ({
   sessions = [],
   onSessionSelect,
   className = ''
 }) => {
-  // Convert sessions to tldraw-compatible format for potential embedding
-  const sessionNodes = sessions.map(session => ({
-    id: `session-${session.id}`,
-    type: 'session-node',
-    x: Math.random() * 800 + 100,
-    y: Math.random() * 600 + 100,
-    width: 240,
-    height: 120,
-    rotation: 0,
-    isLocked: false,
-    isEditing: false,
-    isHovered: false,
-    isHighlighted: false,
-    meta: {
-      sessionId: session.id,
-      title: session.title,
-      date: session.date,
-      duration: session.duration,
-      status: session.status,
-      commands: session.commands,
-      filesChanged: session.filesChanged
-    }
-  }));
-
   return (
     <div className={`journal-whiteboard-container ${className}`} style={{ height: '100%', width: '100%' }}>
       <Tldraw
@@ -55,7 +31,7 @@ export const JournalWhiteboard: React.FC<JournalWhiteboardProps> = ({
           // Custom toolbar items could be added here for journal-specific actions
         }}
       />
-      
+
       {/* Overlay for session nodes (this would be integrated with tldraw's custom shapes) */}
       {sessions.length > 0 && (
         <div className="absolute inset-0 pointer-events-none">

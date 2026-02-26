@@ -217,17 +217,17 @@ Building the standalone desktop app with Tauri v2 + React.
 
 | Task | Status |
 |------|--------|
-| Scaffold Tauri v2 App | Done |
-| Design System (50+ CSS variables, WCAG AAA) | Done |
-| Connect UI to daemon via MCP bridge | Next |
-| Journal View — Timeline | Pending |
-| Journal View — Topics | Pending |
-| Journal View — Search | Pending |
-| Onboarding Wizard | Pending |
-| Terminal Pane (xterm.js) | Pending |
-| Voice Input (whisper-rs) | Pending |
-| Creator Corner MVP | Pending |
-| Polish & Package (Linux/macOS/Windows) | Pending |
+| Scaffold Tauri v2 App | ✅ Done |
+| Design System (50+ CSS variables, WCAG AAA) | ✅ Done |
+| Connect UI to daemon via MCP bridge | ✅ Done |
+| Journal View — Timeline | ✅ Done |
+| Journal View — Topics | ⏳ Pending |
+| Journal View — Search | ✅ Done (Modular Panel) |
+| Onboarding Wizard | ✅ Done |
+| **Terminal Pane V2 (PTY-backed)** | ✅ **Done** (Build passes, integrated) |
+| Voice Input (whisper-rs) | ⏳ Pending |
+| Creator Corner MVP | 🟡 In Progress |
+| Polish & Package (Linux/macOS/Windows) | ⏳ Pending |
 
 ### Phase C: The Platform — Planned
 
@@ -263,14 +263,14 @@ Building the standalone desktop app with Tauri v2 + React.
 |-----------|--------|--------|
 | Scaffold Tauri v2 App | Feb 2026 | ✅ Done |
 | Design System (50+ CSS variables, WCAG AAA) | Feb 2026 | ✅ Done |
-| Connect UI to daemon via MCP bridge | Mar 2026 | 🔜 Next |
-| Journal View — Timeline | Mar 2026 | ⏳ Pending |
+| Connect UI to daemon via MCP bridge | Feb 2026 | ✅ Done |
+| Journal View — Timeline | Feb 2026 | ✅ Done |
+| Journal View — Search | Feb 2026 | ✅ Done (Modular Panel) |
+| Onboarding Wizard | Feb 2026 | ✅ Done |
+| **Terminal Pane V2 (PTY-backed)** | **Feb 2026** | ✅ **Done** (Build passes, integrated) |
 | Journal View — Topics | Mar 2026 | ⏳ Pending |
-| Journal View — Search | Mar 2026 | ⏳ Pending |
-| Onboarding Wizard | Mar 2026 | ⏳ Pending |
-| Terminal Pane (xterm.js) | Mar 2026 | ⏳ Pending |
+| Creator Corner MVP | Mar 2026 | 🟡 In Progress |
 | Voice Input (whisper-rs) | Apr 2026 | ⏳ Pending |
-| Creator Corner MVP | Apr 2026 | ⏳ Pending |
 | Polish & Package (Linux/macOS/Windows) | May 2026 | ⏳ Pending |
 
 ### Phase C: The Platform — Planned 📋

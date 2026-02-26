@@ -4,6 +4,8 @@ import { FitAddon } from 'xterm-addon-fit';
 import { WebLinksAddon } from 'xterm-addon-web-links';
 import { invoke } from '@tauri-apps/api/core';
 import { X } from 'lucide-react';
+// TODO: Re-import for voice execution
+// import { useVoiceTerminal } from '../contexts/VoiceTerminalContext';
 
 import 'xterm/css/xterm.css';
 
@@ -16,8 +18,11 @@ export const TerminalPane: React.FC<TerminalPaneProps> = ({ isOpen, onClose }) =
   const terminalRef = useRef<HTMLDivElement>(null);
   const xtermRef = useRef<Terminal | null>(null);
   const fitAddonRef = useRef<FitAddon | null>(null);
-  const [isExecuting, setIsExecuting] = useState(false);
   const workingDir = '~';
+  
+  // TODO: Use voice terminal context when TerminalPane has PTY session
+  // const { isExecuting: voiceExecuting, lastCommand } = useVoiceTerminal();
+  const [isExecuting, setIsExecuting] = useState(false);
 
   useEffect(() => {
     if (!isOpen || !terminalRef.current || xtermRef.current) return;
@@ -157,6 +162,29 @@ export const TerminalPane: React.FC<TerminalPaneProps> = ({ isOpen, onClose }) =
       setTimeout(() => fitAddonRef.current?.fit(), 100);
     }
   }, [isOpen]);
+
+  // TODO: Execute voice commands when TerminalPane has PTY session
+  // useEffect(() => {
+  //   if (voiceExecuting && lastCommand && xtermRef.current && sessionId) {
+  //     const runVoiceCommand = async () => {
+  //       try {
+  //         // Write command to terminal
+  //         xtermRef.current?.write(`\x1B[1;34m$ \x1B[0m${lastCommand}\r\n`);
+  //         
+  //         // Send to PTY
+  //         await invoke('terminal_write', {
+  //           sessionId,
+  //           input: lastCommand + '\n'
+  //         });
+  //       } catch (error) {
+  //         const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+  //         xtermRef.current?.writeln(`\x1B[1;31mError: ${errorMessage}\x1B[0m`);
+  //       }
+  //     };
+  //     
+  //     runVoiceCommand();
+  //   }
+  // }, [voiceExecuting, lastCommand, sessionId]);
 
   if (!isOpen) return null;
 

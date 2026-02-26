@@ -1,0 +1,589 @@
+template:
+  id: refine-project-setup-template
+  name: Refine.dev Project Setup Guide
+  version: 1.0
+  output:
+    format: markdown
+    filename: docs/refine-project-setup.md
+    title: "Refine.dev Project Setup: {{project_name}}"
+
+workflow:
+  mode: interactive
+  elicitation: advanced-elicitation
+
+sections:
+  - id: project-overview
+    title: Project Overview
+    type: structured-text
+    instruction: |
+      Provide project context and setup overview:
+      - Project name and description
+      - Target dashboard type (admin panel, analytics, monitoring, etc.)
+      - Expected complexity level (simple, standard, complex)
+      - Team size and technical expertise
+    template: |
+      ## Project: {{project_name}}
+      
+      **Description**: {{project_description}}
+      **Dashboard Type**: {{dashboard_type}}
+      **Complexity**: {{complexity_level}}
+      **Team Size**: {{team_size}}
+    elicit: true
+
+  - id: tech-stack-selection
+    title: Technology Stack Selection
+    type: structured-content
+    instruction: Configure the modern dashboard stack
+    elicit: true
+    sections:
+      - id: frontend-stack
+        title: Frontend Stack Configuration
+        instruction: |
+          Configure the Refine.dev frontend stack:
+          
+          **Core Framework:**
+          - React + TypeScript (recommended)
+          - Refine.dev for dashboard logic and CRUD operations
+          - Vite for build tooling (faster than Create React App)
+          
+          **UI Components:**
+          - shadcn/ui (recommended for modern 2024 aesthetics)
+          - Alternative: Material-UI, Ant Design, Chakra UI
+          - Tailwind CSS for styling (works best with shadcn/ui)
+          
+          **State Management:**
+          - Refine's built-in state management (recommended)
+          - Alternative: Zustand for additional state needs
+          
+          **Visualization:**
+          - Recharts (works well with shadcn/ui theming)
+          - Alternative: D3.js for custom visualizations
+          
+          Select your preferences and justify any deviations from recommendations.
+        elicit: true
+
+      - id: backend-stack
+        title: Backend Stack Configuration
+        instruction: |
+          Configure the Supabase backend stack:
+          
+          **Backend Service:**
+          - Supabase (recommended) - provides PostgreSQL + instant APIs
+          - Self-hosted or cloud-hosted Supabase
+          - Alternative: Custom backend with FastAPI/Express
+          
+          **Database:**
+          - PostgreSQL (via Supabase) - excellent for dashboards
+          - Real-time subscriptions for live updates
+          - Built-in authentication and authorization
+          
+          **File Storage:**
+          - Supabase Storage for file uploads
+          - Alternative: AWS S3, Cloudinary
+          
+          **Additional Services:**
+          - Supabase Edge Functions for custom backend logic
+          - Third-party API integrations as needed
+          
+          Document your backend architecture decisions.
+        elicit: true
+
+      - id: deployment-stack
+        title: Deployment and Infrastructure
+        instruction: |
+          Configure deployment and infrastructure:
+          
+          **Frontend Deployment:**
+          - Vercel (recommended for React applications)
+          - Automatic deployments from GitHub
+          - Preview deployments for every PR
+          - Alternative: Netlify, Cloudflare Pages
+          
+          **Backend Deployment:**
+          - Supabase Cloud (managed service)
+          - Alternative: Self-hosted Supabase on VPS/cloud
+          
+          **Optional Enhancements:**
+          - Cloudflare for global edge performance
+          - Custom domain configuration
+          - SSL certificates (automatic with Vercel)
+          
+          **Development Workflow:**
+          - Git-based deployment (push to deploy)
+          - Local development with Supabase CLI
+          - Environment management (dev/staging/prod)
+          
+          Define your deployment strategy and requirements.
+        elicit: true
+
+  - id: project-initialization
+    title: Project Initialization Steps
+    type: structured-content
+    instruction: Provide step-by-step setup instructions
+    sections:
+      - id: environment-setup
+        title: Development Environment Setup
+        instruction: |
+          **Prerequisites:**
+          - Node.js 18+ and npm/yarn/pnpm
+          - Git for version control
+          - VS Code (recommended) with extensions:
+            - TypeScript
+            - Tailwind CSS IntelliSense
+            - Prettier
+            - ESLint
+          
+          **Required Accounts:**
+          - GitHub account for code repository
+          - Supabase account (free tier available)
+          - Vercel account (free tier available)
+          - Optional: Cloudflare account
+          
+          Document any additional environment setup requirements.
+
+      - id: refine-project-creation
+        title: Refine Project Creation
+        instruction: |
+          **Create Refine Project:**
+          ```bash
+          # Use Refine CLI to bootstrap project
+          npm create refine-app@latest {{project_name}}
+          
+          # Or with specific configuration
+          npx create-refine-app@latest {{project_name}} \
+            --preset refine-vite \
+            --data-provider supabase \
+            --ui-framework shadcn-ui
+          ```
+          
+          **Project Configuration Options:**
+          - Template: Choose dashboard/admin template
+          - Data Provider: Supabase
+          - UI Framework: shadcn/ui (or Material-UI/Ant Design)
+          - Authentication: Supabase Auth
+          - Router: React Router DOM
+          
+          **Initial Project Structure:**
+          ```
+          {{project_name}}/
+          ├── src/
+          │   ├── components/
+          │   ├── pages/
+          │   ├── providers/
+          │   └── App.tsx
+          ├── public/
+          ├── package.json
+          └── vite.config.ts
+          ```
+          
+          Document any customizations to the default setup.
+
+      - id: shadcn-ui-setup
+        title: shadcn/ui Integration (2-4 hours)
+        instruction: |
+          **shadcn/ui Setup Process:**
+          
+          **Step 1: Initialize shadcn/ui**
+          ```bash
+          cd {{project_name}}
+          npx shadcn-ui@latest init
+          ```
+          
+          **Step 2: Configure Tailwind and shadcn/ui**
+          - Follow interactive setup prompts
+          - Choose your color scheme and radius preferences
+          - Set up CSS variables for theming
+          
+          **Step 3: Install Core Components**
+          ```bash
+          # Essential dashboard components
+          npx shadcn-ui@latest add button
+          npx shadcn-ui@latest add card
+          npx shadcn-ui@latest add table
+          npx shadcn-ui@latest add form
+          npx shadcn-ui@latest add input
+          npx shadcn-ui@latest add select
+          npx shadcn-ui@latest add dialog
+          npx shadcn-ui@latest add sheet
+          ```
+          
+          **Step 4: Refine Integration**
+          - Create custom Refine components using shadcn/ui
+          - Override default Refine UI components
+          - Ensure consistent theming across the application
+          
+          **Expected Time Investment:**
+          - Initial setup: 1-2 hours
+          - Component integration: 1-2 hours
+          - Theme customization: 30 minutes
+          - Total: 2-4 hours (one-time investment)
+          
+          **Benefits After Setup:**
+          - Modern, professional UI components
+          - Full ownership of component code
+          - Easy customization and theming
+          - Excellent accessibility out-of-the-box
+          
+          Document any specific customizations or theme choices.
+
+  - id: supabase-configuration
+    title: Supabase Configuration
+    type: structured-content
+    instruction: Configure Supabase backend services
+    sections:
+      - id: supabase-project-setup
+        title: Supabase Project Creation
+        instruction: |
+          **Create Supabase Project:**
+          1. Visit supabase.com and create account
+          2. Create new project: "{{project_name}}-dashboard"
+          3. Choose region closest to your users
+          4. Note down project URL and anon key
+          
+          **Environment Configuration:**
+          ```env
+          # .env.local
+          VITE_SUPABASE_URL=your-project-url
+          VITE_SUPABASE_ANON_KEY=your-anon-key
+          ```
+          
+          **Supabase CLI Setup (Optional):**
+          ```bash
+          npm install -g supabase
+          supabase login
+          supabase init
+          supabase link --project-ref your-project-id
+          ```
+          
+          Document your Supabase project configuration.
+
+      - id: database-schema
+        title: Database Schema Design
+        instruction: |
+          **Design Dashboard Data Schema:**
+          
+          **Common Dashboard Tables:**
+          - users (authentication handled by Supabase Auth)
+          - user_profiles (additional user data)
+          - dashboard_configs (user dashboard preferences)
+          - data_sources (external data connections)
+          - widgets (dashboard widget configurations)
+          - analytics_events (usage tracking)
+          
+          **Example Schema SQL:**
+          ```sql
+          -- User profiles table
+          create table user_profiles (
+            id uuid references auth.users primary key,
+            email text,
+            full_name text,
+            avatar_url text,
+            role text default 'user',
+            created_at timestamp with time zone default now(),
+            updated_at timestamp with time zone default now()
+          );
+          
+          -- Dashboard widgets table
+          create table widgets (
+            id uuid default gen_random_uuid() primary key,
+            user_id uuid references auth.users,
+            type text not null,
+            title text not null,
+            config jsonb,
+            position jsonb,
+            created_at timestamp with time zone default now(),
+            updated_at timestamp with time zone default now()
+          );
+          ```
+          
+          **Real-time Subscriptions:**
+          ```sql
+          -- Enable real-time for live dashboard updates
+          alter publication supabase_realtime add table widgets;
+          alter publication supabase_realtime add table user_profiles;
+          ```
+          
+          Define your specific database schema requirements.
+
+      - id: authentication-setup
+        title: Authentication Configuration
+        instruction: |
+          **Supabase Auth Configuration:**
+          
+          **Enable Authentication Providers:**
+          - Email/Password (default)
+          - Google OAuth (optional)
+          - GitHub OAuth (optional)
+          - Magic Links (passwordless)
+          
+          **Row Level Security (RLS):**
+          ```sql
+          -- Enable RLS on user_profiles
+          alter table user_profiles enable row level security;
+          
+          -- Users can only see/edit their own profile
+          create policy "Users can view own profile" on user_profiles
+            for select using (auth.uid() = id);
+            
+          create policy "Users can update own profile" on user_profiles
+            for update using (auth.uid() = id);
+          ```
+          
+          **Refine Auth Provider Configuration:**
+          ```tsx
+          import { authProvider } from '@refinedev/supabase'
+          import { supabaseClient } from './supabase'
+          
+          export const authProviderConfig = authProvider({
+            supabaseClient,
+            // Additional configuration
+          })
+          ```
+          
+          Document your authentication requirements and setup.
+
+  - id: development-workflow
+    title: Development Workflow
+    type: structured-content
+    instruction: Define development processes and best practices
+    sections:
+      - id: local-development
+        title: Local Development Setup
+        instruction: |
+          **Development Commands:**
+          ```bash
+          # Start development server
+          npm run dev
+          
+          # Start local Supabase (optional)
+          supabase start
+          
+          # Run type checking
+          npm run typecheck
+          
+          # Run linting
+          npm run lint
+          
+          # Run tests
+          npm run test
+          ```
+          
+          **Development Workflow:**
+          1. Pull latest changes from main branch
+          2. Create feature branch: `git checkout -b feature/new-dashboard-widget`
+          3. Develop with hot reloading at localhost:5173
+          4. Test functionality thoroughly
+          5. Commit changes with descriptive messages
+          6. Push and create pull request
+          
+          **Local Environment:**
+          - Use .env.local for local environment variables
+          - Connect to development Supabase project
+          - Enable hot reloading for fast development
+          
+          Document your team's development workflow.
+
+      - id: deployment-workflow
+        title: Deployment Workflow
+        instruction: |
+          **Automatic Deployment Setup:**
+          
+          **Vercel Integration:**
+          1. Connect GitHub repository to Vercel
+          2. Configure environment variables in Vercel dashboard
+          3. Enable automatic deployments on push to main
+          4. Set up preview deployments for pull requests
+          
+          **Environment Variables:**
+          ```bash
+          # Production environment variables
+          VITE_SUPABASE_URL=your-prod-supabase-url
+          VITE_SUPABASE_ANON_KEY=your-prod-anon-key
+          ```
+          
+          **Deployment Workflow:**
+          1. Merge pull request to main branch
+          2. Automatic build and deployment via Vercel
+          3. Run production smoke tests
+          4. Monitor deployment health
+          
+          **Database Migrations:**
+          ```bash
+          # Apply database migrations
+          supabase db push --linked
+          
+          # Or using migration files
+          supabase migration up
+          ```
+          
+          Document your deployment process and requirements.
+
+  - id: performance-optimization
+    title: Performance Optimization
+    type: structured-content
+    instruction: Configure performance and monitoring
+    sections:
+      - id: frontend-optimization
+        title: Frontend Performance
+        instruction: |
+          **Bundle Optimization:**
+          - Vite's automatic code splitting
+          - Tree shaking for unused code elimination
+          - Lazy loading for dashboard components
+          - Image optimization (use next/image or similar)
+          
+          **React Performance:**
+          ```tsx
+          // Lazy load dashboard pages
+          const Dashboard = lazy(() => import('./pages/Dashboard'))
+          const Analytics = lazy(() => import('./pages/Analytics'))
+          
+          // Memoize expensive calculations
+          const memoizedData = useMemo(() => 
+            expensiveCalculation(data), [data])
+          ```
+          
+          **Refine Optimization:**
+          - Use Refine's built-in caching
+          - Implement infinite scrolling for large data sets
+          - Optimize data provider queries
+          
+          Document your performance optimization strategy.
+
+      - id: monitoring-setup
+        title: Monitoring and Analytics
+        instruction: |
+          **Built-in Monitoring:**
+          - Vercel Analytics (performance monitoring)
+          - Supabase Dashboard (database monitoring)
+          - Browser DevTools (development monitoring)
+          
+          **Optional Advanced Monitoring:**
+          - Sentry for error tracking
+          - LogRocket for user session replay
+          - Google Analytics for usage analytics
+          
+          **Performance Targets:**
+          - First Contentful Paint: < 1.5s
+          - Largest Contentful Paint: < 2.5s
+          - Cumulative Layout Shift: < 0.1
+          - First Input Delay: < 100ms
+          
+          Define your monitoring and performance requirements.
+
+  - id: next-steps
+    title: Next Steps and Resources
+    type: structured-content
+    instruction: Provide guidance for project continuation
+    sections:
+      - id: immediate-tasks
+        title: Immediate Next Steps
+        instruction: |
+          **Post-Setup Tasks:**
+          1. Implement core dashboard layout using shadcn/ui components
+          2. Set up basic CRUD operations with Refine
+          3. Configure Supabase database schema for your specific needs
+          4. Implement user authentication flow
+          5. Create first dashboard widgets/components
+          
+          **Development Priorities:**
+          1. Set up CI/CD pipeline with automated testing
+          2. Implement core user journeys
+          3. Add data visualization components
+          4. Configure real-time updates
+          5. Performance testing and optimization
+          
+          **Team Onboarding:**
+          - Share development environment setup guide
+          - Conduct shadcn/ui + Refine training session (2-4 hours)
+          - Establish code review processes
+          - Set up project documentation
+          
+          Document your immediate project priorities.
+
+      - id: resources-documentation
+        title: Resources and Documentation
+        instruction: |
+          **Essential Documentation:**
+          - [Refine.dev Documentation](https://refine.dev/docs/)
+          - [shadcn/ui Components](https://ui.shadcn.com/)
+          - [Supabase Documentation](https://supabase.com/docs)
+          - [Tailwind CSS Docs](https://tailwindcss.com/docs)
+          
+          **Community Resources:**
+          - Refine.dev Discord community
+          - shadcn/ui GitHub repository
+          - Supabase Discord community
+          - Stack Overflow for technical questions
+          
+          **Learning Resources:**
+          - Refine.dev tutorials and examples
+          - shadcn/ui component showcase
+          - Supabase YouTube channel
+          - React TypeScript best practices
+          
+          **Troubleshooting:**
+          - Check browser developer console for errors
+          - Review Supabase logs for backend issues
+          - Use Vercel function logs for deployment issues
+          - Consult community forums for specific problems
+          
+          Include any additional resources specific to your project.
+
+  - id: success-criteria
+    title: Success Criteria and Validation
+    type: structured-content
+    instruction: Define project success metrics
+    sections:
+      - id: technical-validation
+        title: Technical Success Criteria
+        instruction: |
+          **Setup Completion Checklist:**
+          - [ ] Refine.dev project created and running locally
+          - [ ] shadcn/ui components integrated and themed
+          - [ ] Supabase project configured with authentication
+          - [ ] Database schema designed and implemented
+          - [ ] Vercel deployment pipeline working
+          - [ ] Environment variables configured for all environments
+          - [ ] Real-time subscriptions functioning
+          - [ ] Basic CRUD operations working
+          
+          **Performance Benchmarks:**
+          - [ ] Page load time < 3 seconds
+          - [ ] Lighthouse score > 90
+          - [ ] Bundle size optimized
+          - [ ] Database query performance acceptable
+          
+          **Quality Gates:**
+          - [ ] TypeScript compilation without errors
+          - [ ] ESLint rules passing
+          - [ ] Accessibility validation (WCAG AA)
+          - [ ] Mobile responsiveness verified
+          
+          Define your specific technical validation criteria.
+
+      - id: user-acceptance
+        title: User Acceptance Criteria
+        instruction: |
+          **User Experience Validation:**
+          - [ ] Dashboard loads quickly and responsively
+          - [ ] Navigation is intuitive and accessible
+          - [ ] Data updates in real-time as expected
+          - [ ] Authentication flow works smoothly
+          - [ ] Mobile experience is usable
+          
+          **Functional Requirements:**
+          - [ ] All planned dashboard features working
+          - [ ] Data visualization displays correctly
+          - [ ] User permissions and roles function properly
+          - [ ] Error handling provides useful feedback
+          - [ ] Data export/import works as expected
+          
+          **Stakeholder Sign-off:**
+          - [ ] Technical lead approval
+          - [ ] Design review completion
+          - [ ] Security review passed
+          - [ ] Performance requirements met
+          - [ ] Project sponsor acceptance
+          
+          Document your user acceptance and sign-off criteria.

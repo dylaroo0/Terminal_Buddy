@@ -1,0 +1,246 @@
+{
+  "project_name": "Terminal Buddy",
+  "version": "1.0.0-alpha",
+  "generated_at": "2026-02-24T23:00:00-08:00",
+  "genesis_protocol_version": "1.0.0-alpha.1",
+  
+  "maturity": "Brownfield",
+  "phase": "Phase B of 3",
+  "phase_description": "Phase A (Rust daemon) COMPLETE | Phase B (Desktop App) IN PROGRESS | Phase C (Platform) PLANNED",
+  
+  "core_vision": "A journal for your terminal that explains itself - a searchable, explainable, accessible memory layer for everything you've ever done in a shell",
+  
+  "tech_stack": {
+    "daemon": {
+      "language": "Rust",
+      "framework": "MCP Server (rmcp crate)",
+      "storage": ["SQLite", "Memvid (.mv2)"],
+      "status": "COMPLETE - 7 MCP tools working"
+    },
+    "desktop_app": {
+      "framework": "Tauri v2",
+      "frontend": "React 18+ + TypeScript",
+      "styling": "Tailwind CSS v4 + 50+ CSS custom properties",
+      "components": ["Radix UI", "Lucide React", "xterm.js"],
+      "status": "IN PROGRESS - 6/11 tasks complete"
+    },
+    "llm": {
+      "providers": ["OpenRouter (default)", "Anthropic/Claude", "Google/Gemini"],
+      "integration": "Multi-provider trait-based client",
+      "status": "COMPLETE - wired and working"
+    },
+    "voice": {
+      "planned": "whisper-rs (100% on-device)",
+      "status": "NOT STARTED - Task 9"
+    },
+    "memvid": {
+      "usage": "Flight recorder (.mv2) + SQLite",
+      "sdk": "@memvid/canvas-react (imported, not integrated)",
+      "status": "PARTIAL - SDK imported but not integrated"
+    }
+  },
+  
+  "working_features": [
+    "buddy_history - Full-text search across commands",
+    "buddy_sessions - List sessions with timestamps",
+    "buddy_system_health - CPU/RAM/disk monitoring",
+    "buddy_cleanup_scan - Bloat detection (report only)",
+    "buddy_run - PTY execute + capture + record",
+    "buddy_ask - LLM: natural language → shell command",
+    "buddy_explain - LLM: plain-language explanations",
+    "Onboarding Wizard - 3-step setup with API key validation",
+    "Journal Timeline UI - Date-grouped sessions with CommandCards",
+    "Modular Panel System - Show/hide/minimize panels",
+    "Search View - Searches commands + sessions with filters",
+    "Design System - WCAG AAA, Atkinson Hyperlegible, 50+ CSS vars"
+  ],
+  
+  "incomplete_features": [
+    "Terminal Pane V2 - PTY-backed terminal (in progress, not working)",
+    "Voice Input - whisper-rs integration (not started)",
+    "Memvid Canvas SDK - Timeline visualization (imported, not integrated)",
+    "Topics View - Auto-grouping by subject (placeholder only)",
+    "Creator Corner - Template system (panel architecture done, needs template system)",
+    "Panel Drag-and-Drop - Movable panels (show/hide/minimize works, drag doesn't)"
+  ],
+  
+  "risk_factors": [
+    {
+      "risk": "Tauri v2 bleeding edge",
+      "severity": "medium",
+      "mitigation": "Follow Tauri v2 docs closely, test frequently"
+    },
+    {
+      "risk": "Creator Corner scope creep",
+      "severity": "medium",
+      "mitigation": "Focus on MVP first, templates later"
+    },
+    {
+      "risk": "Terminal pane complexity",
+      "severity": "high",
+      "mitigation": "Hire terminal emulator specialist"
+    },
+    {
+      "risk": "Voice integration stalled",
+      "severity": "high",
+      "mitigation": "Hire voice integration specialist"
+    },
+    {
+      "risk": "Memvid integration incomplete",
+      "severity": "medium",
+      "mitigation": "Hire Memvid architect or use memvid-mcp"
+    },
+    {
+      "risk": "Creator overwhelm",
+      "severity": "high",
+      "mitigation": "Focused plan with clear priorities, minimal team"
+    },
+    {
+      "risk": "No automated test suite",
+      "severity": "low",
+      "mitigation": "Add tests after core features working"
+    }
+  ],
+  
+  "critical_gaps": [
+    {
+      "gap": "Terminal Pane Not Working Properly",
+      "category": "technical",
+      "severity": "high",
+      "impact": "Core feature blocked - can't run commands in-app",
+      "recommendation": "Hire terminal emulator specialist (xterm.js + PTY expert)"
+    },
+    {
+      "gap": "Voice-to-Text Stalled All Day",
+      "category": "technical",
+      "severity": "high",
+      "impact": "Key accessibility feature blocked",
+      "recommendation": "Hire voice integration specialist (whisper-rs + Tauri plugins)"
+    },
+    {
+      "gap": "Memvid Integration Incomplete",
+      "category": "technical",
+      "severity": "medium",
+      "impact": "Timeline visualization not working, flight recorder not integrated",
+      "recommendation": "Hire Memvid architect OR integrate memvid-mcp server"
+    },
+    {
+      "gap": "MCP Bridge Not Fully Connected",
+      "category": "technical",
+      "severity": "medium",
+      "impact": "UI ↔ daemon communication incomplete",
+      "recommendation": "Frontend architect to complete Tauri IPC integration"
+    },
+    {
+      "gap": "No Test Suite",
+      "category": "technical",
+      "severity": "low",
+      "impact": "Manual testing only, regression risk",
+      "recommendation": "Add after core features working (Task 11)"
+    }
+  ],
+  
+  "resource_gaps": [
+    {
+      "gap": "Terminal Emulator Expert Missing",
+      "category": "resource",
+      "severity": "high",
+      "recommendation": "Create custom specialist via BMAD Builder"
+    },
+    {
+      "gap": "Voice Integration Expert Missing",
+      "category": "resource",
+      "severity": "high",
+      "recommendation": "Create custom specialist via BMAD Builder"
+    },
+    {
+      "gap": "Memvid Architect Missing",
+      "category": "resource",
+      "severity": "medium",
+      "recommendation": "Create custom specialist OR adopt memvid-mcp"
+    },
+    {
+      "gap": "Creator Overwhelmed",
+      "category": "resource",
+      "severity": "high",
+      "recommendation": "Focused execution plan with clear priorities, minimal team size"
+    }
+  ],
+  
+  "constraints": [
+    "Daemon is DONE - do not modify buddy-daemon/ unless fixing bugs",
+    "UI never talks to SQLite directly - always through MCP tools",
+    "Journal-first paradigm - primary UI is notebook, not raw terminal",
+    "Atkinson Hyperlegible + JetBrains Mono - canonical fonts",
+    "Three surfaces, one brain - Tauri app, MCP App, VS Code extension",
+    "Accessibility features never gated behind paywall",
+    "Local-first architecture - no cloud dependency required"
+  ],
+  
+  "success_criteria": {
+    "phase_b_complete": [
+      "Terminal pane accepts input, executes commands, shows output in real-time",
+      "Voice input works with push-to-talk, 100% on-device transcription",
+      "Memvid timeline visualization working with flight recorder",
+      "Full demo: voice → terminal → journal → Memvid timeline",
+      "Packaged for Linux/macOS/Windows"
+    ],
+    "user_experience": [
+      "User can say 'Show me what I ran last Tuesday' and see it instantly",
+      "One-click explanation for any command",
+      "Voice is peer to keyboard - always available, always primary",
+      "WCAG AAA accessibility throughout"
+    ]
+  },
+  
+  "recommended_specialists": [
+    {
+      "role": "Terminal Emulator Specialist",
+      "expertise": ["xterm.js", "PTY integration", "Terminal emulation", "Rust + TypeScript"],
+      "created_via": "BMAD Builder (BoMB)",
+      "priority": "high"
+    },
+    {
+      "role": "Voice Integration Specialist",
+      "expertise": ["whisper-rs", "Tauri plugins", "Voice UX", "Audio processing"],
+      "created_via": "BMAD Builder (BoMB)",
+      "priority": "high"
+    },
+    {
+      "role": "Memvid Integration Specialist",
+      "expertise": ["Memvid Canvas SDK", "Flight recorder", "Timeline visualization", "@memvid/canvas-react"],
+      "created_via": "BMAD Builder (BoMB) OR adopt memvid-mcp",
+      "priority": "medium"
+    }
+  ],
+  
+  "existing_agents_to_reuse": [
+    {
+      "role": "Scrum Master",
+      "agent_id": "bmad-bmm/sm",
+      "purpose": "Coordinate daily execution, track progress, remove blockers"
+    },
+    {
+      "role": "Frontend Architect",
+      "agent_id": "bmad-bmm/architect",
+      "purpose": "Tauri ↔ MCP bridge, system integration"
+    },
+    {
+      "role": "Frontend Developer",
+      "agent_id": "bmad-bmm/dev",
+      "purpose": "React components, UI implementation"
+    },
+    {
+      "role": "QA Engineer",
+      "agent_id": "bmad-bmm/tea",
+      "purpose": "WCAG audit, cross-platform testing, accessibility"
+    }
+  ],
+  
+  "genesis_output_files": {
+    "project_dna": "_bmad-output/genesis/planning/terminal_buddy_dna.json",
+    "team_structure": "_bmad-output/genesis/teams/terminal_buddy_team.yaml",
+    "execution_plan": "_bmad-output/genesis/planning/terminal_buddy_workflow.json",
+    "genesis_report": "_bmad-output/genesis/planning/terminal_buddy_GENESIS_REPORT.md"
+  }
+}

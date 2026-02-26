@@ -1,0 +1,321 @@
+template:
+  id: dashboard-requirements-template
+  name: Dashboard Requirements Document (DRD)
+  version: 1.0
+  output:
+    format: markdown
+    filename: docs/dashboard-requirements.md
+    title: "Dashboard Requirements Document: {{project_name}}"
+
+workflow:
+  mode: interactive
+  elicitation: advanced-elicitation
+
+sections:
+  - id: executive-summary
+    title: Executive Summary
+    type: structured-text
+    instruction: |
+      Provide a clear, concise overview of the dashboard project including:
+      - Project purpose and business objectives
+      - Target users and primary use cases
+      - Key success metrics and expected outcomes
+      - High-level scope and deliverables
+    template: |
+      ## Project Overview
+      {{project_description}}
+
+      ## Business Objectives
+      {{business_objectives}}
+
+      ## Target Users
+      {{target_users}}
+
+      ## Success Metrics
+      {{success_metrics}}
+    elicit: true
+
+  - id: user-requirements
+    title: User Requirements
+    type: structured-content
+    instruction: Define who will use the dashboard and how they will use it
+    elicit: true
+    sections:
+      - id: user-personas
+        title: User Personas
+        instruction: |
+          Define the different types of users who will interact with this dashboard:
+          - Role and responsibilities
+          - Technical expertise level
+          - Primary goals and motivations
+          - Frequency of dashboard usage
+        elicit: true
+
+      - id: use-cases
+        title: Use Cases and Scenarios
+        instruction: |
+          Document the primary use cases and user scenarios:
+          - What tasks will users accomplish?
+          - What decisions will they make?
+          - What workflows will they follow?
+          - What information do they need to succeed?
+        elicit: true
+
+      - id: user-workflows
+        title: User Workflows
+        instruction: |
+          Describe the typical user journeys and interaction patterns:
+          - Step-by-step workflows for common tasks
+          - Navigation patterns and information hierarchy
+          - Integration with existing user processes
+        elicit: true
+
+  - id: functional-requirements
+    title: Functional Requirements
+    type: structured-content
+    instruction: Define what the dashboard must do functionally
+    elicit: true
+    sections:
+      - id: dashboard-components
+        title: Dashboard Components
+        instruction: |
+          Specify the types of components and visualizations needed:
+          
+          **Charts and Visualizations:**
+          - Line charts, bar charts, pie charts
+          - Scatter plots, heatmaps, gauges
+          - Maps, geographical visualizations
+          - Custom visualizations
+          
+          **Data Displays:**
+          - Tables and data grids
+          - KPI displays and metrics
+          - Text displays and summaries
+          - Status indicators
+          
+          **Interactive Elements:**
+          - Filters and search capabilities
+          - Date/time pickers and ranges
+          - Dropdown selectors and toggles
+          - Action buttons and controls
+        elicit: true
+
+      - id: interactions-features
+        title: Interactions and Features
+        instruction: |
+          Define the interactive capabilities and features:
+          - Drill-down and navigation capabilities
+          - Export and sharing functionality
+          - Customization and personalization options
+          - Real-time updates and refresh mechanisms
+          - Notification and alert systems
+        elicit: true
+
+      - id: layout-organization
+        title: Layout and Organization
+        instruction: |
+          Describe the dashboard layout and information organization:
+          - Page structure and navigation
+          - Component arrangement and grouping
+          - Information hierarchy and priority
+          - Responsive design considerations
+        elicit: true
+
+  - id: data-requirements
+    title: Data Requirements
+    type: structured-content
+    instruction: Define all data-related requirements and specifications
+    elicit: true
+    sections:
+      - id: data-sources
+        title: Data Sources
+        instruction: |
+          Document all data sources that need to be integrated:
+          
+          **APIs and Web Services:**
+          - REST APIs, GraphQL endpoints
+          - Authentication requirements
+          - Rate limits and usage constraints
+          
+          **Databases:**
+          - SQL databases (PostgreSQL, MySQL, etc.)
+          - NoSQL databases (MongoDB, etc.)
+          - Time-series databases (InfluxDB, etc.)
+          
+          **Files and Feeds:**
+          - CSV, JSON, XML files
+          - Real-time data streams
+          - Scheduled data imports
+          
+          **External Services:**
+          - Third-party integrations
+          - Cloud services and platforms
+          - Legacy systems
+        elicit: true
+
+      - id: data-processing
+        title: Data Processing Requirements
+        instruction: |
+          Specify how data should be processed and transformed:
+          - Data cleaning and validation rules
+          - Calculated fields and derived metrics
+          - Aggregation and summarization requirements
+          - Historical data and trend analysis
+          - Data refresh frequency and scheduling
+        elicit: true
+
+      - id: data-quality
+        title: Data Quality and Validation
+        instruction: |
+          Define data quality requirements and validation rules:
+          - Data accuracy and completeness standards
+          - Error handling and fallback mechanisms
+          - Data validation and business rules
+          - Monitoring and alerting for data issues
+        elicit: true
+
+  - id: technical-requirements
+    title: Technical Requirements
+    type: structured-content
+    instruction: Define technical specifications and constraints
+    elicit: true
+    sections:
+      - id: performance-scalability
+        title: Performance and Scalability
+        instruction: |
+          Specify performance requirements and scalability needs:
+          - Expected number of concurrent users
+          - Page load time requirements
+          - Data refresh and update frequency
+          - Response time expectations for interactions
+          - Data volume and growth projections
+        elicit: true
+
+      - id: browser-device-support
+        title: Browser and Device Support
+        instruction: |
+          Define supported browsers, devices, and platforms:
+          - Desktop browsers (Chrome, Firefox, Safari, Edge)
+          - Mobile devices and tablets
+          - Operating system requirements
+          - Screen resolution support
+        elicit: true
+
+      - id: integration-requirements
+        title: Integration Requirements
+        instruction: |
+          Specify integration needs with existing systems:
+          - Authentication and authorization systems
+          - Single sign-on (SSO) requirements
+          - API integrations and data synchronization
+          - Embedding or iframe requirements
+        elicit: true
+
+      - id: security-compliance
+        title: Security and Compliance
+        instruction: |
+          Define security requirements and compliance standards:
+          - Data encryption and protection requirements
+          - User access controls and permissions
+          - Audit logging and compliance requirements
+          - GDPR, HIPAA, or other regulatory compliance
+        elicit: true
+
+  - id: design-requirements
+    title: Design and User Experience Requirements
+    type: structured-content
+    instruction: Define visual design and user experience specifications
+    elicit: true
+    sections:
+      - id: visual-design
+        title: Visual Design Requirements
+        instruction: |
+          Specify visual design requirements and brand guidelines:
+          - Brand colors, fonts, and styling
+          - Logo and branding requirements
+          - Color schemes and themes
+          - Visual consistency standards
+        elicit: true
+
+      - id: accessibility
+        title: Accessibility Requirements
+        instruction: |
+          Define accessibility standards and requirements:
+          - WCAG compliance level (AA, AAA)
+          - Screen reader compatibility
+          - Keyboard navigation support
+          - Color contrast requirements
+          - Support for users with disabilities
+        elicit: true
+
+      - id: usability
+        title: Usability Requirements
+        instruction: |
+          Specify usability standards and user experience goals:
+          - Intuitive navigation and interaction design
+          - Minimal learning curve for new users
+          - Error prevention and recovery
+          - Help and documentation requirements
+        elicit: true
+
+  - id: project-constraints
+    title: Project Constraints and Success Criteria
+    type: structured-content
+    instruction: Define project limitations and success measurements
+    elicit: true
+    sections:
+      - id: timeline-budget
+        title: Timeline and Budget Constraints
+        instruction: |
+          Document project constraints and limitations:
+          - Project timeline and key milestones
+          - Budget constraints and resource limitations
+          - Technology stack preferences or requirements
+          - Maintenance and support expectations
+        elicit: true
+
+      - id: success-criteria
+        title: Success Criteria and Acceptance
+        instruction: |
+          Define how success will be measured and validated:
+          - Key performance indicators (KPIs)
+          - User adoption and satisfaction metrics
+          - Technical performance benchmarks
+          - Acceptance criteria for major features
+          - Testing and validation requirements
+        elicit: true
+
+      - id: risks-assumptions
+        title: Risks and Assumptions
+        instruction: |
+          Document known risks and project assumptions:
+          - Technical risks and mitigation strategies
+          - Data availability and quality assumptions
+          - Resource and timeline risks
+          - External dependencies and constraints
+        elicit: true
+
+  - id: appendices
+    title: Appendices
+    type: reference-content
+    instruction: Include supporting documentation and references
+    sections:
+      - id: references
+        title: References and Resources
+        instruction: |
+          Include relevant references and supporting materials:
+          - Existing documentation and specifications
+          - Research and analysis reports
+          - Competitive analysis and benchmarks
+          - Technical documentation and APIs
+        optional: true
+
+      - id: mockups-wireframes
+        title: Mockups and Wireframes
+        instruction: |
+          Reference any existing visual designs or mockups:
+          - UI mockups and wireframes
+          - User flow diagrams
+          - Information architecture diagrams
+          - Design inspiration and examples
+        optional: true

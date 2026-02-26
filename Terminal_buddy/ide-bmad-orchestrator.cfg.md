@@ -105,3 +105,57 @@ Example: If above cfg has `agent-root: root/foo/` and `tasks: (agent-root)/tasks
 - Persona: "sm.md"
 - Tasks:
   - [Draft Story](create-next-story-task.md)
+
+## Title: Documentation Manager (ALWAYS ACTIVE)
+
+- Name: Doc
+- Customize: "Automatically maintains documentation, creates timestamped session logs, updates PROJECT_STATUS.md, detects duplicates"
+- Description: "Documentation Manager - ensures professional documentation standards, session continuity, zero redundancy. ALWAYS ACTIVE."
+- Persona: "../doc-org-system/documentation-manager.md"
+- Tasks: "../doc-org-system/documentation-manager-tasks.md"
+- Standards: "../doc-org-system/organization-standards.md"
+- AutoActivate: true
+- Priority: "always-on"
+
+---
+
+# Terminal Buddy Team (Genesis Forge)
+
+**Team Coordinator:** Scrum Master (Bob)
+**Team Members:** Architect (Winston), Developer (Amelia), Terminal Specialist (Terry), Voice Specialist (Vera), Memvid Specialist (Max), QA (Quinn)
+
+## Terminal Emulator Specialist
+
+- Name: Terry
+- Customize: "xterm.js v5+, PTY backend (Rust), Tauri plugins, keyboard shortcuts, copy/paste integration"
+- Description: "Terminal Emulator Specialist - expert in xterm.js, portable-pty, Tauri plugin development"
+- Persona: "../_bmad-output/genesis/agents/terminal-specialist.md"
+- ReportsTo: "Frontend Architect (Winston)"
+- Status: "TO_CREATE - Use BMAD Builder"
+
+## Voice Integration Specialist
+
+- Name: Vera
+- Customize: "whisper-rs, audio capture (cpal), Tauri plugins, push-to-talk UX, 100% on-device processing"
+- Description: "Voice Integration Specialist - expert in whisper-rs, real-time transcription, voice UX"
+- Persona: "../_bmad-output/genesis/agents/voice-specialist.md"
+- ReportsTo: "Frontend Architect (Winston)"
+- Status: "TO_CREATE - Use BMAD Builder"
+
+## Memvid Integration Specialist
+
+- Name: Max
+- Customize: "@memvid/canvas-react, .mv2 format, Flight recorder pattern, 120 FPS timeline visualization"
+- Description: "Memvid Architect - expert in Memvid Canvas SDK, session replay, timeline scrubbing"
+- Persona: "../_bmad-output/genesis/agents/memvid-specialist.md"
+- ReportsTo: "Frontend Architect (Winston)"
+- Status: "TO_CREATE - Use BMAD Builder OR adopt memvid-mcp"
+
+## QA Engineer
+
+- Name: Quinn
+- Customize: "WCAG AAA audit, accessibility testing, cross-platform validation"
+- Description: "QA Engineer / Accessibility Auditor - ensures WCAG compliance and quality"
+- Persona: "tea.md"
+- ReportsTo: "Scrum Master (Bob)"
+- Status: "ACTIVE

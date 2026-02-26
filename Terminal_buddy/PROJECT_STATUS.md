@@ -1,7 +1,7 @@
 # Terminal Buddy — Project Status
 
-> **Last Updated:** 2026-02-24T02:30:00-08:00
-> **Updated By:** Roo (Task 4 — Journal Timeline with live data)
+> **Last Updated:** 2026-02-25T12:00:00-08:00
+> **Updated By:** Terminal Pane V2 Completion Session
 
 ---
 
@@ -11,43 +11,51 @@
 
 Phase A (Rust MCP daemon) is **✅ COMPLETE**. Phase B builds the UI.
 
+**Latest:** Terminal Pane V2 (PTY-backed) is **✅ COMPLETE** — build passes, integrated into App.tsx, ready for live testing.
+
 ---
 
-## Recent Completions (2026-02-22)
+## Recent Completions (2026-02-25)
+
+### Terminal Pane V2 — Complete ✅
 
 | Time | What | Details |
 |------|------|---------|
-| Morning | Product Spec v2 finalized | 844-line spec with journal paradigm, onboarding, monetization |
-| Morning | Design System v2 created | OLED dark theme, Atkinson Hyperlegible, WCAG AAA |
-| Morning | Phase B handoff written | 11-task plan with architecture decisions locked |
-| Afternoon | Genesis Forge integration | Meta-Orchestrator wired to Genesis Protocol |
-| Afternoon | Genesis analysis complete | Project DNA, Team Structure, Execution Report |
-| Afternoon | Task 1 partial | Tauri v2 scaffold exists (from earlier session) |
-| Afternoon | Task 3 started | Design System CSS rewritten (50+ variables, correct fonts) |
-| Afternoon | Journal UI coded | App.tsx with Timeline/Topics/Search views (mock data) |
-| Evening | Doc audit & reorganization | DOCS_INDEX rewritten, duplicates flagged, PROJECT_STATUS created |
-| Evening | Review incorporated | 3 gaps added: Memvid Canvas, MCP App distribution, Template system |
-| Evening | Parallel plan saved | 4-workstream Phase B plan saved to docs/plans/ |
-| Evening | Party mode handoff saved | Session vision doc saved to docs/plans/ |
-| Evening | **BUILD VERIFIED ✅** | `npm run build` passes — 1,732 modules, 206KB JS, clean |
+| Morning | `useTerminalTheme` hook | CSS var sync, WCAG AAA, respects `prefers-reduced-motion` |
+| Morning | `useTerminalOutput` hook | Debounced (100ms) output capture for daemon journaling |
+| Morning | TerminalV2.tsx refactored | Theme sync, output capture, `aria-live` announcements |
+| Morning | Accessibility enhancements | Screen reader status, reduced-motion, keyboard shortcuts |
+| Morning | Build verification | `npm run build` passes (2586 modules, 185KB CSS, 2.27MB JS) |
+| Morning | App.tsx integration | Replaced `TerminalPane` with `TerminalV2` |
+| Morning | Documentation | `DOCS_INDEX.md`, `README.md`, completion report |
+| Morning | **BUILD VERIFIED ✅** | TypeScript clean, integrated, ready for live test |
 
-### 2026-02-23 Session
+---
 
-| Time | What | Details |
-|------|------|---------|
-| Morning | MCP bridge audit | Audited all 4 MCP layers (App.tsx → tauri-mcp.ts → lib.rs → mcp_client.rs) |
-| Morning | Concurrency fix | Separated stdin/stdout locks in `mcp_client.rs` to prevent deadlocks |
-| Morning | Param mismatch fix | `explain_command` now sends `command`+`output` (not `query`+`context`) |
-| Morning | Mock data fix | Added missing `notes: []` to mock sessions — prevented UI crash |
-| Morning | Path alias fix | Added `@/` → `src/` alias in vite + tsconfig, installed `@types/node` |
-| Morning | Dev daemon path | Daemon now auto-discovered in workspace `target/release/` during dev |
-| Morning | **BUILD VERIFIED ✅** | `npx vite build` passes — 1,735 modules, 219KB JS, clean |
+## Recent Completions (2026-02-24)
 
-### 2026-02-24 Session (Full Stack Testing)
+### Session 6: Multimodal Integration - Step 1 ✅
 
 | Time | What | Details |
 |------|------|---------|
-| Evening | TypeScript build fix | Removed unused `CommandCard.tsx`, fixed unused variable warnings |
+| Night | Mouse wheel scrolling | Smooth scrolling for all panels (timeline, search, topics, whiteboard) |
+| Night | Custom scrollbars | 12px accessible width, hover states, high-contrast |
+| Night | Scroll indicators | Gradient fade at bottom shows more content |
+| Night | Documentation | `2026-02-24-SCROLLING-IMPLEMENTATION.md`, `2026-02-24-MULTIMODAL-INTEGRATION-PLAN.md` |
+| Night | **BUILD VERIFIED ✅** | TypeScript clean, CSS 173KB, JS 2.2MB |
+
+### Session 5: Terminal V2 Implementation ✅
+
+| Time | What | Details |
+|------|------|---------|
+| Evening | Terminal Features Spec | Complete terminal emulator blueprint pinned (`SPEC_TERMINAL_FEATURES.md`) |
+| Evening | Terminal V2 Component | `TerminalV2.tsx` with PTY support, toolbar, keyboard shortcuts |
+| Evening | Terminal V2 Styles | OLED-optimized dark theme (`TerminalV2.css`) |
+| Evening | Tauri PTY Commands | `terminal_spawn`, `terminal_write`, `terminal_kill`, `terminal_resize` |
+| Evening | Terminal Manager | Session management with Arc<Mutex<>> for thread safety |
+| Evening | Clipboard Integration | `tauri-plugin-clipboard-manager` for copy/paste |
+| Evening | Documentation | 3 new docs: TERMINAL-V2-PROGRESS, TERMINAL-IMPLEMENTATION, TERMINAL-BLUEPRINT |
+| Evening | **Architecture Decision** | Terminal V2 alongside V1 (no destruction, parallel development) |
 | Evening | MCP handshake fix | Added `initialized` notification after `initialize` response |
 | Evening | Query param fix | Made `buddy_history` query optional (allows listing recent commands) |
 | Evening | Test data created | Added 2 sessions + 4 commands to SQLite for testing |
@@ -175,11 +183,12 @@ MCP App SDK at `ext-apps/` with marketplace config at `.claude-plugin/marketplac
 2. ~~**Task 7: Onboarding Wizard**~~ — ✅ DONE! 3-step wizard with live API key validation
 3. ~~**Task 4: Journal Timeline**~~ — ✅ DONE! Live data, date grouping, explanation modal, error states
 4. ~~**Task 6: Search View**~~ — ✅ DONE! Modular panel with search, date/topic filters
-5. **Task 5: Topics View** — Group sessions by auto-detected subject (placeholder exists)
-6. **Task 8: Terminal Pane (xterm.js)** — Embed terminal for running commands in-app
-7. **Memvid Canvas SDK** — Import `@memvid/canvas-react` for timeline visualization
+5. ~~**Task 8: Terminal Pane V2**~~ — ✅ **DONE!** PTY-backed, accessibility-ready, build passes
+6. **Task 5: Topics View** — Group sessions by auto-detected subject (placeholder exists)
+7. **Creator Corner MVP** — Template system, drag-and-drop (panel architecture done)
 8. **Task 9: Voice Input** — whisper-rs integration for voice commands
-9. **Panel Drag-and-Drop** — Add react-grid-layout for moving panels (Creator Corner)
+9. **Memvid Canvas SDK** — Import `@memvid/canvas-react` for timeline visualization
+10. **Panel Drag-and-Drop** — Add react-grid-layout for moving panels
 
 ---
 
@@ -190,7 +199,7 @@ MCP App SDK at `ext-apps/` with marketplace config at `.claude-plugin/marketplac
 | LLM features need API key to test live | 🟡 Medium | Set `OPENROUTER_API_KEY` env var or configure in `buddy.toml` |
 | Memvid Canvas SDK not yet imported | 🟡 Medium | Needed for timeline scrubber + session replay |
 | `terminal-buddy/docs/UI_UX_DESIGN_SYSTEM.md` outdated | 🟢 Low | Uses Inter font — superseded by `docs/design/DESIGN_SYSTEM_V2.md` |
-| No real terminal integration yet | 🟡 Medium | Task 8 - xterm.js terminal pane |
+| `buddy_add_output` not implemented in daemon | 🟡 Medium | Terminal V2 output capture ready, daemon needs MCP tool |
 | Note button is a no-op | 🟢 Low | Needs `buddy_add_note` daemon tool (Task 4.1 — MCP API v1.1) |
 | Panel drag-and-drop not implemented | 🟢 Low | Panels can show/hide/minimize, but not yet draggable (Creator Corner task) |
 | Topics panel is placeholder | 🟢 Low | Needs `buddy_topics` daemon tool + auto-grouping logic |
@@ -205,17 +214,17 @@ MCP App SDK at `ext-apps/` with marketplace config at `.claude-plugin/marketplac
 | 2 | Connect to buddy-daemon via MCP | ✅ COMPLETE | — |
 | 3 | Design System Implementation | ✅ COMPLETE | — |
 | 4 | Journal View — Timeline | ✅ COMPLETE | Live data, date grouping, explanation modal, error states |
-| 5 | Journal View — Topics | 🟡 PARTIAL | Placeholder panel exists, needs auto-grouping logic |
+| 5 | Journal View — Topics | ⬜ NOT STARTED | Unblocked |
 | 6 | Journal View — Search | ✅ COMPLETE | Modular panel, searches commands + sessions, date/topic filters |
 | 7 | Onboarding Wizard | ✅ COMPLETE | 3-step wizard with API key validation |
-| 8 | Terminal Pane (xterm.js) | ⬜ NOT STARTED | Unblocked by Task 2 |
-| 9 | Voice Input (whisper-rs) | ⬜ NOT STARTED | Task 1 ✅ |
+| 8 | Terminal Pane V2 (PTY-backed) | ✅ **COMPLETE** | **Build passes, integrated, accessibility-ready** |
+| 9 | Voice Input (whisper-rs) | ⬜ NOT STARTED | Unblocked |
 | 10 | Creator Corner MVP | 🟡 STARTED | Panel architecture done, needs template system |
 | 11 | Polish & Package | ⬜ NOT STARTED | All |
 
-**Progress:** 6/11 tasks COMPLETE, 2 in progress
+**Progress:** 7/11 tasks COMPLETE, 1 in progress
 **Estimated total:** ~5 weeks (Genesis estimate)
-**Unblocked now:** Tasks 5 (Topics), 8 (Terminal Pane), 9 (Voice), 10 (Creator Corner)
+**Unblocked now:** Tasks 5 (Topics), 9 (Voice), 10 (Creator Corner)
 
 ---
 

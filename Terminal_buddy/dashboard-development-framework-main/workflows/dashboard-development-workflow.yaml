@@ -1,0 +1,276 @@
+workflow:
+  id: dashboard-development
+  name: Complete Dashboard Development Workflow
+  description: >-
+    Comprehensive workflow for building professional control panels and dashboards from concept to deployment.
+    Focuses on data-driven, interactive dashboards with emphasis on performance, usability, and professional code quality.
+  type: dashboard
+  project_types:
+    - control-panel
+    - analytics-dashboard
+    - monitoring-dashboard
+    - business-intelligence
+    - data-visualization
+    - admin-panel
+    - reporting-dashboard
+
+  sequence:
+    - agent: dashboard-orchestrator
+      creates: project-plan.md
+      notes: "Initial project coordination and workflow planning. Assesses project complexity and recommends appropriate workflow path."
+
+    - agent: dashboard-master
+      creates: dashboard-requirements.md
+      uses: create-dashboard-requirements
+      notes: "Comprehensive requirements gathering for dashboard functionality, data sources, users, and technical constraints. SAVE OUTPUT: Copy final dashboard-requirements.md to your project's docs/ folder."
+
+    - agent: dashboard-architect
+      creates: dashboard-architecture.md
+      requires: dashboard-requirements.md
+      uses: create-dashboard-architecture
+      notes: "Technical architecture design including technology stack, system design, data flow, security, and deployment architecture. SAVE OUTPUT: Copy final dashboard-architecture.md to your project's docs/ folder."
+
+    - agent: ui-designer
+      creates: dashboard-mockups.md
+      requires: 
+        - dashboard-requirements.md
+        - dashboard-architecture.md
+      uses: create-dashboard-mockup
+      notes: "Visual design and user experience planning including wireframes, component design, interaction patterns, and responsive layouts. SAVE OUTPUT: Copy final dashboard-mockups.md to your project's docs/ folder."
+
+    - agent: data-integrator
+      creates: data-integration-spec.md
+      requires: 
+        - dashboard-requirements.md
+        - dashboard-architecture.md
+      uses: setup-data-integration
+      notes: "Data source connections, API integrations, real-time data streams, and backend data processing setup. May run in parallel with UI design phase."
+
+    - agent: component-dev
+      action: setup-development-environment
+      requires: dashboard-architecture.md
+      notes: "Set up development environment based on architecture specifications including frameworks, build tools, and component libraries."
+
+    - component_development_cycle:
+      repeats: for_each_major_component
+      sequence:
+        - agent: component-dev
+          creates: component-specification.md
+          uses: create-component-specification
+          notes: "Detailed specification for individual dashboard components (charts, tables, filters, controls) based on mockups and requirements."
+
+        - agent: component-dev
+          implements: dashboard-component
+          uses: develop-component
+          requires: component-specification.md
+          notes: "Implementation of interactive dashboard component with proper testing, documentation, and performance optimization."
+
+        - agent: dashboard-qa
+          validates: component-implementation
+          uses: test-component-functionality
+          requires: implemented-component
+          notes: "Component testing including functionality, performance, accessibility, and integration validation."
+
+    - agent: component-dev
+      action: integrate-components
+      creates: integrated-dashboard
+      uses: integrate-dashboard-components
+      requires: all-components-validated
+      notes: "Integration of all dashboard components into cohesive dashboard application with proper layout, navigation, and data flow."
+
+    - agent: data-integrator
+      action: connect-data-sources
+      implements: data-connections
+      uses: connect-data-sources
+      requires: integrated-dashboard
+      notes: "Connect integrated dashboard to real data sources, implement caching, real-time updates, and data validation."
+
+    - testing_and_validation_phase:
+      sequence:
+        - agent: dashboard-qa
+          validates: dashboard-functionality
+          uses: test-dashboard-functionality
+          notes: "Comprehensive dashboard testing including user workflows, data accuracy, performance, and cross-browser compatibility."
+
+        - agent: dashboard-qa
+          validates: performance
+          uses: validate-performance
+          notes: "Performance testing and optimization including load times, real-time updates, large dataset handling, and mobile responsiveness."
+
+        - agent: dashboard-qa
+          validates: accessibility
+          uses: test-accessibility-compliance
+          notes: "Accessibility testing and validation ensuring WCAG compliance and usability for users with disabilities."
+
+        - agent: dashboard-qa
+          validates: security
+          uses: validate-security
+          notes: "Security validation including authentication, authorization, data protection, and vulnerability assessment."
+
+    - agent: dashboard-architect
+      action: setup-deployment
+      creates: deployment-configuration
+      uses: design-deployment-architecture
+      requires: validated-dashboard
+      notes: "Production deployment setup including containerization, infrastructure configuration, monitoring, and scaling."
+
+    - agent: dashboard-qa
+      validates: deployment-readiness
+      uses: validate-deployment-readiness
+      requires: deployment-configuration
+      notes: "Final validation that dashboard is ready for production deployment including all quality gates and acceptance criteria."
+
+    - agent: dashboard-orchestrator
+      action: project-completion
+      creates: project-handover.md
+      notes: "Project completion coordination including documentation handover, deployment verification, and ongoing maintenance planning."
+
+  flow_diagram: |
+    ```mermaid
+    graph TD
+        A[Start: Dashboard Project] --> B[dashboard-orchestrator: project-plan.md]
+        B --> C[dashboard-master: dashboard-requirements.md]
+        C --> D[dashboard-architect: dashboard-architecture.md]
+        D --> E[ui-designer: dashboard-mockups.md]
+        D --> F[data-integrator: data-integration-spec.md]
+        E --> G[component-dev: setup-environment]
+        F --> G
+        G --> H[Component Development Cycle]
+        
+        H --> I[component-dev: component-specification.md]
+        I --> J[component-dev: implement-component]
+        J --> K[dashboard-qa: test-component]
+        K --> L{More Components?}
+        L -->|Yes| I
+        L -->|No| M[component-dev: integrate-components]
+        
+        M --> N[data-integrator: connect-data-sources]
+        N --> O[Testing & Validation Phase]
+        
+        O --> P[dashboard-qa: test-functionality]
+        P --> Q[dashboard-qa: validate-performance]
+        Q --> R[dashboard-qa: test-accessibility]
+        R --> S[dashboard-qa: validate-security]
+        
+        S --> T{All Tests Pass?}
+        T -->|No| U[Fix Issues]
+        U --> P
+        T -->|Yes| V[dashboard-architect: setup-deployment]
+        
+        V --> W[dashboard-qa: validate-deployment-readiness]
+        W --> X{Deployment Ready?}
+        X -->|No| Y[Address Deployment Issues]
+        Y --> V
+        X -->|Yes| Z[dashboard-orchestrator: project-completion]
+        Z --> AA[Dashboard Complete & Deployed]
+
+        style AA fill:#90EE90
+        style H fill:#ADD8E6
+        style O fill:#FFE4B5
+        style B fill:#E6E6FA
+        style C fill:#FFE4B5
+        style D fill:#FFE4B5
+        style E fill:#FFE4B5
+        style F fill:#FFE4B5
+    ```
+
+  decision_guidance:
+    when_to_use:
+      - Building data-driven control panels and dashboards
+      - Creating monitoring and analytics interfaces
+      - Developing business intelligence applications
+      - Building admin panels with complex data visualization
+      - Need professional-grade, production-ready dashboards
+      - Require real-time data updates and interactive features
+      - Want systematic, quality-driven development process
+
+    complexity_factors:
+      simple_dashboard:
+        - Single data source
+        - Basic charts and tables
+        - Minimal user interaction
+        - Static or infrequent data updates
+        - Small user base
+        - Recommended: Use simplified workflow with fewer validation steps
+
+      complex_dashboard:
+        - Multiple data sources and integrations
+        - Advanced visualizations and interactions
+        - Real-time data streams
+        - Complex user permissions and customization
+        - Large user base and high performance requirements
+        - Recommended: Use full workflow with comprehensive testing
+
+  quality_gates:
+    requirements_complete:
+      - All user types and use cases documented
+      - Data sources and integration needs specified
+      - Performance and scalability requirements defined
+      - Acceptance criteria clearly established
+
+    architecture_approved:
+      - Technology stack selected and justified
+      - System architecture addresses all requirements
+      - Security and performance considerations documented
+      - Development guidelines established
+
+    design_validated:
+      - Visual mockups align with requirements
+      - User experience flows are intuitive
+      - Responsive design considerations addressed
+      - Accessibility requirements incorporated
+
+    components_tested:
+      - All components meet functional requirements
+      - Performance meets established benchmarks
+      - Accessibility compliance validated
+      - Code quality standards maintained
+
+    integration_complete:
+      - All components work together seamlessly
+      - Data flows correctly through the system
+      - Real-time updates function properly
+      - Error handling works as expected
+
+    deployment_ready:
+      - All quality gates passed
+      - Security validation complete
+      - Performance benchmarks met
+      - Documentation and handover materials prepared
+
+  handoff_prompts:
+    orchestrator_to_requirements: "Project planning complete. Begin comprehensive requirements gathering to establish clear project scope and constraints."
+    requirements_to_architecture: "Requirements document complete. Save it as docs/dashboard-requirements.md in your project, then create the technical architecture."
+    architecture_to_design: "Architecture complete. Save it as docs/dashboard-architecture.md. Now create visual mockups and user experience design."
+    architecture_to_data: "Architecture complete. Begin data integration planning and backend setup in parallel with UI design."
+    design_to_development: "UI/UX design complete. Save mockups as docs/dashboard-mockups.md. Begin component development environment setup."
+    components_to_integration: "All components developed and tested. Begin dashboard integration and data source connections."
+    integration_to_testing: "Dashboard integration complete. Begin comprehensive testing and validation phase."
+    testing_to_deployment: "All testing complete and passed. Begin deployment setup and production readiness validation."
+    deployment_to_completion: "Deployment validated and ready. Complete project handover and documentation."
+
+  success_metrics:
+    development_quality:
+      - All components meet functional requirements
+      - Code coverage above 80% for critical components
+      - Performance benchmarks met or exceeded
+      - Security validation passed
+      - Accessibility compliance achieved
+
+    user_experience:
+      - Intuitive navigation and interaction patterns
+      - Fast load times and responsive interactions
+      - Clear data visualization and information hierarchy
+      - Mobile and cross-browser compatibility
+
+    technical_excellence:
+      - Professional code quality and organization
+      - Proper error handling and edge case management
+      - Scalable architecture and performance optimization
+      - Comprehensive documentation and maintainability
+
+    project_delivery:
+      - Delivered on time and within scope
+      - All acceptance criteria met
+      - Stakeholder approval and sign-off
+      - Successful production deployment

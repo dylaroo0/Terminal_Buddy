@@ -1,6 +1,18 @@
 /* Terminal Buddy - Global Styles */
 /* Design System v2 - Dyslexia-friendly defaults */
 
+/* Canvas View Styles */
+.canvas-view {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.canvas-view .canvas-shell {
+  height: 100%;
+  width: 100%;
+}
+
 /* Whiteboard Journal Styles */
 .whiteboard-journal {
   position: relative;
@@ -48,6 +60,83 @@
   border: 1px solid var(--border);
   border-radius: 8px;
   box-shadow: 0 8px 32px rgba(56, 189, 248, 0.15);
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar styling for all panels */
+.timeline-panel::-webkit-scrollbar,
+.search-panel::-webkit-scrollbar,
+.topics-panel::-webkit-scrollbar {
+  width: 12px;
+}
+
+.timeline-panel::-webkit-scrollbar-track,
+.search-panel::-webkit-scrollbar-track,
+.topics-panel::-webkit-scrollbar-track {
+  background: var(--bg-deep);
+  border-radius: 6px;
+}
+
+.timeline-panel::-webkit-scrollbar-thumb,
+.search-panel::-webkit-scrollbar-thumb,
+.topics-panel::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 6px;
+  border: 2px solid var(--bg-deep);
+}
+
+.timeline-panel::-webkit-scrollbar-thumb:hover,
+.search-panel::-webkit-scrollbar-thumb:hover,
+.topics-panel::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
+/* Scroll indicator gradient */
+.timeline-panel,
+.search-panel,
+.topics-panel {
+  mask-image: linear-gradient(
+    to bottom,
+    black 0%,
+    black calc(100% - 20px),
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    black 0%,
+    black calc(100% - 20px),
+    transparent 100%
+  );
+}
+
+/* Whiteboard journal container - enable scrolling */
+.whiteboard-journal-container {
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  height: 100%;
+}
+
+.whiteboard-journal-container::-webkit-scrollbar {
+  width: 12px;
+}
+
+.whiteboard-journal-container::-webkit-scrollbar-track {
+  background: var(--bg-deep);
+  border-radius: 6px;
+}
+
+.whiteboard-journal-container::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 6px;
+  border: 2px solid var(--bg-deep);
+}
+
+.whiteboard-journal-container::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
 }
 
 /* Terminal pane styling */
@@ -583,7 +672,8 @@ pre,
 }
 
 .terminal-pane--closed {
-  height: 40px;
+  height: 0;
+  overflow: hidden;
 }
 
 .terminal-pane--open {
@@ -644,6 +734,20 @@ pre,
 .terminal-hint {
   font-size: 0.75rem;
   font-style: italic;
+}
+
+/* xterm.js container */
+.terminal-pane .xterm {
+  height: 100%;
+  padding: 0.5rem;
+}
+
+.terminal-pane .xterm-viewport {
+  overflow-y: auto;
+}
+
+.terminal-pane .xterm-screen {
+  padding-left: 0.5rem;
 }
 
 /* ============================================

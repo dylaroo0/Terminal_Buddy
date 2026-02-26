@@ -3,13 +3,25 @@ use std::path::PathBuf;
 use std::sync::Arc;
 use tauri::{AppHandle, Manager, State};
 use tokio::sync::Mutex;
+use base64::Engine;
 
 mod mcp_client;
 use mcp_client::McpClient;
 
+mod terminal;
+use terminal::TerminalManager;
+
+mod voice;
+use voice::{VoiceState, voice_transcribe, voice_is_configured, voice_test_connection};
+
 /// Application state containing the MCP client
 pub struct AppState {
     pub mcp: Arc<Mutex<Option<McpClient>>>,
+}
+
+/// Application state containing terminal manager
+pub struct TerminalState {
+    pub terminal: Arc<Mutex<TerminalManager>>,
 }
 
 /// Initialize MCP client on app startup
@@ -357,12 +369,22 @@ async fn test_api_key(provider: String, api_key: String) -> Result<Value, String
 pub fn run() {
     // Initialize logging
     tracing_subscriber::fmt::init();
+    
+    // Load .env file for development
+    let _ = dotenvy::dotenv();
 
     tauri::Builder::default()
         .plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_opener::init())
+        .plugin(tauri_plugin_clipboard_manager::init())
         .manage(AppState {
             mcp: Arc::new(Mutex::new(None)),
+        })
+        .manage(TerminalState {
+            terminal: Arc::new(Mutex::new(TerminalManager::new())),
+        })
+        .manage(VoiceState {
+            api_key: std::env::var("GROQ_API_KEY").unwrap_or_default(),
         })
         .invoke_handler(tauri::generate_handler![
             get_sessions,
@@ -374,7 +396,14 @@ pub fn run() {
             check_first_run,
             load_config,
             save_config,
-            test_api_key
+            test_api_key,
+            terminal::terminal_spawn,
+            terminal::terminal_write,
+            terminal::terminal_kill,
+            terminal::terminal_resize,
+            voice_transcribe,
+            voice_is_configured,
+            voice_test_connection,
         ])
         .setup(|app| {
             let app_handle = app.handle().clone();

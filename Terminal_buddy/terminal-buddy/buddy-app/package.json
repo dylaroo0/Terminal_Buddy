@@ -7,13 +7,18 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "tauri": "tauri"
+    "tauri": "tauri",
+    "canvas-server": "node canvas-server.js"
   },
   "dependencies": {
+    "@memvid/canvas-core": "^2.0.146",
+    "@memvid/canvas-react": "^2.0.146",
+    "@memvid/canvas-server": "^2.0.146",
     "@modelcontextprotocol/sdk": "^1.26.0",
     "@radix-ui/react-slot": "^1.2.4",
     "@tailwindcss/vite": "^4.2.0",
     "@tauri-apps/api": "^2",
+    "@tauri-apps/plugin-clipboard-manager": "^2",
     "@tauri-apps/plugin-opener": "^2",
     "@tauri-apps/plugin-shell": "^2.3.5",
     "@tldraw/tldraw": "^4.4.0",
@@ -21,9 +26,13 @@
     "lucide-react": "^0.575.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-resizable-panels": "^4.6.5",
     "tailwind-merge": "^3.5.0",
     "tailwindcss": "^4.2.0",
-    "tldraw": "^4.4.0"
+    "tldraw": "^4.4.0",
+    "xterm": "^5.3.0",
+    "xterm-addon-fit": "^0.8.0",
+    "xterm-addon-web-links": "^0.9.0"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^2",

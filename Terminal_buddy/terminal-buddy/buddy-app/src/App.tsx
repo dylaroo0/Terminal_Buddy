@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Settings, BookOpen, Calendar, Terminal, Sparkles, ChevronDown, ChevronUp, AlertCircle, RefreshCw } from 'lucide-react';
+import { Settings, BookOpen, Sparkles, AlertCircle, RefreshCw } from 'lucide-react';
 import './App.css';
+import '@memvid/canvas-react/styles/canvas.css';
 import * as mcp from './utils/tauri-mcp';
 import type { CommandRecord, SessionRecord, Explanation } from './utils/tauri-mcp';
 import { CreatorCornerWorkshop } from './components/CreatorCornerWorkshop';
@@ -11,8 +12,11 @@ import { SearchView } from './components/SearchView';
 import { PanelManager, PanelConfig } from './components/PanelManager';
 import { TopicsPanel } from './components/TopicsPanel';
 import { CreatorCorner } from './components/CreatorCorner';
-import { Whiteboard } from './components/Whiteboard';
 import { JournalWhiteboard } from './components/JournalWhiteboard';
+import { CanvasShell } from '@memvid/canvas-react/components';
+import { TerminalV2 } from './components/TerminalV2';
+import { VoiceWidget } from './components/VoiceWidget';
+import { VoiceTerminalProvider } from './contexts/VoiceTerminalContext';
 
 /** Group sessions by date string for the timeline view */
 function groupSessionsByDate(sessions: SessionRecord[]): Map<string, SessionRecord[]> {
@@ -33,7 +37,7 @@ function groupSessionsByDate(sessions: SessionRecord[]): Map<string, SessionReco
 
 const App: React.FC = () => {
   // Top-level navigation: Journal, Creator Corner, or Workshop
-  const [activeView, setActiveView] = useState<'journal' | 'creator' | 'workshop'>('journal');
+  const [activeView, setActiveView] = useState<'journal' | 'creator' | 'workshop' | 'canvas'>('journal');
 
   // Panel state - modular, movable panels
   const [panels, setPanels] = useState<PanelConfig[]>([
@@ -59,8 +63,8 @@ const App: React.FC = () => {
   } | null>(null);
   const [explanationLoading, setExplanationLoading] = useState(false);
 
-  // Terminal pane state (collapsible at bottom)
-  const [terminalPaneOpen, setTerminalPaneOpen] = useState(false);
+  // Terminal pane state (now managed by PanelManager)
+  // const [terminalPaneOpen, setTerminalPaneOpen] = useState(true);
 
   const formatTime = (dateString: string): string => {
     return new Date(dateString).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
@@ -169,7 +173,8 @@ const App: React.FC = () => {
   const dateGroups = groupSessionsByDate(sessions);
 
   return (
-    <div className="app-container">
+    <VoiceTerminalProvider>
+      <div className="app-container">
       {/* Onboarding Wizard */}
       {showOnboarding && (
         <OnboardingWizard onComplete={() => setShowOnboarding(false)} />
@@ -197,6 +202,9 @@ const App: React.FC = () => {
           <button onClick={() => setActiveView('journal')} className={`nav-tab ${activeView === 'journal' ? 'active' : ''}`}>
             <BookOpen size={16} /> Journal
           </button>
+          <button onClick={() => setActiveView('canvas')} className={`nav-tab ${activeView === 'canvas' ? 'active' : ''}`}>
+            <Sparkles size={16} /> Canvas
+          </button>
           <button onClick={() => setActiveView('creator')} className={`nav-tab ${activeView === 'creator' ? 'active' : ''}`}>
             <Sparkles size={16} /> Creator Corner
           </button>
@@ -205,11 +213,19 @@ const App: React.FC = () => {
           </button>
         </div>
         <div className="nav-right">
-          <PanelManager
-            panels={panels}
-            onToggleVisibility={togglePanelVisibility}
-            onToggleMinimize={togglePanelMinimize}
+          {/* Voice Widget */}
+          <VoiceWidget
+            visible={true}
+            privacyMode={false}
+            onCommandConfirm={(command) => {
+              console.log('Voice command confirmed:', command);
+              // TODO: Execute command in terminal
+            }}
+            onStateChange={(state) => {
+              console.log('Voice state changed:', state);
+            }}
           />
+          
           <button className="icon-btn" title="Settings"><Settings className="icon" /></button>
         </div>
       </nav>
@@ -220,7 +236,7 @@ const App: React.FC = () => {
           <div className="journal-view">
             {/* Endless Whiteboard Journal */}
             <div className="whiteboard-journal">
-              <JournalWhiteboard 
+              <JournalWhiteboard
                 sessions={[
                   {
                     id: 'sess-1',
@@ -263,7 +279,7 @@ const App: React.FC = () => {
                 className="journal-whiteboard"
               />
             </div>
-            
+
             {/* Overlay Panels */}
             <div className="panel-overlay">
               {/* Timeline Panel - always visible as base */}
@@ -354,7 +370,7 @@ const App: React.FC = () => {
 
               {/* Topics Panel - implemented */}
               {panels.find(p => p.id === 'topics')?.visible && (
-                <TopicsPanel 
+                <TopicsPanel
                   topics={[
                     {
                       id: 'terminal-buddy-daemon',
@@ -421,6 +437,38 @@ const App: React.FC = () => {
               )}
             </div>
           </div>
+        ) : activeView === 'canvas' ? (
+          <div className="canvas-view">
+            <CanvasShell 
+              apiBasePath="http://localhost:3456/api/canvas"
+              settings={{
+                llmProvider: 'openai',
+                llmModel: 'gpt-4o',
+                themeMode: 'dark',
+              }}
+              config={{
+                app: {
+                  name: 'Terminal Buddy',
+                },
+                theme: {
+                  mode: 'dark',
+                  colors: {
+                    primary: '#3B82F6',
+                    background: '#0F172A',
+                    surface: '#1E293B',
+                    border: '#334155',
+                    text: '#F1F5F9',
+                    muted: '#94A3B8',
+                  },
+                },
+                features: {
+                  search: { enabled: true },
+                  chat: { enabled: true },
+                  dashboard: { enabled: true },
+                },
+              }}
+            />
+          </div>
         ) : activeView === 'workshop' ? (
           <CreatorCornerWorkshop />
         ) : (
@@ -428,24 +476,44 @@ const App: React.FC = () => {
         )}
       </main>
 
-      {/* Collapsible Terminal Pane at Bottom */}
-      <div className={`terminal-pane ${terminalPaneOpen ? 'terminal-pane--open' : 'terminal-pane--closed'}`}>
-        <button onClick={() => setTerminalPaneOpen(!terminalPaneOpen)} className="pane-toggle">
-          {terminalPaneOpen ? <ChevronDown className="icon" /> : <ChevronUp className="icon" />}
-          <span>{terminalPaneOpen ? 'Collapse Terminal' : 'Expand Terminal'}</span>
-        </button>
-        {terminalPaneOpen && (
-          <div className="terminal-content">
-            <div className="terminal-placeholder">
-              <Terminal className="terminal-icon" />
-              <h3>Terminal View</h3>
-              <p>Terminal emulator (xterm.js) will be embedded here — Task 8</p>
-              <p className="terminal-hint">Type commands or use voice input</p>
-            </div>
-          </div>
+      {/* Modular Panel Manager with Resizable Panels */}
+      <PanelManager
+        panels={panels}
+        onToggleVisibility={(panelId) => {
+          setPanels(prev => prev.map(p => 
+            p.id === panelId ? { ...p, visible: !p.visible } : p
+          ));
+        }}
+        onToggleMinimize={(panelId) => {
+          setPanels(prev => prev.map(p =>
+            p.id === panelId ? { ...p, minimized: !p.minimized } : p
+          ));
+        }}
+        terminalPanel={<TerminalV2 isOpen={true} onClose={() => {}} />}
+      >
+        {activeView === 'journal' && (
+          <>
+            {/* Timeline Panel */}
+            {panels.find(p => p.id === 'timeline')?.visible && !panels.find(p => p.id === 'timeline')?.minimized && (
+              <div className="timeline-panel-content">
+                {/* Timeline content rendered here */}
+              </div>
+            )}
+            
+            {/* Topics Panel */}
+            {panels.find(p => p.id === 'topics')?.visible && !panels.find(p => p.id === 'topics')?.minimized && (
+              <TopicsPanel
+                topics={[]}
+                onTopicSelect={(topicId) => console.log('Topic selected:', topicId)}
+                onSessionSelect={(sessionId) => console.log('Session selected:', sessionId)}
+                visible={panels.find(p => p.id === 'topics')?.visible || false}
+              />
+            )}
+          </>
         )}
-      </div>
+      </PanelManager>
     </div>
+    </VoiceTerminalProvider>
   );
 };
 

@@ -11,10 +11,28 @@ use tokio::sync::Mutex;
 use crate::correlation::CorrelationEngine;
 use crate::llm::LlmClient;
 use crate::memory::sqlite::SessionStore;
-use crate::monitor::{cleanup, SystemMonitor};
+use crate::monitor::{cleanup, DeepSystemSnapshot, SystemMonitor};
 use crate::pty::capture::run_command_in_pty;
 use shared::CommandRecord;
 use uuid::Uuid;
+
+/// Format duration in seconds to human-readable string
+fn format_duration(seconds: u64) -> String {
+    let days = seconds / 86400;
+    let hours = (seconds % 86400) / 3600;
+    let mins = (seconds % 3600) / 60;
+    let secs = seconds % 60;
+
+    if days > 0 {
+        format!("{}d {}h {}m {}s", days, hours, mins, secs)
+    } else if hours > 0 {
+        format!("{}h {}m {}s", hours, mins, secs)
+    } else if mins > 0 {
+        format!("{}m {}s", mins, secs)
+    } else {
+        format!("{}s", secs)
+    }
+}
 
 #[derive(Debug, Deserialize, JsonSchema)]
 pub struct HistorySearchParams {
@@ -167,27 +185,144 @@ impl BuddyServer {
         Parameters(_params): Parameters<EmptyParams>,
     ) -> Result<CallToolResult, rmcp::ErrorData> {
         let mut monitor = self.system_monitor.lock().await;
-        let snapshot = monitor.snapshot();
+        let snapshot = monitor.deep_snapshot();
 
-        let output = format!(
-            "System Health:\n\n\
-             CPU:      {cpu:.1}%\n\
-             Memory:   {mem_pct:.1}% ({mem_used} GB / {mem_total} GB)\n\
-             Disk:     {disk_pct:.1}% ({disk_used} GB / {disk_total} GB)\n\
-             Processes: {procs}",
+        let mut output = format!(
+            "🖥️  System Health — {}\n\n\
+             ═══════════════════════════════════════\n\n\
+             ⏱️  Uptime: {uptime}\n\
+             🖥️  Hostname: {hostname}\n\
+             🐧 Kernel: {kernel}\n\n\
+             ═══════════════════════════════════════\n\n\
+             📊 CPU:      {cpu:.1}%\n\n\
+             📊 Memory:   {mem_pct:.1}% ({mem_used} GB / {mem_total} GB)\n\n\
+             📊 Disk:     {disk_pct:.1}% ({disk_used} GB / {disk_total} GB)\n\n\
+             📊 Processes: {procs} total\n",
+            uptime = format_duration(snapshot.uptime_seconds),
+            hostname = snapshot.hostname,
+            kernel = snapshot.kernel_version,
             cpu = snapshot.cpu_usage_pct,
-            mem_pct =
-                (snapshot.memory_used_bytes as f64 / snapshot.memory_total_bytes as f64) * 100.0,
+            mem_pct = snapshot.memory_usage_pct,
             mem_used = snapshot.memory_used_bytes / 1_073_741_824,
             mem_total = snapshot.memory_total_bytes / 1_073_741_824,
-            disk_pct = (snapshot.disk_used_bytes as f64 / snapshot.disk_total_bytes as f64) * 100.0,
+            disk_pct = snapshot.disk_usage_pct,
             disk_used = snapshot.disk_used_bytes / 1_073_741_824,
             disk_total = snapshot.disk_total_bytes / 1_073_741_824,
             procs = snapshot.process_count,
         );
 
+        // Top CPU processes
+        if !snapshot.top_cpu_processes.is_empty() {
+            output.push_str("\n═══════════════════════════════════════\n");
+            output.push_str("🔥 Top CPU Processes:\n\n");
+            for (i, proc) in snapshot.top_cpu_processes.iter().take(5).enumerate() {
+                output.push_str(&format!(
+                    "  {}. {} (PID {}) — {:.1}% CPU, {:.1}% RAM\n",
+                    i + 1,
+                    proc.name,
+                    proc.pid,
+                    proc.cpu_usage,
+                    proc.memory_percent
+                ));
+            }
+        }
+
+        // Top memory processes
+        if !snapshot.top_memory_processes.is_empty() {
+            output.push_str("\n═══════════════════════════════════════\n");
+            output.push_str("📦 Top Memory Processes:\n\n");
+            for (i, proc) in snapshot.top_memory_processes.iter().take(5).enumerate() {
+                output.push_str(&format!(
+                    "  {}. {} (PID {}) — {:.1}% RAM ({:.1} MB)\n",
+                    i + 1,
+                    proc.name,
+                    proc.pid,
+                    proc.memory_percent,
+                    proc.memory_bytes as f64 / 1_048_576.0
+                ));
+            }
+        }
+
+        // Open ports
+        if !snapshot.open_ports.is_empty() {
+            output.push_str("\n═══════════════════════════════════════\n");
+            output.push_str("🌐 Open Network Ports:\n\n");
+            for port in &snapshot.open_ports {
+                let owner = match (&port.pid, &port.process_name) {
+                    (Some(pid), Some(name)) => format!(" → {} (PID {})", name, pid),
+                    (Some(pid), None) => format!(" → PID {}", pid),
+                    _ => String::new(),
+                };
+                output.push_str(&format!(
+                    "  • {}:{} ({}) [{}]{}\n",
+                    port.address, port.port, port.protocol, port.state, owner
+                ));
+            }
+        }
+
+        // Running services
+        let running_services: Vec<_> = snapshot.running_services.iter()
+            .filter(|s| s.status == "running")
+            .collect();
+        if !running_services.is_empty() {
+            output.push_str("\n═══════════════════════════════════════\n");
+            output.push_str("⚙️  Running Services:\n\n");
+            for service in running_services.iter().take(10) {
+                output.push_str(&format!("  • {}\n", service.name));
+            }
+            if running_services.len() > 10 {
+                output.push_str(&format!("  ... and {} more\n", running_services.len() - 10));
+            }
+        }
+
+        // Recently installed packages
+        if !snapshot.recently_installed_packages.is_empty() {
+            output.push_str("\n═══════════════════════════════════════\n");
+            output.push_str("📦 Recently Installed Packages:\n\n");
+            for pkg in &snapshot.recently_installed_packages {
+                output.push_str(&format!(
+                    "  • {} v{} ({})\n",
+                    pkg.name, pkg.version, pkg.package_type
+                ));
+            }
+        }
+
+        // Boot items
+        if !snapshot.boot_items.is_empty() {
+            output.push_str("\n═══════════════════════════════════════\n");
+            output.push_str("🚀 Boot Items (Systemd + Cron):\n\n");
+            for item in snapshot.boot_items.iter().take(10) {
+                output.push_str(&format!(
+                    "  • [{}] {}\n",
+                    item.item_type, item.name
+                ));
+            }
+            if snapshot.boot_items.len() > 10 {
+                output.push_str(&format!("  ... and {} more\n", snapshot.boot_items.len() - 10));
+            }
+        }
+
         Ok(CallToolResult::success(vec![rmcp::model::Content::text(
             output,
+        )]))
+    }
+
+    #[tool(
+        name = "buddy_system_health_json",
+        description = "Get deep system health as structured JSON. Includes top processes, open ports, running services, installed packages, and boot items. Use this for programmatic access to system awareness data."
+    )]
+    async fn system_health_json(
+        &self,
+        Parameters(_params): Parameters<EmptyParams>,
+    ) -> Result<CallToolResult, rmcp::ErrorData> {
+        let mut monitor = self.system_monitor.lock().await;
+        let snapshot = monitor.deep_snapshot();
+
+        let json_output = serde_json::to_string_pretty(&snapshot)
+            .map_err(|e| rmcp::ErrorData::internal_error(e.to_string(), None))?;
+
+        Ok(CallToolResult::success(vec![rmcp::model::Content::text(
+            json_output,
         )]))
     }
 

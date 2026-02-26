@@ -1,0 +1,639 @@
+template:
+  id: dashboard-architecture-template
+  name: Dashboard Architecture Document
+  version: 1.0
+  output:
+    format: markdown
+    filename: docs/dashboard-architecture.md
+    title: "Dashboard Architecture: {{project_name}}"
+
+workflow:
+  mode: interactive
+  elicitation: advanced-elicitation
+
+sections:
+  - id: executive-summary
+    title: Executive Summary
+    type: structured-text
+    instruction: |
+      Provide a clear, concise overview of the dashboard architecture including:
+      - Architectural approach and key design decisions
+      - Technology stack summary
+      - Performance and scalability considerations
+      - Security and compliance approach
+    template: |
+      ## Architecture Overview
+      {{architecture_overview}}
+
+      ## Technology Stack Summary
+      {{technology_stack_summary}}
+
+      ## Key Design Decisions
+      {{key_design_decisions}}
+
+      ## Performance and Scalability
+      {{performance_scalability_summary}}
+    elicit: true
+
+  - id: technology-stack
+    title: Technology Stack
+    type: structured-content
+    instruction: Define the complete technology stack and justify selections
+    elicit: true
+    sections:
+      - id: frontend-technologies
+        title: Frontend Technologies
+        instruction: |
+          Specify the frontend technology stack and justifications:
+          
+          **Recommended Modern Stack (2024):**
+          - Primary framework: React + TypeScript
+          - Dashboard framework: Refine.dev (headless, CRUD-focused)
+          - UI Components: shadcn/ui (Radix UI + Tailwind CSS)
+          - State management: Zustand (or Refine's built-in)
+          - Build tools: Vite (or Create React App)
+          
+          **Framework Selection:**
+          - Alternative frameworks (Vue, Angular, Streamlit, Dash)
+          - Alternative component libraries (Material-UI, Ant Design, Chakra UI)
+          - Alternative state management (Redux, Context API)
+          
+          **Visualization Libraries:**
+          - Chart libraries (Recharts, D3.js, Plotly, Chart.js)
+          - Map libraries (Leaflet, Mapbox, Google Maps)
+          - Custom visualization tools
+          
+          **UI and Styling:**
+          - CSS framework: Tailwind CSS (recommended with shadcn/ui)
+          - Design system: shadcn/ui components (copy-paste approach)
+          - Accessibility: Built-in via Radix UI primitives
+          - Responsive design strategy
+          
+          **Refine.dev Benefits:**
+          - Pre-built dashboard patterns (tables, filters, forms)
+          - Built-in authentication and routing
+          - CRUD operations with minimal code
+          - Data provider integrations (Supabase, REST, GraphQL)
+          - Reduces development time from months to weeks
+          
+          **shadcn/ui Benefits:**
+          - Modern 2024 aesthetics vs older component libraries
+          - Full ownership of components (copy-paste approach)
+          - Accessibility built-in via Radix UI
+          - Minimal bundle size (only copy what you need)
+          - TypeScript support throughout
+          
+          **Justification:**
+          Explain why these technologies were selected based on:
+          - Project requirements and constraints
+          - Team expertise and preferences
+          - Performance and scalability needs
+          - Community support and ecosystem
+          - Time to market considerations
+        elicit: true
+
+      - id: backend-technologies
+        title: Backend Technologies
+        instruction: |
+          Specify the backend technology stack and data layer:
+          
+          **Recommended Modern Stack (2024):**
+          - Primary backend: Supabase (PostgreSQL + instant APIs)
+          - Authentication: Supabase Auth (built-in)
+          - Real-time: Supabase Realtime subscriptions
+          - File storage: Supabase Storage
+          - API approach: Instant REST APIs from database schema
+          
+          **Supabase Benefits:**
+          - Eliminates entire backend development phase
+          - PostgreSQL with instant REST/GraphQL APIs
+          - Built-in authentication and authorization
+          - Real-time subscriptions for live dashboard updates
+          - Visual database management interface
+          - Generous free tier, scales to enterprise
+          - Self-hosting option available
+          
+          **Alternative API Frameworks:**
+          - Express.js, FastAPI, Flask, Django (if custom backend needed)
+          - API design approach (REST, GraphQL, hybrid)
+          - Authentication and authorization libraries
+          - Middleware and plugins
+          
+          **Database and Storage:**
+          - Primary database: PostgreSQL (via Supabase)
+          - Alternative databases (MongoDB, InfluxDB)
+          - Caching layer (Redis, Memcached) - if needed beyond Supabase
+          - File storage: Supabase Storage (or AWS S3, local storage)
+          - Search engines (Elasticsearch, Solr) - if advanced search needed
+          
+          **Data Processing:**
+          - Real-time processing: Supabase Edge Functions
+          - ETL tools and pipelines (if complex data transformations needed)
+          - Message queues (RabbitMQ, Apache Kafka) - for high-volume scenarios
+          - Scheduled jobs: Supabase Edge Functions with cron
+          - Data validation: PostgreSQL constraints + application layer
+          
+          **Justification:**
+          Explain backend technology selections based on:
+          - Data volume and complexity requirements
+          - Real-time processing needs
+          - Integration requirements
+          - Scalability and performance needs
+          - Development speed and team expertise
+          - Cost considerations (Supabase free tier)
+        elicit: true
+
+      - id: infrastructure-deployment
+        title: Infrastructure and Deployment
+        instruction: |
+          Define infrastructure, deployment, and operational technologies:
+          
+          **Recommended Modern Stack (2024):**
+          - Frontend deployment: Vercel (React/Next.js optimized)
+          - Backend: Supabase (fully managed PostgreSQL + APIs)
+          - Edge network: Cloudflare (optional, for global performance)
+          - Version control: Git + GitHub
+          - CI/CD: GitHub Actions (built-in with Vercel)
+          
+          **Deployment Benefits:**
+          - **Vercel**: Zero-config React deployment, automatic HTTPS, global CDN
+          - **Supabase**: Fully managed backend, no server management
+          - **Cloudflare**: Sub-50ms global response times, DDoS protection
+          - **Time to deployment**: Minutes vs weeks with traditional infrastructure
+          
+          **Alternative Deployment Platforms:**
+          - Frontend: Netlify, Cloudflare Pages, traditional hosting
+          - Containerization: Docker (if needed for complex deployments)
+          - Orchestration: Kubernetes, Docker Compose (for enterprise)
+          - Container registry and image management
+          
+          **Cloud Platform and Services:**
+          - Cloud provider alternatives: AWS, Azure, GCP, or on-premise
+          - Compute services: EC2, App Service, Compute Engine (if not using Vercel)
+          - Database services: Supabase (managed) or RDS, CosmosDB, Cloud SQL
+          - Storage services: Supabase Storage or S3, Blob Storage, Cloud Storage
+          
+          **CI/CD and DevOps:**
+          - Version control: Git, GitHub, GitLab
+          - CI/CD pipelines: GitHub Actions (recommended), Jenkins, Azure DevOps
+          - Infrastructure as Code: Not typically needed with Supabase + Vercel
+          - Monitoring and logging: Built-in Supabase metrics, Vercel analytics
+          - Advanced monitoring: Prometheus, DataDog, ELK Stack (if needed)
+          
+          **Development Workflow:**
+          - Local development: Supabase CLI + local Supabase instance
+          - Preview deployments: Automatic with Vercel on every PR
+          - Production deployment: Git-based, automatic on main branch
+          - Database migrations: Supabase migration system
+          
+          **Justification:**
+          Explain infrastructure choices based on:
+          - Scalability and availability requirements
+          - Security and compliance needs
+          - Cost considerations (free tiers vs enterprise needs)
+          - Team expertise and operational capabilities
+          - Development velocity and time to market
+        elicit: true
+
+  - id: system-architecture
+    title: System Architecture
+    type: structured-content
+    instruction: Define the overall system architecture and design patterns
+    elicit: true
+    sections:
+      - id: high-level-architecture
+        title: High-Level System Architecture
+        instruction: |
+          Describe the overall system architecture and major components:
+          
+          **Architecture Pattern:**
+          - Layered architecture (Presentation, Application, Data)
+          - Microservices or monolithic approach
+          - Event-driven or request-response patterns
+          - Separation of concerns and modularity
+          
+          **System Components:**
+          - Frontend application and user interface
+          - API gateway and backend services
+          - Database and data storage layers
+          - External integrations and third-party services
+          
+          **Communication Patterns:**
+          - HTTP/HTTPS for API communication
+          - WebSockets for real-time updates
+          - Message queues for asynchronous processing
+          - Database connections and pooling
+          
+          Include an architecture diagram showing:
+          - Major system components
+          - Data flow and communication paths
+          - External dependencies and integrations
+          - Security boundaries and access controls
+        elicit: true
+
+      - id: component-architecture
+        title: Component Architecture
+        instruction: |
+          Define the detailed component structure and organization:
+          
+          **Frontend Component Structure:**
+          - Page-level components and routing
+          - Layout components (header, sidebar, content)
+          - Dashboard-specific components (charts, tables, filters)
+          - Reusable UI components and utilities
+          - State management and data flow patterns
+          
+          **Backend Service Architecture:**
+          - API controllers and route handlers
+          - Business logic and service layers
+          - Data access layers and repositories
+          - Authentication and authorization services
+          - Background job processors and schedulers
+          
+          **Shared Components and Libraries:**
+          - Common utilities and helper functions
+          - Shared data models and schemas
+          - Configuration and environment management
+          - Logging and error handling patterns
+          
+          **Component Interaction Patterns:**
+          - Props and callback patterns for React
+          - Service injection for backend services
+          - Event-driven communication where appropriate
+          - Error boundaries and fallback mechanisms
+        elicit: true
+
+      - id: data-architecture
+        title: Data Architecture
+        instruction: |
+          Design the data architecture and flow patterns:
+          
+          **Data Flow Architecture:**
+          - Data ingestion from various sources
+          - Data transformation and processing pipelines
+          - Data validation and quality checks
+          - Data aggregation and summarization
+          - Real-time data streaming and updates
+          
+          **Data Storage Design:**
+          - Database schema and table structures
+          - Indexing strategy for query performance
+          - Data partitioning and sharding approaches
+          - Backup and disaster recovery procedures
+          
+          **Caching Strategy:**
+          - Browser caching for static assets
+          - API response caching (Redis/Memcached)
+          - Database query result caching
+          - CDN caching for global performance
+          
+          **Data Integration Patterns:**
+          - API integration with external services
+          - Batch data imports and ETL processes
+          - Real-time data streams and webhooks
+          - Data synchronization and conflict resolution
+        elicit: true
+
+  - id: security-architecture
+    title: Security Architecture
+    type: structured-content
+    instruction: Define comprehensive security measures and protocols
+    elicit: true
+    sections:
+      - id: authentication-authorization
+        title: Authentication and Authorization
+        instruction: |
+          Design authentication and access control systems:
+          
+          **Authentication Mechanisms:**
+          - User login and password requirements
+          - Multi-factor authentication (MFA) if required
+          - Single sign-on (SSO) integration
+          - API key and token-based authentication
+          - Session management and timeout policies
+          
+          **Authorization and Access Control:**
+          - Role-based access control (RBAC)
+          - Fine-grained permissions and data filtering
+          - Resource-level access controls
+          - API endpoint protection and rate limiting
+          
+          **Token and Session Management:**
+          - JWT token structure and validation
+          - Refresh token rotation and expiration
+          - Secure session storage and transmission
+          - Cross-site request forgery (CSRF) protection
+        elicit: true
+
+      - id: data-security
+        title: Data Security and Privacy
+        instruction: |
+          Define data protection and privacy measures:
+          
+          **Data Encryption:**
+          - Encryption at rest for sensitive data
+          - TLS/SSL for data in transit
+          - Database-level encryption where required
+          - Key management and rotation policies
+          
+          **Input Validation and Sanitization:**
+          - SQL injection prevention measures
+          - Cross-site scripting (XSS) protection
+          - Input validation and data sanitization
+          - File upload security controls
+          
+          **Privacy and Compliance:**
+          - GDPR compliance measures if applicable
+          - HIPAA compliance for healthcare data
+          - Data retention and deletion policies
+          - Audit logging and compliance reporting
+          
+          **Security Monitoring:**
+          - Intrusion detection and prevention
+          - Security logging and alerting
+          - Vulnerability scanning and patching
+          - Security incident response procedures
+        elicit: true
+
+  - id: performance-architecture
+    title: Performance and Scalability Architecture
+    type: structured-content
+    instruction: Define performance optimization and scalability strategies
+    elicit: true
+    sections:
+      - id: performance-optimization
+        title: Performance Optimization
+        instruction: |
+          Design performance optimization strategies:
+          
+          **Frontend Performance:**
+          - Code splitting and lazy loading
+          - Image optimization and compression
+          - Bundle size optimization and tree shaking
+          - Browser caching and service workers
+          - Progressive loading and skeleton screens
+          
+          **Backend Performance:**
+          - Database query optimization and indexing
+          - API response caching and compression
+          - Connection pooling and resource management
+          - Asynchronous processing for heavy operations
+          - CDN usage for static content delivery
+          
+          **Data Loading Optimization:**
+          - Pagination and virtual scrolling for large datasets
+          - Data aggregation and pre-computation
+          - Real-time updates only for changed data
+          - Efficient data serialization and compression
+          
+          **Performance Monitoring:**
+          - Application performance monitoring (APM)
+          - Real user monitoring (RUM)
+          - Database performance monitoring
+          - Infrastructure monitoring and alerting
+        elicit: true
+
+      - id: scalability-design
+        title: Scalability and High Availability
+        instruction: |
+          Design for scalability and high availability:
+          
+          **Horizontal Scaling:**
+          - Load balancing strategies and algorithms
+          - Auto-scaling policies and triggers
+          - Stateless application design patterns
+          - Database read replicas and sharding
+          
+          **High Availability:**
+          - Multi-region deployment strategies
+          - Failover mechanisms and disaster recovery
+          - Health checks and circuit breaker patterns
+          - Backup and restore procedures
+          
+          **Resource Management:**
+          - Container resource limits and requests
+          - Database connection pooling and limits
+          - Memory and CPU optimization strategies
+          - Storage capacity planning and monitoring
+          
+          **Capacity Planning:**
+          - Expected user load and growth projections
+          - Data volume growth and storage planning
+          - Network bandwidth and traffic analysis
+          - Cost optimization and resource efficiency
+        elicit: true
+
+  - id: development-guidelines
+    title: Development Guidelines and Standards
+    type: structured-content
+    instruction: Define development standards, processes, and best practices
+    elicit: true
+    sections:
+      - id: code-organization
+        title: Code Organization and Standards
+        instruction: |
+          Define code organization and development standards:
+          
+          **Project Structure:**
+          ```
+          project-root/
+          ├── frontend/
+          │   ├── src/
+          │   │   ├── components/
+          │   │   ├── pages/
+          │   │   ├── services/
+          │   │   └── utils/
+          │   ├── public/
+          │   └── package.json
+          ├── backend/
+          │   ├── src/
+          │   │   ├── controllers/
+          │   │   ├── services/
+          │   │   ├── models/
+          │   │   └── utils/
+          │   └── requirements.txt
+          ├── docs/
+          ├── tests/
+          └── docker-compose.yml
+          ```
+          
+          **Naming Conventions:**
+          - File and directory naming patterns
+          - Component and function naming standards
+          - Variable and constant naming conventions
+          - Database table and column naming
+          
+          **Code Quality Standards:**
+          - ESLint/Prettier configuration for JavaScript
+          - PEP 8 compliance for Python
+          - TypeScript usage and type definitions
+          - Code documentation and commenting standards
+        elicit: true
+
+      - id: testing-strategy
+        title: Testing Strategy
+        instruction: |
+          Define comprehensive testing approach and standards:
+          
+          **Testing Levels:**
+          - Unit testing for individual components and functions
+          - Integration testing for API endpoints and data flows
+          - End-to-end testing for user workflows
+          - Performance testing for load and stress scenarios
+          
+          **Testing Tools and Frameworks:**
+          - Frontend testing (Jest, React Testing Library, Cypress)
+          - Backend testing (PyTest, unittest, Postman)
+          - Database testing and data validation
+          - Browser automation and cross-browser testing
+          
+          **Test Coverage and Quality:**
+          - Minimum code coverage requirements
+          - Critical path testing priorities
+          - Test data management and fixtures
+          - Continuous testing in CI/CD pipeline
+          
+          **Testing Environments:**
+          - Local development testing setup
+          - Staging environment for integration testing
+          - Production-like testing environment
+          - Performance testing environment
+        elicit: true
+
+      - id: deployment-workflow
+        title: Deployment and Release Management
+        instruction: |
+          Define deployment processes and release management:
+          
+          **CI/CD Pipeline:**
+          - Automated testing and quality gates
+          - Build process and artifact creation
+          - Deployment automation and rollback procedures
+          - Environment promotion and approval processes
+          
+          **Version Control and Branching:**
+          - Git workflow and branching strategy
+          - Code review requirements and processes
+          - Merge policies and conflict resolution
+          - Release tagging and versioning
+          
+          **Environment Management:**
+          - Development, staging, and production environments
+          - Environment-specific configuration management
+          - Database migration and schema management
+          - Infrastructure provisioning and updates
+          
+          **Monitoring and Observability:**
+          - Application monitoring and alerting
+          - Log aggregation and analysis
+          - Error tracking and debugging tools
+          - Performance monitoring and optimization
+        elicit: true
+
+  - id: architecture-decisions
+    title: Architecture Decision Records (ADRs)
+    type: structured-content
+    instruction: Document key architectural decisions and trade-offs
+    sections:
+      - id: technology-decisions
+        title: Technology Selection Decisions
+        instruction: |
+          Document key technology selection decisions:
+          
+          For each major technology choice, include:
+          - **Decision**: What technology was selected
+          - **Context**: What problem needed to be solved
+          - **Options Considered**: Alternative technologies evaluated
+          - **Decision Criteria**: Factors that influenced the decision
+          - **Consequences**: Benefits and trade-offs of the selection
+          
+          Example decisions to document:
+          - Frontend framework selection
+          - Database technology choice
+          - Visualization library selection
+          - Deployment platform decision
+          - Authentication approach
+        elicit: true
+
+      - id: architectural-patterns
+        title: Architectural Pattern Decisions
+        instruction: |
+          Document architectural pattern and design decisions:
+          
+          **Design Pattern Decisions:**
+          - Component composition vs inheritance
+          - State management approach
+          - Data fetching and caching patterns
+          - Error handling and recovery strategies
+          
+          **Performance Trade-offs:**
+          - Real-time vs batch processing decisions
+          - Client-side vs server-side rendering
+          - Caching strategies and invalidation
+          - Database normalization vs denormalization
+          
+          **Security Design Decisions:**
+          - Authentication mechanism selection
+          - Data encryption approach
+          - API security and rate limiting
+          - Compliance requirement implementations
+        elicit: true
+
+  - id: implementation-roadmap
+    title: Implementation Roadmap
+    type: structured-content
+    instruction: Provide guidance for implementation phases and priorities
+    sections:
+      - id: development-phases
+        title: Development Phases
+        instruction: |
+          Define the recommended development phases and priorities:
+          
+          **Phase 1: Foundation Setup**
+          - Development environment setup
+          - Core infrastructure and CI/CD pipeline
+          - Basic authentication and security framework
+          - Database setup and initial schema
+          
+          **Phase 2: Core Dashboard Framework**
+          - Basic dashboard layout and navigation
+          - Core component library development
+          - Data integration and API development
+          - Basic visualization components
+          
+          **Phase 3: Feature Development**
+          - Advanced visualization components
+          - User interface and interaction features
+          - Data filtering and customization
+          - Performance optimization
+          
+          **Phase 4: Testing and Deployment**
+          - Comprehensive testing and quality assurance
+          - Performance testing and optimization
+          - Security testing and validation
+          - Production deployment and monitoring
+        elicit: true
+
+      - id: next-steps
+        title: Next Steps and Recommendations
+        instruction: |
+          Provide clear guidance for moving forward with implementation:
+          
+          **Immediate Next Steps:**
+          - UI/UX design and mockup creation
+          - Development environment setup
+          - Team onboarding and training
+          - Risk assessment and mitigation planning
+          
+          **Agent Workflow Recommendations:**
+          - Use UI/UX Designer agent for visual design
+          - Use Data Integration agent for backend setup
+          - Use Component Developer for frontend implementation
+          - Use Testing & Validation agent for quality assurance
+          
+          **Success Criteria:**
+          - Architecture review and approval checkpoints
+          - Development milestone validation
+          - Performance and security validation
+          - User acceptance testing and feedback
+        elicit: true

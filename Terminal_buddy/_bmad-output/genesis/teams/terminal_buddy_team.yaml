@@ -1,0 +1,335 @@
+# Terminal Buddy Phase B Completion Squad
+
+**Generated:** 2026-02-24
+**Topology:** Pipeline (sequential handoffs for focused execution)
+**Coordinator:** Scrum Master (bmad-bmm/sm)
+**Estimated Duration:** 2-3 days focused execution
+
+---
+
+## Team Roster
+
+### 📋 Scrum Master (Existing)
+
+| Field | Value |
+|-------|-------|
+| **Role** | Scrum Master / Team Coordinator |
+| **Agent ID** | `bmad-bmm/sm` |
+| **Name** | Bob |
+| **Responsibilities** | - Coordinate daily execution<br>- Track progress against plan<br>- Remove blockers<br>- Report status to creator |
+| **Reports To** | Creator (Dylaroo) |
+| **Dependencies** | None |
+
+---
+
+### 🏗️ Frontend Architect (Existing)
+
+| Field | Value |
+|-------|-------|
+| **Role** | Frontend Architect / Technical Lead |
+| **Agent ID** | `bmad-bmm/architect` |
+| **Name** | Winston |
+| **Focus** | - Tauri ↔ MCP bridge<br>- System integration<br>- Technical decisions |
+| **Reports To** | Scrum Master |
+| **Dependencies** | None |
+
+---
+
+### ⚡ Frontend Developer (Existing)
+
+| Field | Value |
+|-------|-------|
+| **Role** | Frontend Developer |
+| **Agent ID** | `bmad-bmm/dev` |
+| **Name** | Amelia |
+| **Focus** | - React components<br>- UI implementation<br>- TypeScript + Tailwind |
+| **Reports To** | Frontend Architect |
+| **Dependencies** | Frontend Architect (API contracts) |
+
+---
+
+### 🔧 Terminal Emulator Specialist (NEW - Create via BMAD Builder)
+
+| Field | Value |
+|-------|-------|
+| **Role** | Terminal Emulator Specialist |
+| **Agent ID** | `custom/terminal-expert` |
+| **Name** | Terry |
+| **Focus** | - xterm.js integration<br>- PTY backend (Rust)<br>- Terminal pane V2<br>- Keyboard shortcuts, copy/paste |
+| **Reports To** | Frontend Architect |
+| **Dependencies** | None |
+| **Created Via** | BMAD Builder (BoMB) |
+| **Priority** | HIGH - Critical path |
+
+**Expertise Required:**
+- xterm.js v5+ (addons: fit, web-links)
+- Tauri plugin development (Rust)
+- PTY management (portable-pty crate)
+- TypeScript + React integration
+- Clipboard API integration
+
+---
+
+### 🎤 Voice Integration Specialist (NEW - Create via BMAD Builder)
+
+| Field | Value |
+|-------|-------|
+| **Role** | Voice Integration Specialist |
+| **Agent ID** | `custom/voice-expert` |
+| **Name** | Vera |
+| **Focus** | - whisper-rs integration<br>- Tauri plugin for audio capture<br>- Push-to-talk UX<br>- 100% on-device processing |
+| **Reports To** | Frontend Architect |
+| **Dependencies** | None |
+| **Created Via** | BMAD Builder (BoMB) |
+| **Priority** | HIGH - Critical path |
+
+**Expertise Required:**
+- whisper-rs (Rust bindings for Whisper)
+- Tauri plugin development (Rust)
+- Audio capture APIs (cpal crate)
+- Real-time transcription
+- Voice UX design
+
+---
+
+### 🎞️ Memvid Integration Specialist (NEW - Create via BMAD Builder OR adopt memvid-mcp)
+
+| Field | Value |
+|-------|-------|
+| **Role** | Memvid Architect |
+| **Agent ID** | `custom/memvid-expert` |
+| **Name** | Max |
+| **Focus** | - @memvid/canvas-react integration<br>- Flight recorder (.mv2)<br>- Timeline visualization<br>- 120 FPS scrubbing |
+| **Reports To** | Frontend Architect |
+| **Dependencies** | Terminal Emulator Specialist (needs terminal data) |
+| **Created Via** | BMAD Builder (BoMB) OR adopt memvid-mcp |
+| **Priority** | MEDIUM - Important but not blocking |
+
+**Expertise Required:**
+- Memvid Canvas SDK (@memvid/canvas-react, @memvid/canvas-core)
+- React integration
+- Flight recorder pattern
+- Binary serialization (.mv2 format)
+- Performance optimization (120 FPS)
+
+**Alternative:** Integrate `memvid-mcp` server instead of building custom
+
+---
+
+### 🧪 QA Engineer (Existing)
+
+| Field | Value |
+|-------|-------|
+| **Role** | QA Engineer / Accessibility Auditor |
+| **Agent ID** | `bmad-bmm/tea` |
+| **Name** | Quinn |
+| **Focus** | - WCAG AAA audit<br>- Cross-platform testing<br>- Accessibility validation<br>- Test suite setup |
+| **Reports To** | Scrum Master |
+| **Dependencies** | All implementation tasks |
+
+---
+
+## Communication Topology
+
+```
+                    ┌─────────────────┐
+                    │   Dylaroo       │
+                    │   (Creator)     │
+                    └────────┬────────┘
+                             │
+                    ┌────────▼────────┐
+                    │  Scrum Master   │
+                    │   (Bob)         │
+                    └────────┬────────┘
+                             │
+              ┌──────────────┼──────────────┐
+              │              │              │
+     ┌────────▼────────┐    │    ┌────────▼────────┐
+     │ Frontend        │    │    │ QA Engineer     │
+     │ Architect       │    │    │ (Quinn)         │
+     │ (Winston)       │    │    │                 │
+     └────────┬────────┘    │    └─────────────────┘
+              │              │
+     ┌────────▼────────┐    │
+     │ Terminal        │    │
+     │ Specialist      │────┤
+     │ (Terry)         │    │
+     └────────┬────────┘    │
+              │              │
+     ┌────────▼────────┐    │
+     │ Voice           │    │
+     │ Specialist      │────┤
+     │ (Vera)          │    │
+     └────────┬────────┘    │
+              │              │
+     ┌────────▼────────┐    │
+     │ Memvid          │    │
+     │ Specialist      │────┤
+     │ (Max)           │    │
+     └─────────────────┘    │
+```
+
+**Topology Type:** Pipeline with Hub-and-Spoke coordination
+
+- **Scrum Master** coordinates all communication
+- **Frontend Architect** leads technical implementation
+- **Specialists** work in sequence (Terminal → Voice → Memvid)
+- **QA** validates all completed work
+
+---
+
+## Communication Rules
+
+1. **Daily Standup** - All agents report status to Scrum Master (async, written)
+2. **Technical Decisions** - Frontend Architect makes final call, consults specialists
+3. **Blockers** - Immediately report to Scrum Master for resolution
+4. **QA Handoff** - Specialists self-test, then QA validates
+5. **Creator Updates** - Scrum Master provides daily summary to Dylaroo
+
+---
+
+## Handoff Protocols
+
+### Terminal → Voice
+- **From:** Terminal Emulator Specialist
+- **To:** Voice Specialist
+- **Artifact:** Working terminal pane with input/output
+- **Trigger:** Terminal accepts keyboard input, executes commands, shows output
+- **Validation:** Voice specialist can manually type commands and see results
+
+### Terminal + Voice → Memvid
+- **From:** Terminal + Voice Specialists
+- **To:** Memvid Architect
+- **Artifact:** Terminal data stream + voice transcription events
+- **Trigger:** Both terminal and voice working independently
+- **Validation:** Memvid architect can capture terminal sessions and voice events
+
+### All Implementation → QA
+- **From:** All Specialists
+- **To:** QA Engineer
+- **Artifact:** Completed features with self-test
+- **Trigger:** Feature complete, self-tested by specialist
+- **Validation:** QA runs WCAG audit, cross-platform tests, accessibility checklist
+
+### QA → Creator Demo
+- **From:** QA Engineer
+- **To:** Dylaroo
+- **Artifact:** Full integrated demo
+- **Trigger:** All features pass QA
+- **Validation:** Creator approves and signs off
+
+---
+
+## AgentScope Configuration
+
+```yaml
+# terminal_buddy_team.yaml
+team_name: "terminal_buddy_phase_b_completion_squad"
+topology: "pipeline_with_hub_spoke"
+coordinator: "bmad-bmm/sm"
+
+agents:
+  - id: "bmad-bmm/sm"
+    role: "scrum_master"
+    status: "existing"
+    
+  - id: "bmad-bmm/architect"
+    role: "frontend_architect"
+    status: "existing"
+    
+  - id: "bmad-bmm/dev"
+    role: "frontend_developer"
+    status: "existing"
+    
+  - id: "custom/terminal-expert"
+    role: "terminal_emulator_specialist"
+    status: "new"
+    creation_method: "bomb"
+    
+  - id: "custom/voice-expert"
+    role: "voice_integration_specialist"
+    status: "new"
+    creation_method: "bomb"
+    
+  - id: "custom/memvid-expert"
+    role: "memvid_integration_specialist"
+    status: "new"
+    creation_method: "bomb_or_adopt"
+    
+  - id: "bmad-bmm/tea"
+    role: "qa_engineer"
+    status: "existing"
+
+orchestration:
+  pattern: "sequential_pipeline"
+  retry_policy:
+    max_retries: 3
+    backoff: "exponential"
+  parallel_groups:
+    - name: "independent_work"
+      agents: ["terminal_emulator_specialist", "voice_integration_specialist"]
+      reason: "Can work in parallel until integration"
+
+fault_tolerance:
+  high_risk_tasks: ["terminal_pane_v2", "voice_integration"]
+  fallback_agents:
+    "terminal_emulator_specialist": "bmad-bmm/dev"
+    "voice_integration_specialist": "bmad-bmm/architect"
+```
+
+---
+
+## Creation Plan for New Agents
+
+### Step 1: Terminal Emulator Specialist (HIGH PRIORITY)
+
+**Use BMAD Builder:**
+```bash
+cd /home/dylaroo/projects/Terminal_buddy/skills/skill-creator
+./scripts/init_skill.py terminal-emulator-specialist --path ../
+```
+
+**Then edit `SKILL.md` with:**
+- Name: Terry the Terminal Expert
+- Expertise: xterm.js, PTY, Rust, TypeScript
+- Workflows: Terminal pane setup, PTY integration, keyboard shortcuts
+
+### Step 2: Voice Integration Specialist (HIGH PRIORITY)
+
+**Use BMAD Builder:**
+```bash
+./scripts/init_skill.py voice-integration-specialist --path ../
+```
+
+**Then edit `SKILL.md` with:**
+- Name: Vera the Voice Expert
+- Expertise: whisper-rs, Tauri plugins, audio capture
+- Workflows: Voice setup, transcription integration, push-to-talk UX
+
+### Step 3: Memvid Specialist (MEDIUM PRIORITY)
+
+**Option A: Create via BMAD Builder**
+```bash
+./scripts/init_skill.py memvid-specialist --path ../
+```
+
+**Option B: Adopt memvid-mcp (RECOMMENDED)**
+```bash
+git clone https://github.com/Tapiocapioca/memvid-mcp
+# Evaluate if it can replace custom Memvid integration
+```
+
+---
+
+## Next Steps
+
+1. **✅ Project DNA Created** - Saved to `_bmad-output/genesis/planning/terminal_buddy_dna.json`
+2. **✅ Team Structure Created** - This document saved to `_bmad-output/genesis/teams/terminal_buddy_team.yaml`
+3. **⏳ Create 3 New Specialists** - Use BMAD Builder scripts
+4. **⏳ Generate Execution Plan** - Workflow with dependencies and time estimates
+5. **⏳ Generate Full Genesis Report** - Comprehensive markdown summary
+
+---
+
+*Generated by Genesis Forge Protocol - 2026-02-24*
+*Part of BMad Genesis - The Meta-Architect Module*

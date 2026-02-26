@@ -1,0 +1,215 @@
+/* Terminal V2 Styles - Proper PTY-backed terminal */
+
+.terminal-v2 {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 500px;
+  background: #0F172A;
+  border-top: 2px solid #334155;
+  box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  transition: all 0.2s ease;
+}
+
+.terminal-v2.maximized {
+  top: 0;
+  height: 100vh;
+  border-top: none;
+}
+
+/* Header / Toolbar */
+.terminal-v2-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: #1E293B;
+  border-bottom: 1px solid #334155;
+  gap: 12px;
+}
+
+.terminal-v2-header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+.terminal-v2-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: #22C55E;
+  white-space: nowrap;
+}
+
+.terminal-v2-separator {
+  color: #475569;
+  font-size: 12px;
+}
+
+.terminal-v2-shell {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: #06B6D4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.terminal-v2-status {
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.terminal-v2-status-executing {
+  color: #F59E0B;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.terminal-v2-status-ready {
+  color: #22C55E;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.terminal-v2-header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Toolbar */
+.terminal-v2-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.terminal-v2-toolbar-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 8px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: #94A3B8;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.terminal-v2-toolbar-btn:hover {
+  background: #334155;
+  color: #F1F5F9;
+}
+
+.terminal-v2-toolbar-btn:focus {
+  outline: 2px solid #3B82F6;
+  outline-offset: 2px;
+}
+
+.terminal-v2-toolbar-btn:active {
+  background: #475569;
+}
+
+/* Close Button */
+.terminal-v2-close-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 8px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: #94A3B8;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  margin-left: 8px;
+}
+
+.terminal-v2-close-btn:hover {
+  background: #EF4444;
+  color: #FFFFFF;
+}
+
+.terminal-v2-close-btn:focus {
+  outline: 2px solid #EF4444;
+  outline-offset: 2px;
+}
+
+/* Terminal Container */
+.terminal-v2-container {
+  flex: 1;
+  overflow: hidden;
+  padding: 8px;
+  background: #0F172A;
+}
+
+.terminal-v2-content {
+  width: 100%;
+  height: 100%;
+}
+
+/* Status Bar */
+.terminal-v2-statusbar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 6px 12px;
+  background: #1E293B;
+  border-top: 1px solid #334155;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: #64748B;
+}
+
+.terminal-v2-statusbar-item {
+  white-space: nowrap;
+}
+
+/* Scrollbar Styling */
+.terminal-v2-content ::-webkit-scrollbar {
+  width: 10px;
+}
+
+.terminal-v2-content ::-webkit-scrollbar-track {
+  background: #0F172A;
+}
+
+.terminal-v2-content ::-webkit-scrollbar-thumb {
+  background: #475569;
+  border-radius: 5px;
+}
+
+.terminal-v2-content ::-webkit-scrollbar-thumb:hover {
+  background: #64748B;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .terminal-v2 {
+    height: 60vh;
+  }
+  
+  .terminal-v2.maximized {
+    height: 100vh;
+  }
+  
+  .terminal-v2-toolbar {
+    display: none; /* Hide toolbar on mobile */
+  }
+  
+  .terminal-v2-statusbar {
+    display: none; /* Hide status bar on mobile */
+  }
+}

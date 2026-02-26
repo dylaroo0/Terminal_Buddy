@@ -4,6 +4,7 @@ import * as mcp from '../utils/tauri-mcp';
 import type { CommandRecord, SessionRecord } from '../utils/tauri-mcp';
 import { CommandCard } from './CommandCard';
 import { Panel } from './Panel';
+import { VoiceInput } from './VoiceInput';
 
 interface SearchViewProps {
   onExplain: (commandId: string) => void;
@@ -140,6 +141,16 @@ export const SearchView: React.FC<SearchViewProps> = ({ onExplain, onReRun, onNo
     searchInputRef.current?.focus();
   };
 
+  // Handle voice transcription
+  const handleVoiceTranscription = (text: string) => {
+    console.log('[SearchView] Voice transcription received:', text);
+    setSearchQuery(text);
+    // Focus the search input so user can edit
+    setTimeout(() => {
+      searchInputRef.current?.focus();
+    }, 100);
+  };
+
   // Format date label
   const formatDateLabel = (dateString: string): string => {
     const date = new Date(dateString);
@@ -196,6 +207,11 @@ export const SearchView: React.FC<SearchViewProps> = ({ onExplain, onReRun, onNo
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search commands, sessions, errors, files..."
             className="search-input"
+          />
+          {/* Voice Input Button */}
+          <VoiceInput
+            onTranscription={handleVoiceTranscription}
+            placeholder="Click mic and speak..."
           />
           {searchQuery && (
             <button onClick={handleClear} className="clear-search-btn">
