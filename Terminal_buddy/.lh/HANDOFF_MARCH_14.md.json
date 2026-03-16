@@ -1,0 +1,18 @@
+{
+    "sourceFile": "HANDOFF_MARCH_14.md",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1773531799861,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1773531799861,
+            "name": "Commit-0",
+            "content": "# Handoff Log: Terminal Buddy\n**Date:** March 14, 2026\n**To:** Next AI Assistant / Claude\n\n## 1. What We Just Did\n- **UI/Accessibility:** Added the \"Read Aloud\" capability and prepared `Urgency.css` to enable flashing UI element states (like warnings) inside `ExplanationModal.tsx`.\n- **Architecture Validation:** We confirmed the Rust backend (`buddy-daemon`) is structurally sound, leveraging native PTY, filesystem history logging, and correlation logic.\n- **Tauri Launch Attempt:** Shifted focus to natively building and launching the standalone React/Tauri desktop application so Dylaroo can actually test the real UI.\n\n## 2. Immediate Blockers & Where to Start Next\n1. **Tauri Build Error (PRIORITY 1):** When running the app externally, there is an unhandled `npm`/Vite or Tauri build error: **\"Metadata extraction from cannot find module\"**.\n   - *Fix Action:* Have the next assistant instruct on reinstalling dependencies (`cd terminal-buddy/buddy-app && npm install`) and tracking down the unlinked module causing this crash.\n2. **Annoying Hooks:** The underlying terminal has lingering \"PAI\" / \"pie\" hooks triggering warning messages. \n   - *Fix Action:* The next assistant should provide the command to clear the global hooks (`git config --global --unset core.hooksPath`) to reduce noise.\n\n## 3. Next Session Goals\n- Resolve the `cannot find module` error.\n- Get the Tauri Desktop application to successfully run locally.\n- Test out the native terminal interface and `pty` architecture.\n\n---\n**Note to next AI:** Dylaroo leverages a voice-first workflow, is dyslexic, and strongly prefers short sentences, **bolded key points**, copy-paste terminal commands, and zero \"walls of text\". We are bridging a Tauri desktop GUI with an MCP-based Rust terminal backend."
+        }
+    ]
+}

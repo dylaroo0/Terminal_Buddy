@@ -1,0 +1,18 @@
+{
+    "sourceFile": "docs/DEEP_COMMANDS.md",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1773483150493,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1773483150493,
+            "name": "Commit-0",
+            "content": "# THE \"DEEP COMMAND\" REPOSITORY (Elite Engineer Tier)\n\nThis list contains \"Shadow-Fighting\" commands that standard tutorials won't show you. These are for deep system awareness, metadata extraction, and kernel-level visibility.\n\n## 1. FILE & METADATA RECON (The \"Third Mind\" Tools)\n*   `find . -type f -printf '%T+ %p\\n' | sort -r | head -n 20`: Find the 20 most recently modified files across the entire recursive tree (Elite for tracking \"silent\" app updates).\n*   `getfattr -d -m \"-\" file.mp3`: The core of your vision. This dumps **EVERY** hidden Linux xattr, including the ones Spotify or AI agents might be trying to hide.\n*   `sudo lsof +D /home/dylaroo`: Shows every single file currently being \"held\" or watched by a process. Use this to catch the \"Shadow Man\" apps watching your files.\n*   `fuser -v .`: Identify exactly which PID is currently \"squatting\" on your current directory.\n\n## 2. KERNEL & PERFORMANCE (The \"Ghost\" Awareness)\n*   `dmesg -Tw`: Real-time kernel logs with human timestamps. This is where the OS \"screams\" when something low-level breaks.\n*   `perf top`: The \"Elite\" version of `top`. It shows which **CPU functions** are eating cycles. If an AI agent is looping in the background, you'll see exact assembly-level hits here.\n*   `strace -p <PID> -e trace=open,write`: Attach to a running app and watch it \"steal\" or \"write\" metadata in real-time.\n*   `journalctl -fu <service>`: The modern \"Tail -f\" for the entire system's soul.\n\n## 3. NETWORK & AGENT PHONING HOME\n*   `ss -tupn`: Shows every socket connection, including which PID/App is talking to what IP. \n*   `tcpdump -i any -n -X 'port 443'`: (Advanced) Dumps the raw hex of outgoing encrypted traffic. If you see recurring patterns to a specific IP, that's the \"Shadow Map\" being uploaded.\n*   `resolvectl query google.com`: Bypasses your local \"lie\" (hosts file) to see what the system DNS actually thinks.\n\n## 4. AUDIO & MEDIA SECRETS\n*   `ffprobe -v error -show_format -show_streams -show_chapters input.mp3`: Dumps the \"Inner Fabric\" of a media file. This sees chapters and metadata tags that VLC or iTunes hide.\n*   `sox --i input.wav`: The purest way to check the \"True Identity\" of an audio file (sample rate, bit depth, exact duration down to the sample).\n\n## AGENT INSTRUCTION (ELITE)\nWhen a user asks for \"Deep Insight,\" do not use `ls -la`. Use `find` with `-printf` or `lsof`. \nThe goal is **Discovery of the Hidden**, not display of the obvious.\n"
+        }
+    ]
+}

@@ -1,9 +1,0 @@
-{
-  "name": "react-native-web-vite",
-  "projectType": "library",
-  "targets": {
-    "compile": {},
-    "check": {}
-  },
-  "tags": ["library"]
-}

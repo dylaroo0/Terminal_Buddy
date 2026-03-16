@@ -1,0 +1,115 @@
+Terminal Buddy: A Strategic Deep-Dive into the Next Generation of Correlated Computing
+
+"A journal for your terminal that explains itself."
+
+1. The Paradigm Shift: From Passive Display to Correlated Journal
+
+The traditional terminal emulator has stagnated as a passive text-rendering surface, displaying characters without any comprehension of underlying system state. Terminal Buddy architecturally mandates a transition from this "dumb" surface to a "Second Brain" journal. Much as Notion and Obsidian transformed static notes into networked knowledge bases, Terminal Buddy creates a "Second Brain for the Terminal." By tapping directly into the operating system kernel, filesystem, and logs, the platform correlates user input with machine reality, transforming the Command Line Interface (CLI) into an explainable, persistent record of work.
+
+Terminal Buddy solves the "Cryptic Terminal" problem by redefining the atomic unit of interaction: sessions, not individual commands. This transformation is anchored by three strategic principles:
+
+* Journaling: Commands are no longer ephemeral. Sessions are treated as chapters in a journal, automatically titled and organized by subject, creating a permanent, searchable knowledge base.
+* Connection: The terminal is tethered to Machine Reality via the "Correlation Triple"—linking terminal output to filesystem deltas and kernel logs to provide a holistic view of system impact.
+* Explainability: The system translates technical jargon into plain language. Through "Teachable Moments," the AI explains why a command behaved as it did based on grounded system data, not probabilistic guesses.
+
+The strategic wedge of this ecosystem is the First 60-Second Moment. While competitors offer a blinking cursor and a blank slate, Terminal Buddy opens to a structured journal of recent activity. The ability to click an "Explain" button and receive plain-language, kernel-grounded feedback creates an immediate realization of value and deep user retention. The terminal is finally working with the human.
+
+1. Core Technical Moats: The Correlation Engine and Memvid Ecosystem
+
+Technical defensibility in Terminal Buddy is rooted in "Machine Reality" rather than the shallow LLM wrappers currently saturating the market. Our platform does not guess what happened; it records what happened at the kernel level.
+
+The Correlation Triple
+
+The Correlation Engine is the "nervous system" of Terminal Buddy, synchronizing three distinct data streams to provide a comprehensive, verifiable record of any given command.
+
+Stream Data Captured Strategic Value
+Stream A: Terminal Raw stdout/stderr The Result: The visible output the user sees.
+Stream B: Filesystem Delta in files and PIDs The Impact: The actual physical changes made to the system.
+Stream C: System Logs Kernel/OS logs (timestamped) The Root Cause: The underlying "why" behind system behavior.
+
+The Memvid (.mv2) Binary Flight Recorder
+
+To manage this high-fidelity data with professional rigor, the system utilizes a Hybrid Storage Model: SQLite handles fast indexing and metadata, while the Memvid .mv2 binary format stores raw binary blobs. Functioning as a "Black Box Flight Recorder," Memvid captures "Reality Snapshots" every 100ms, including compressed terminal grids and system impact JSON.
+
+The "So What?" layer is profound: local semantic search and 120 FPS timeline scrubbing allow users to search for concepts—"that database fix from last Tuesday"—rather than exact text. For power users and developers with ADHD, this eliminates the cognitive tax of context reconstruction, creating a high switching cost and an insurmountable moat.
+
+Grounded Explainability vs. AI Guesswork
+
+This technical foundation fills the "Trust Gap" prevalent in AI tooling. While competitors like Warp or Copilot CLI often "guess" based on error text, Terminal Buddy provides a "Teachable Moment" response by explaining from correlated kernel data. Because the AI is grounded in the machine's actual behavior, its explanations are verifiable, creating a bridge of trust that simple LLM wrappers cannot emulate.
+
+1. Cognitive Performance Engineering: Designing for Focus
+
+Terminal Buddy refutes the idea that accessibility is a niche "bolt-on." Instead, we embrace Cognitive Performance Engineering. By "Designing for Focus"—specifically addressing the needs of users with dyslexia and ADHD—we create a superior product for all developers, including senior engineers managing high-density environments.
+
+* Atkinson Hyperlegible Font: Developed by the Braille Institute to make common character confusions (b/d, p/q, I/l/1) visually distinct.
+* 1.8 Line Height & Increased Spacing: Reduces visual crowding, allowing for faster parsing of long logs.
+* High Contrast & Focus Mode: Uses WCAG AAA compliant palettes and dims background elements during AI explanations to spotlight critical information and reduce overwhelm.
+
+Voice-as-a-Peer Interaction
+
+Voice is treated as a primary interaction model, not an assistive afterthought. Terminal Buddy utilizes a privacy-first, 100% on-device pipeline (local Whisper) to enable a "Voice-as-a-Peer" experience. This serves users with RSI, dyslexia, or those seeking a hands-free "Pair Programmer" mode. This on-device transcription creates a "Blue Ocean" moat against cloud-dependent competitors, ensuring user data never leaves the machine.
+
+1. The Decoupled Architecture: Defensibility via MCP
+
+Strategic modularity is achieved through a decoupled architecture: a high-performance Rust Daemon (the brain) and swappable UI "skins" connected via the Model Context Protocol (MCP).
+
+Zero-Effort AI Integration: The Dual Role
+
+Terminal Buddy positions itself as an essential layer in the modern AI stack by functioning as both an MCP Server and an MCP Client.
+
+* As a Server: It exposes the terminal as a plug-and-play resource for external AI hosts like Claude Desktop or Cursor. This enables "zero-effort AI integration," allowing external models to query system health or history without user copy-pasting.
+* As a Client: The internal "Buddy" consumes tools from other MCP servers (e.g., GitHub or Filesystem servers) to provide context-aware suggestions.
+
+The "Load-Bearing Wall"
+
+To ensure long-term stability and investor confidence, the MCP v1.0 API is treated as a "load-bearing wall" with Frozen v1.0 Signatures. These six core tools allow the UI to iterate rapidly without risking core engine stability:
+
+1. buddy_history: Query past commands.
+2. buddy_sessions: Search and list work chapters.
+3. buddy_system_health: Real-time machine monitoring.
+4. buddy_cleanup_scan: Identifying system bloat.
+5. buddy_run: Executing commands with PTY capture.
+6. buddy_explain/ask: Contextual AI assistance.
+
+7. Multi-Surface Distribution and the Market Funnel
+
+Our distribution strategy follows the "One Brain, Multiple Skins" model, ensuring Terminal Buddy is available wherever the developer works.
+
+Surface Technology Strategic Use Case Scope
+Standalone App Tauri v2 + React The full flagship product. Includes Journal, Creator Corner, and Terminal. Primary Hub
+MCP App (iframe) HTML/JS via Daemon Embedded within Claude or Cursor. Focused on search and journal. Discovery Funnel
+VS Code Extension Webview Panel A sidebar journal within the IDE. Workflow Integration
+
+The Discovery Funnel & Memvid Canvas
+
+The MCP App acts as the primary discovery funnel. By serving the UI as an iframe resource, users of Claude and Cursor can access the journal with zero installation friction. This multi-surface strategy is fueled by the Memvid Canvas SDK—drop-in React components (Search, RAG Chat, Timeline) that ensure a consistent visual experience across all distribution channels. A community template created in the standalone app renders identically when viewed in an MCP iframe.
+
+1. Commercialization, Monetization, and the Roadmap
+
+Terminal Buddy’s commercial strategy is built on the principle of "Personalization without Complexity." This is realized through the "Creator Corner" and a template-driven network effect.
+
+The Creator Corner: A Network Effect Engine
+
+User-generated templates (custom fonts, colors, and layout presets) are more than just customizations; they are a Network Effect engine. Customization acts as Retention (switching cost), while sharing these templates on the "Hub" serves as Viral Marketing. As users share setups like "Dyslexia-Friendly Dark" or "ADHD Focus Mode," they effectively market the product to niche, high-value communities.
+
+Monetization Tiers
+
+Monetization follows an Open Core model. Hard Requirement: Core accessibility features are never gated behind a paywall.
+
+Tier Target Audience Key Features
+Free Students/Learners Journal, Heuristic Explain, Voice Input, Accessibility Defaults.
+Pro ADHD Power Users Advanced Semantic search, LLM-powered titles, Premium TTS.
+Enterprise Compliance-First Orgs SSO/SAML, Audit Logs, Team Memvid Sync, Centralized Config.
+
+The Four-Phase Roadmap
+
+The ecosystem is managed through a strictly gated roadmap:
+
+* Phase 1 (Iron Skeleton): Stable Rust Daemon and PTY management.
+* Phase 2 (The Brain): CURRENT STATUS. 6/6 automated tests passing; 7MB release binary. Implementation of the Correlation Triple and .mv2 logging.
+* Phase 3 (Voice/Skins): Integration of local Whisper and the Creator Corner visual editor.
+* Phase 4 (Ship/Extend): Security hardening, cross-platform packaging, and optional Neovim embedding.
+
+Conclusion: The Terminal Buddy Manifesto
+
+Terminal Buddy is a commitment to the principle that terminals should remember, commands should be explainable, and accessibility is the foundation of innovation. By using Machine Reality as the bridge to human understanding, we have built a terminal that learns with the user. It is not just an emulator; it is a searchable, explainable, and grounded journal for everything ever done in a shell. Terminal Buddy does not replace the terminal; it finally makes the terminal human.

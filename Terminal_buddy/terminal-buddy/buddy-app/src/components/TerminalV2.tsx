@@ -110,7 +110,15 @@ export const TerminalV2: React.FC<TerminalV2Props> = ({
     }
 
     term.open(terminalRef.current);
-    fitAddon.fit();
+
+    // Defer fit to ensure dimensions are computed
+    requestAnimationFrame(() => {
+      try {
+        fitAddon.fit();
+      } catch (e) {
+        console.warn('Initial fitAddon.fit() failed:', e);
+      }
+    });
 
     // Store refs
     xtermRef.current = term;
@@ -127,11 +135,18 @@ export const TerminalV2: React.FC<TerminalV2Props> = ({
       const payload = event.payload as { session_id: string; data: string };
       if (payload.session_id === sessionIdRef.current && xtermRef.current) {
         xtermRef.current.write(payload.data);
+        captureOutput(payload.data);
       }
     });
 
     // Handle resize
-    const handleResize = () => fitAddon.fit();
+    const handleResize = () => {
+      try {
+        fitAddon.fit();
+      } catch (e) {
+        // ignore size errors
+      }
+    };
     window.addEventListener('resize', handleResize);
 
     // Handle copy/paste keyboard shortcuts
@@ -189,15 +204,13 @@ export const TerminalV2: React.FC<TerminalV2Props> = ({
   }, [isOpen, background, foreground, cursor, selection, cursorBlink]);
 
   // Use output capture hook
-  useTerminalOutput(xtermRef, onOutput);
+  const captureOutput = useTerminalOutput(onOutput);
 
   // Spawn shell session
   const spawnShell = async () => {
     try {
       const shell = '/bin/bash';
-      const cwd = workingDir === '~'
-        ? process.env.HOME || '/home/' + (process.env.USER || 'user')
-        : workingDir;
+      const cwd = workingDir || '~';
 
       const id = await invoke<string>('terminal_spawn', {
         shell,

@@ -11,7 +11,7 @@
 The Session module is the **primary interface** for Terminal Buddy. It replaces the traditional terminal-first paradigm with a session/notebook paradigm where the terminal is embedded within a rich history and context system.
 
 ### 1.1 Purpose
-
+deep research on better semantic search and recalling!!!!
 The Session module provides:
 - **Session-based history** organized by date and subject
 - **Three viewing modes:** Timeline, Topics, and Search
@@ -21,7 +21,7 @@ The Session module provides:
 
 ### 1.2 Key Principle
 
-> "A session history for your terminal that explains itself."
+> "history if fundemental on being civilized. ;)
 
 The Session view is not a sidebar to the terminal. **The terminal is embedded in the Session view.** This inversion is the core product wedge.
 
@@ -67,7 +67,7 @@ modules/session/
 
 ```
 ┌─────────────────┐
-│  JournalPanel   │
+│  JournalPanel   │ add ons like sandbox
 └────────┬────────┘
          │ MCP stdio
          v
@@ -83,7 +83,7 @@ modules/session/
 └─────────────────┘
 ```
 
-**Key:** The Journal module **never** accesses SQLite directly. All data flows through MCP tools.
+**Key:** The Journal(dot use Jurnal ) module **never** accesses SQLite directly. All data flows through MCP tools.
 
 ---
 
@@ -151,7 +151,7 @@ registry.register({
 **Layout:**
 ```
 +--------------------------------------------------+
-|  [ Timeline ]    [ Topics ]    [ Search ]          |
+|  [ Timeline ]    [ Topics ]  (project)   [ Search ] workspaces language.... more if choose to not locked in          |
 |  ================================================  |
 |                                                    |
 |  Feb 22, 2026                                      |
@@ -197,7 +197,7 @@ export function TimelineView() {
 }
 ```
 
-### 4.2 Topics View
+### 4.2 Topics View   
 
 **Purpose:** Grouped by auto-detected subject.
 

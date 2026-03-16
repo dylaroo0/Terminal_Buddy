@@ -159,6 +159,15 @@ impl SessionStore {
         Ok(sessions)
     }
 
+    pub fn record_note(&self, session_id: &Uuid, content: &str) -> Result<()> {
+        let now = Utc::now().to_rfc3339();
+        self.conn.execute(
+            "INSERT INTO notes (session_id, content, created_at) VALUES (?1, ?2, ?3)",
+            (&session_id.to_string(), &content, &now),
+        )?;
+        Ok(())
+    }
+
     pub fn search_commands(&self, query: &str, limit: usize) -> Result<Vec<CommandRecord>> {
         let pattern = format!("%{query}%");
         let mut stmt = self.conn.prepare(

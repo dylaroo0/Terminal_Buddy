@@ -26,22 +26,22 @@ export function CreatorCornerWorkshop() {
   // Validate and enforce design system rules
   const validateStyleChanges = (changes: Record<string, any>) => {
     const validated = { ...changes };
-    
+
     // Enforce accessibility defaults
     if (validated.font_size_ui && validated.font_size_ui < 16) {
       validated.font_size_ui = 16; // Minimum for dyslexia-friendly
     }
-    
+
     // Enforce contrast ratios
     if (validated.contrast_mode === 'high') {
       validated.text_primary = '#F1F5F9';
       validated.bg_deep = '#0F172A';
     }
-    
+
     // Enforce font choices
     validated.font_ui = 'Atkinson Hyperlegible';
     validated.font_mono = 'JetBrains Mono';
-    
+
     return validated;
   };
 
@@ -72,13 +72,12 @@ export function CreatorCornerWorkshop() {
         <div className="flex space-x-2">
           {[1, 2, 3, 4].map((s) => (
             <div key={s} className={`flex items-center ${s <= step ? 'text-blue-400' : 'text-gray-500'}`}>
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center border-2 ${
-                s === step 
-                  ? 'bg-blue-500 border-blue-400' 
-                  : s < step 
-                    ? 'bg-blue-500 border-blue-400' 
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center border-2 ${s === step
+                  ? 'bg-blue-500 border-blue-400'
+                  : s < step
+                    ? 'bg-blue-500 border-blue-400'
                     : 'border-gray-600'
-              }`}>
+                }`}>
                 {s}
               </div>
               {s < 4 && (
@@ -92,34 +91,34 @@ export function CreatorCornerWorkshop() {
       {/* Step Content */}
       <div className="bg-gray-800/50 rounded-xl p-6 mb-6">
         {step === 1 && (
-          <TemplateSelector 
+          <TemplateSelector
             onSelect={(template) => {
               updateConfig({ template });
               handleNextStep();
             }}
           />
         )}
-        
+
         {step === 2 && (
-          <AccessibilityTweaks 
+          <AccessibilityTweaks
             config={config}
             onChange={updateConfig}
             onNext={handleNextStep}
             onPrev={handlePrevStep}
           />
         )}
-        
+
         {step === 3 && (
-          <ComponentCustomizer 
+          <ComponentCustomizer
             config={config}
             preview={preview}
             onNext={handleNextStep}
             onPrev={handlePrevStep}
           />
         )}
-        
+
         {step === 4 && (
-          <SaveAndShare 
+          <SaveAndShare
             config={config}
             onExport={() => {
               // In real implementation, this would call Pencil export
@@ -168,13 +167,13 @@ function TemplateSelector({ onSelect }: { onSelect: (template: string) => void }
   );
 }
 
-function AccessibilityTweaks({ 
-  config, 
+function AccessibilityTweaks({
+  config,
   onChange,
   onNext,
-  onPrev 
-}: { 
-  config: any; 
+  onPrev
+}: {
+  config: any;
   onChange: (changes: Partial<any>) => void;
   onNext: () => void;
   onPrev: () => void;
@@ -182,7 +181,7 @@ function AccessibilityTweaks({
   return (
     <div>
       <h3 className="text-xl font-bold mb-4">Step 2: Adjust Accessibility Settings</h3>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <h4 className="font-medium mb-3 text-gray-300">Font Settings</h4>
@@ -194,18 +193,17 @@ function AccessibilityTweaks({
                   <button
                     key={size}
                     onClick={() => onChange({ font_size_ui: size })}
-                    className={`px-3 py-2 rounded ${
-                      config.font_size_ui === size 
-                        ? 'bg-blue-600' 
+                    className={`px-3 py-2 rounded ${config.font_size_ui === size
+                        ? 'bg-blue-600'
                         : 'bg-gray-700 hover:bg-gray-600'
-                    }`}
+                      }`}
                   >
                     {size}px
                   </button>
                 ))}
               </div>
             </div>
-            
+
             <div>
               <label className="block text-sm mb-1">Contrast Mode</label>
               <div className="flex space-x-2">
@@ -213,11 +211,10 @@ function AccessibilityTweaks({
                   <button
                     key={mode}
                     onClick={() => onChange({ contrast_mode: mode })}
-                    className={`px-3 py-2 rounded capitalize ${
-                      config.contrast_mode === mode 
-                        ? 'bg-blue-600' 
+                    className={`px-3 py-2 rounded capitalize ${config.contrast_mode === mode
+                        ? 'bg-blue-600'
                         : 'bg-gray-700 hover:bg-gray-600'
-                    }`}
+                      }`}
                   >
                     {mode}
                   </button>
@@ -226,7 +223,7 @@ function AccessibilityTweaks({
             </div>
           </div>
         </div>
-        
+
         <div>
           <h4 className="font-medium mb-3 text-gray-300">Visual Guidelines</h4>
           <div className="bg-gray-800/50 p-4 rounded-lg">
@@ -245,15 +242,15 @@ function AccessibilityTweaks({
           </div>
         </div>
       </div>
-      
+
       <div className="flex justify-between mt-6">
-        <button 
+        <button
           onClick={onPrev}
           className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded"
         >
           ← Back
         </button>
-        <button 
+        <button
           onClick={onNext}
           className="px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded"
         >
@@ -270,7 +267,7 @@ function ComponentCustomizer({
   onNext,
   onPrev
 }: {
-  config: any; 
+  config: any;
   preview: string;
   onNext: () => void;
   onPrev: () => void;
@@ -278,7 +275,7 @@ function ComponentCustomizer({
   return (
     <div>
       <h3 className="text-xl font-bold mb-4">Step 3: Customize Components</h3>
-      
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div>
           <h4 className="font-medium mb-3 text-gray-300">Command Card Preview</h4>
@@ -301,7 +298,7 @@ function ComponentCustomizer({
               </div>
             </div>
           </div>
-          
+
           <div className="mt-4">
             <h4 className="font-medium mb-3 text-gray-300">Customization Options</h4>
             <div className="space-y-3">
@@ -311,21 +308,21 @@ function ComponentCustomizer({
                   {['#1E293B', '#334155', '#0F172A'].map(color => (
                     <button
                       key={color}
-                      onClick={() => {}}
+                      onClick={() => { }}
                       className="w-8 h-8 rounded border-2"
                       style={{ backgroundColor: color, borderColor: color === '#1E293B' ? '#3B82F6' : '#444' }}
                     ></button>
                   ))}
                 </div>
               </div>
-              
+
               <div>
                 <label className="block text-sm mb-1">Primary Color</label>
                 <div className="flex space-x-2">
                   {['#3B82F6', '#2563EB', '#1D4ED8'].map(color => (
                     <button
                       key={color}
-                      onClick={() => {}}
+                      onClick={() => { }}
                       className="w-8 h-8 rounded border-2"
                       style={{ backgroundColor: color, borderColor: color === '#3B82F6' ? '#3B82F6' : '#444' }}
                     ></button>
@@ -335,7 +332,7 @@ function ComponentCustomizer({
             </div>
           </div>
         </div>
-        
+
         <div>
           <h4 className="font-medium mb-3 text-gray-300">Live Preview</h4>
           <div className="bg-gray-900 rounded-lg p-4 h-64 overflow-auto">
@@ -343,7 +340,7 @@ function ComponentCustomizer({
               {preview || "Your custom terminal UI will appear here in real-time"}
             </div>
           </div>
-          
+
           <div className="mt-4">
             <h4 className="font-medium mb-3 text-gray-300">Design Principles</h4>
             <ul className="text-sm space-y-2 text-gray-400">
@@ -355,15 +352,15 @@ function ComponentCustomizer({
           </div>
         </div>
       </div>
-      
+
       <div className="flex justify-between mt-6">
-        <button 
+        <button
           onClick={onPrev}
           className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded"
         >
           ← Back
         </button>
-        <button 
+        <button
           onClick={onNext}
           className="px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded"
         >
@@ -374,11 +371,11 @@ function ComponentCustomizer({
   );
 }
 
-function SaveAndShare({ 
+function SaveAndShare({
   config,
   onExport,
-  onPrev 
-}: { 
+  onPrev
+}: {
   config: any;
   onExport: () => void;
   onPrev: () => void;
@@ -386,7 +383,7 @@ function SaveAndShare({
   return (
     <div>
       <h3 className="text-xl font-bold mb-4">Step 4: Save & Share</h3>
-      
+
       <div className="bg-gray-800/50 rounded-lg p-6 mb-6">
         <h4 className="font-medium mb-3 text-gray-300">Your Custom Template</h4>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
@@ -420,9 +417,9 @@ function SaveAndShare({
           </div>
         </div>
       </div>
-      
+
       <div className="flex flex-wrap gap-4">
-        <button 
+        <button
           onClick={onExport}
           className="px-6 py-3 bg-blue-600 hover:bg-blue-500 rounded-lg font-medium flex items-center"
         >
@@ -431,8 +428,8 @@ function SaveAndShare({
           </svg>
           Save as My Template
         </button>
-        
-        <button 
+
+        <button
           onClick={() => alert('Community sharing coming soon!')}
           className="px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg font-medium flex items-center"
         >
@@ -442,15 +439,15 @@ function SaveAndShare({
           Share to Community
         </button>
       </div>
-      
+
       <div className="flex justify-between mt-6">
-        <button 
+        <button
           onClick={onPrev}
           className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded"
         >
           ← Back
         </button>
-        <button 
+        <button
           onClick={() => alert('Workshop complete! Your template is ready.')}
           className="px-4 py-2 bg-green-600 hover:bg-green-500 rounded"
         >

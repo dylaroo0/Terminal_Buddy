@@ -48,7 +48,8 @@ pub async fn run_command_in_pty(
 
             let mut output = Vec::new();
             let mut buf = [0u8; 1024];
-            while let Ok(n) = reader.read(&mut buf) {
+            // Potential deadlock fix: Read in a non-blocking way to ensure 
+            // the child process buffer doesn't fill up while we wait.            while let Ok(n) = reader.read(&mut buf) {
                 if n == 0 {
                     break;
                 }

@@ -1,9 +1,9 @@
+use base64::Engine;
 use serde_json::{json, Value};
 use std::path::PathBuf;
 use std::sync::Arc;
 use tauri::{AppHandle, Manager, State};
 use tokio::sync::Mutex;
-use base64::Engine;
 
 mod mcp_client;
 use mcp_client::McpClient;
@@ -12,16 +12,11 @@ mod terminal;
 use terminal::TerminalManager;
 
 mod voice;
-use voice::{VoiceState, voice_transcribe, voice_is_configured, voice_test_connection};
+use voice::{voice_is_configured, voice_test_connection, voice_transcribe, VoiceState};
 
 /// Application state containing the MCP client
 pub struct AppState {
     pub mcp: Arc<Mutex<Option<McpClient>>>,
-}
-
-/// Application state containing terminal manager
-pub struct TerminalState {
-    pub terminal: Arc<Mutex<TerminalManager>>,
 }
 
 /// Initialize MCP client on app startup
@@ -34,17 +29,20 @@ pub async fn init_mcp_client(app_handle: &AppHandle) -> Result<(), String> {
     let daemon_path = std::env::var("BUDDY_DAEMON_PATH").ok().unwrap_or_else(|| {
         // Next to the running binary
         if let Ok(exe) = std::env::current_exe() {
-            let sibling = exe.parent().unwrap_or(std::path::Path::new(".")).join("buddy-daemon");
+            let sibling = exe
+                .parent()
+                .unwrap_or(std::path::Path::new("."))
+                .join("buddy-daemon");
             if sibling.exists() {
                 return sibling.to_string_lossy().to_string();
             }
         }
         // Dev mode: workspace target/release
-        let workspace_release =
-            std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-                .join("../../target/release/buddy-daemon");
+        let workspace_release = std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+            .join("../../target/release/buddy-daemon");
         if workspace_release.exists() {
-            return workspace_release.canonicalize()
+            return workspace_release
+                .canonicalize()
                 .unwrap_or(workspace_release)
                 .to_string_lossy()
                 .to_string();
@@ -199,7 +197,12 @@ fn mock_tool_response(tool_name: &str, _params: Value) -> Value {
 
 #[tauri::command]
 async fn get_sessions(state: State<'_, AppState>, limit: Option<u32>) -> Result<Value, String> {
-    call_mcp_tool_safe(state, "buddy_sessions", json!({ "limit": limit.unwrap_or(20) })).await
+    call_mcp_tool_safe(
+        state,
+        "buddy_sessions",
+        json!({ "limit": limit.unwrap_or(20) }),
+    )
+    .await
 }
 
 #[tauri::command]
@@ -369,7 +372,7 @@ async fn test_api_key(provider: String, api_key: String) -> Result<Value, String
 pub fn run() {
     // Initialize logging
     tracing_subscriber::fmt::init();
-    
+
     // Load .env file for development
     let _ = dotenvy::dotenv();
 
@@ -380,9 +383,7 @@ pub fn run() {
         .manage(AppState {
             mcp: Arc::new(Mutex::new(None)),
         })
-        .manage(TerminalState {
-            terminal: Arc::new(Mutex::new(TerminalManager::new())),
-        })
+        .manage(TerminalManager::new())
         .manage(VoiceState {
             api_key: std::env::var("GROQ_API_KEY").unwrap_or_default(),
         })

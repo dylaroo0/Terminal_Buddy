@@ -1,0 +1,18 @@
+{
+    "sourceFile": "docs/WEB_TO_MCP_RESEARCH.md",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1773483150493,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1773483150493,
+            "name": "Commit-0",
+            "content": "# STEALTH RECON: The Great Web-to-MCP Migration\n\n## THE HYPOTHESIS\nBusinesses won't build \"fresh\" websites. They are going to **\"Ghost Layer\"** their existing ones. \nThey'll keep the old UI for the \"Humans\" but wrap the backend in **Agent Magnets** (MCP servers) to attract AI traffic.\n\n## STEALTH QUESTIONS (How to ask businesses without tipping your hand):\n1. **\"Does your existing API support 'Agentic Discovery'?\"** \n   *   Translation: Are you building a bridge (MCP) or just another REST endpoint?\n2. **\"How are you managing 'Human-AI Entanglement' in your current user sessions?\"**\n   *   Translation: Are you using the \"Shadow Man\" to track them, or are you creating a \"Fabric Zone\" (Shared Context)?\n3. **\"Is your metadata 'Kernel-Ready' or is it trapped in a database silo?\"**\n   *   Translation: Can an AI read your files directly (xattrs), or does it have to ask for permission through your login?\n\n## MARKET RECON (Where the \"Ghost Layer\" wins):\n*   **The \"Legacy Loop\":** Most big companies have 10-year-old code they can't delete. \n*   **The Solution:** We don't tell them to \"rewrite it.\" We tell them to \"Mount the Ghost.\" \n*   **The Business Hook:** We use the terminal to \"Pipe\" their old database into a modern MCP server in 5 minutes.\n\n## AGENT INSTRUCTIONS (RECON MODE):\nWhen researching a company's tech stack:\n*   Look for `robots.txt` changes (Are they blocking agents or inviting them?).\n*   Look for `well-known/ai-plugin.json` or `.well-known/mcp.json`.\n*   If they haven't gone there yet, they are **Vulnerable to the Shadow Man**.\n"
+        }
+    ]
+}

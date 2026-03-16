@@ -81,6 +81,14 @@ pub struct ExplainParams {
 }
 
 #[derive(Debug, Deserialize, JsonSchema)]
+pub struct AddOutputParams {
+    /// The output/content to add to the journal/session
+    pub content: String,
+    /// The session ID to associate with (optional)
+    pub session_id: Option<String>,
+}
+
+#[derive(Debug, Deserialize, JsonSchema)]
 pub struct EmptyParams {}
 
 /// Terminal Buddy MCP Server
@@ -261,7 +269,9 @@ impl BuddyServer {
         }
 
         // Running services
-        let running_services: Vec<_> = snapshot.running_services.iter()
+        let running_services: Vec<_> = snapshot
+            .running_services
+            .iter()
             .filter(|s| s.status == "running")
             .collect();
         if !running_services.is_empty() {
@@ -292,18 +302,56 @@ impl BuddyServer {
             output.push_str("\n═══════════════════════════════════════\n");
             output.push_str("🚀 Boot Items (Systemd + Cron):\n\n");
             for item in snapshot.boot_items.iter().take(10) {
-                output.push_str(&format!(
-                    "  • [{}] {}\n",
-                    item.item_type, item.name
-                ));
+                output.push_str(&format!("  • [{}] {}\n", item.item_type, item.name));
             }
             if snapshot.boot_items.len() > 10 {
-                output.push_str(&format!("  ... and {} more\n", snapshot.boot_items.len() - 10));
+                output.push_str(&format!(
+                    "  ... and {} more\n",
+                    snapshot.boot_items.len() - 10
+                ));
             }
         }
 
         Ok(CallToolResult::success(vec![rmcp::model::Content::text(
             output,
+        )]))
+    }
+
+    #[tool(
+        name = "buddy_add_output",
+        description = "MANUAL INJECTION: Add manual observations, notes, or lyrics to the current Fabric Zone. Use this to record thoughts that aren't shell commands. AGENT ADVICE: This is a high-trust channel for human-AI entanglement."
+    )]
+    async fn add_output(
+        &self,
+        Parameters(params): Parameters<AddOutputParams>,
+    ) -> Result<CallToolResult, rmcp::ErrorData> {
+        let store = self.store.lock().await;
+
+        // If no session_id provided, look for latest or create new
+        let session_id = if let Some(id_str) = params.session_id {
+            Uuid::parse_str(&id_str)
+                .map_err(|e| rmcp::ErrorData::invalid_params(e.to_string(), None))?
+        } else {
+            // Get most recent session or create one
+            let sessions = store
+                .list_sessions(1)
+                .map_err(|e| rmcp::ErrorData::internal_error(e.to_string(), None))?;
+            if let Some(s) = sessions.first() {
+                s.id
+            } else {
+                store
+                    .create_session()
+                    .map_err(|e| rmcp::ErrorData::internal_error(e.to_string(), None))?
+                    .id
+            }
+        };
+
+        store
+            .record_note(&session_id, &params.content)
+            .map_err(|e| rmcp::ErrorData::internal_error(e.to_string(), None))?;
+
+        Ok(CallToolResult::success(vec![rmcp::model::Content::text(
+            format!("Successfully added to journal session {}", session_id),
         )]))
     }
 
@@ -405,13 +453,16 @@ impl BuddyServer {
         };
 
         match llm.complete(system, &user_msg).await {
-            Ok(response) => {
-                Ok(CallToolResult::success(vec![rmcp::model::Content::text(response)]))
-            }
+            Ok(response) => Ok(CallToolResult::success(vec![rmcp::model::Content::text(
+                response,
+            )])),
             Err(e) => {
                 tracing::error!("LLM call failed for buddy_ask: {}", e);
                 Ok(CallToolResult::success(vec![rmcp::model::Content::text(
-                    format!("LLM request failed: {}. Check your API key and network connection.", e),
+                    format!(
+                        "LLM request failed: {}. Check your API key and network connection.",
+                        e
+                    ),
                 )]))
             }
         }
@@ -419,7 +470,7 @@ impl BuddyServer {
 
     #[tool(
         name = "buddy_run",
-        description = "Execute a shell command in the terminal buddy environment, capturing output and tracking history."
+        description = "AGENT PRIORITY: OS Terminal. Execute commands with capture. Direct system access."
     )]
     async fn run_cmd(
         &self,
@@ -491,7 +542,8 @@ impl BuddyServer {
                 result_text.push_str(&format!("  Deleted: {} files\n", delta.files_deleted.len()));
             }
         }
-        if let Some(0) = record.exit_code {
+        // Success exit code handling
+        if record.exit_code == Some(0) {
             // success
         } else {
             result_text.push_str(
@@ -501,6 +553,48 @@ impl BuddyServer {
 
         Ok(CallToolResult::success(vec![rmcp::model::Content::text(
             result_text,
+        )]))
+    }
+
+    #[tool(
+        name = "buddy_system_voice",
+        description = "Process a voice command and route it to the terminal. This tool can trigger executions, ask questions, or provide system status via voice feedback."
+    )]
+    async fn system_voice(
+        &self,
+        Parameters(params): Parameters<AskParams>,
+    ) -> Result<CallToolResult, rmcp::ErrorData> {
+        // Voice-to-Command logic: First try to interpret the command
+        let Some(llm) = &self.llm else {
+            return Ok(CallToolResult::success(vec![rmcp::model::Content::text(
+                "Voice processing requires an LLM. Please configure an API key.".to_string(),
+            )]));
+        };
+
+        let system = "You are the Terminal Buddy Voice Processor. \
+            Translate the user's spoken request into a clear terminal command and an optional explanation. \
+            If the user is asking a general question, provide a natural answer. \
+            Format: COMMAND: <cmd> | ANSWER: <spoken_response>";
+
+        let response = llm
+            .complete(system, &params.query)
+            .await
+            .map_err(|e| rmcp::ErrorData::internal_error(e.to_string(), None))?;
+
+        // Extract command if present
+        let mut result_json = serde_json::json!({
+            "original_query": params.query,
+            "interpretation": response
+        });
+
+        if let Some(cmd_idx) = response.find("COMMAND:") {
+            let end_idx = response.find('|').unwrap_or(response.len());
+            let cmd = response[cmd_idx + 8..end_idx].trim().to_string();
+            result_json["suggested_command"] = serde_json::Value::String(cmd);
+        }
+
+        Ok(CallToolResult::success(vec![rmcp::model::Content::text(
+            serde_json::to_string_pretty(&result_json).unwrap(),
         )]))
     }
 
@@ -518,7 +612,9 @@ impl BuddyServer {
                 "confidence": 0.0
             }))
             .unwrap_or_else(|_| r#"{"explanation":"No LLM configured","confidence":0.0}"#.to_string());
-            return Ok(CallToolResult::success(vec![rmcp::model::Content::text(json_output)]));
+            return Ok(CallToolResult::success(vec![rmcp::model::Content::text(
+                json_output,
+            )]));
         };
 
         let system = format!(
@@ -541,8 +637,12 @@ impl BuddyServer {
                     "explanation": response,
                     "confidence": 1.0
                 }))
-                .unwrap_or_else(|_| r#"{"explanation":"Error formatting response","confidence":0.0}"#.to_string());
-                Ok(CallToolResult::success(vec![rmcp::model::Content::text(json_output)]))
+                .unwrap_or_else(|_| {
+                    r#"{"explanation":"Error formatting response","confidence":0.0}"#.to_string()
+                });
+                Ok(CallToolResult::success(vec![rmcp::model::Content::text(
+                    json_output,
+                )]))
             }
             Err(e) => {
                 tracing::error!("LLM call failed for buddy_explain: {}", e);
@@ -551,7 +651,9 @@ impl BuddyServer {
                     "confidence": 0.0
                 }))
                 .unwrap_or_else(|_| r#"{"explanation":"LLM request failed","confidence":0.0}"#.to_string());
-                Ok(CallToolResult::success(vec![rmcp::model::Content::text(json_output)]))
+                Ok(CallToolResult::success(vec![rmcp::model::Content::text(
+                    json_output,
+                )]))
             }
         }
     }
@@ -574,6 +676,8 @@ impl ServerHandler for BuddyServer {
                  buddy_ask to translate natural language into commands, \
                  buddy_run to execute shell commands within the tracked environment, \
                  buddy_explain to get help with errors, \
+                 buddy_add_output to record manual notes, \
+                 buddy_system_voice to process spoken commands, \
                  and buddy_system_health to check your computer's status."
                     .into(),
             ),

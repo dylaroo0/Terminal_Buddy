@@ -1,0 +1,18 @@
+{
+    "sourceFile": "terminal-buddy/buddy-app/src/components/WhiteportAnalystMessage.tsx",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1773606901180,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1773606901180,
+            "name": "Commit-0",
+            "content": "// src/components/WhiteportAnalystMessage.tsx\nimport { AgentVoiceButton } from './AgentVoiceButton';\n\nexport function WhiteportAnalystMessage() {\n  const message = \"Hello! I'm Mary, your Whiteport Business Analyst. I can help you create product briefs, trigger maps, and facilitate collaborative workshops using the Whiteport method. Would you like to start with a product brief discovery session?\";\n\n  return (\n    <div style={{\n      border: '1px solid #334155',\n      borderRadius: '8px',\n      padding: '16px',\n      backgroundColor: '#1E293B',\n      margin: '16px 0'\n    }}>\n      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>\n        <span style={{ fontSize: '20px', marginRight: '8px' }}>📊</span>\n        <strong>Mary (Whiteport Analyst)</strong>\n      </div>\n      <p style={{ color: '#F1F5F9', marginBottom: '12px' }}>{message}</p>\n      <div style={{ display: 'flex', gap: '8px' }}>\n        <AgentVoiceButton \n          text={message}\n          agentId=\"whiteport-analyst\"\n          label=\"Hear Mary\"\n        />\n        <button style={{\n          padding: '6px 12px',\n          borderRadius: '20px',\n          border: 'none',\n          backgroundColor: '#64748B',\n          color: '#F1F5F9',\n          cursor: 'pointer'\n        }}>\n          📝 Copy\n        </button>\n      </div>\n    </div>\n  );\n}"
+        }
+    ]
+}

@@ -1,5 +1,5 @@
 //! Terminal PTY management for Tauri app
-//! 
+//!
 //! This module provides Tauri commands for spawning and managing
 //! PTY shell sessions with full duplex I/O.
 
@@ -7,8 +7,8 @@ use anyhow::Result;
 use portable_pty::{CommandBuilder, NativePtySystem, PtySize, PtySystem};
 use std::collections::HashMap;
 use std::io::{Read, Write};
-use std::sync::{Arc, Mutex};
 use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::{Arc, Mutex};
 use tauri::{Emitter, State};
 use uuid::Uuid;
 
@@ -25,15 +25,15 @@ impl TerminalSession {
     /// Spawn a new shell session with reader thread
     pub fn spawn(app: tauri::AppHandle, shell: &str, cwd: &str) -> Result<Self> {
         let pty_system = NativePtySystem::default();
-        
+
         // Build command
         let mut cmd = CommandBuilder::new(shell);
         cmd.cwd(std::path::PathBuf::from(cwd));
-        
+
         // Set environment
         cmd.env("TERM", "xterm-256color");
         cmd.env("COLORTERM", "truecolor");
-        
+
         // Spawn PTY
         let pair = pty_system
             .openpty(PtySize {
@@ -49,10 +49,14 @@ impl TerminalSession {
             .spawn_command(cmd)
             .map_err(|e| anyhow::anyhow!("Failed to spawn shell: {}", e))?;
 
-        let writer = pair.master.take_writer()
+        let writer = pair
+            .master
+            .take_writer()
             .map_err(|e| anyhow::anyhow!("Failed to get writer: {}", e))?;
-        
-        let mut reader = pair.master.try_clone_reader()
+
+        let mut reader = pair
+            .master
+            .try_clone_reader()
             .map_err(|e| anyhow::anyhow!("Failed to get reader: {}", e))?;
 
         let session_id = Uuid::new_v4().to_string();
@@ -70,10 +74,13 @@ impl TerminalSession {
                     Ok(n) => {
                         let output = String::from_utf8_lossy(&buf[..n]).to_string();
                         // Emit event to React
-                        let _ = app_clone.emit("terminal-output", TerminalOutput {
-                            session_id: session_id_clone.clone(),
-                            data: output,
-                        });
+                        let _ = app_clone.emit(
+                            "terminal-output",
+                            TerminalOutput {
+                                session_id: session_id_clone.clone(),
+                                data: output,
+                            },
+                        );
                     }
                     Err(_) => break,
                 }
@@ -91,11 +98,15 @@ impl TerminalSession {
 
     /// Write input to PTY
     pub fn write(&self, input: &[u8]) -> Result<()> {
-        let mut writer = self.writer.lock()
+        let mut writer = self
+            .writer
+            .lock()
             .map_err(|_| anyhow::anyhow!("Lock poisoned"))?;
-        writer.write_all(input)
+        writer
+            .write_all(input)
             .map_err(|e| anyhow::anyhow!("Write failed: {}", e))?;
-        writer.flush()
+        writer
+            .flush()
             .map_err(|e| anyhow::anyhow!("Flush failed: {}", e))?;
         Ok(())
     }
@@ -124,7 +135,7 @@ impl TerminalManager {
     pub fn spawn(&self, app: tauri::AppHandle, shell: &str, cwd: &str) -> Result<String> {
         let session = Arc::new(TerminalSession::spawn(app, shell, cwd)?);
         let id = session.id.clone();
-        
+
         self.sessions
             .lock()
             .map_err(|_| anyhow::anyhow!("Lock poisoned"))?
@@ -135,23 +146,25 @@ impl TerminalManager {
 
     /// Write to session
     pub fn write(&self, session_id: &str, input: &[u8]) -> Result<()> {
-        let sessions = self.sessions
+        let sessions = self
+            .sessions
             .lock()
             .map_err(|_| anyhow::anyhow!("Lock poisoned"))?;
-        
+
         let session = sessions
             .get(session_id)
             .ok_or_else(|| anyhow::anyhow!("Session not found"))?;
-        
+
         session.write(input)
     }
 
     /// Kill session
     pub fn kill(&self, session_id: &str) -> Result<()> {
-        let mut sessions = self.sessions
+        let mut sessions = self
+            .sessions
             .lock()
             .map_err(|_| anyhow::anyhow!("Lock poisoned"))?;
-        
+
         if let Some(session) = sessions.get(session_id) {
             session.running.store(false, Ordering::Relaxed);
         }
@@ -175,8 +188,7 @@ pub fn terminal_spawn(
     shell: String,
     cwd: String,
 ) -> Result<String, String> {
-    manager.spawn(app, &shell, &cwd)
-        .map_err(|e| e.to_string())
+    manager.spawn(app, &shell, &cwd).map_err(|e| e.to_string())
 }
 
 #[tauri::command]
@@ -185,17 +197,14 @@ pub fn terminal_write(
     session_id: String,
     input: String,
 ) -> Result<(), String> {
-    manager.write(&session_id, input.as_bytes())
+    manager
+        .write(&session_id, input.as_bytes())
         .map_err(|e| e.to_string())
 }
 
 #[tauri::command]
-pub fn terminal_kill(
-    manager: State<TerminalManager>,
-    session_id: String,
-) -> Result<(), String> {
-    manager.kill(&session_id)
-        .map_err(|e| e.to_string())
+pub fn terminal_kill(manager: State<TerminalManager>, session_id: String) -> Result<(), String> {
+    manager.kill(&session_id).map_err(|e| e.to_string())
 }
 
 #[tauri::command]

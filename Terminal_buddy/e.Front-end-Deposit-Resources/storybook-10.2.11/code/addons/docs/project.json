@@ -1,9 +1,0 @@
-{
-  "name": "addon-docs",
-  "projectType": "library",
-  "targets": {
-    "compile": {},
-    "check": {}
-  },
-  "tags": ["library"]
-}

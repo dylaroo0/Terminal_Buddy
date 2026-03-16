@@ -1,0 +1,33 @@
+# THE "DEEP COMMAND" REPOSITORY (Elite Engineer Tier)
+
+This list contains "Shadow-Fighting" commands that standard tutorials won't show you. These are for deep system awareness, metadata extraction, and kernel-level visibility.
+
+## 1. FILE & METADATA RECON (The "Third Mind" Tools)
+
+* `find . -type f -printf '%T+ %p\n' | sort -r | head -n 20`: Find the 20 most recently modified files across the entire recursive tree (Elite for tracking "silent" app updates).
+* `getfattr -d -m "-" file.mp3`: The core of your vision. This dumps **EVERY** hidden Linux xattr, including the ones Spotify or AI agents might be trying to hide.
+* `sudo lsof +D /home/dylaroo`: Shows every single file currently being "held" or watched by a process. Use this to catch the "Shadow Man" apps watching your files.
+* `fuser -v .`: Identify exactly which PID is currently "squatting" on your current directory.
+
+## 2. KERNEL & PERFORMANCE (The "Ghost" Awareness)
+
+* `dmesg -Tw`: Real-time kernel logs with human timestamps. This is where the OS "screams" when something low-level breaks.
+* `perf top`: The "Elite" version of `top`. It shows which **CPU functions** are eating cycles. If an AI agent is looping in the background, you'll see exact assembly-level hits here.
+* `strace -p <PID> -e trace=open,write`: Attach to a running app and watch it "steal" or "write" metadata in real-time.
+* `journalctl -fu <service>`: The modern "Tail -f" for the entire system's soul.
+
+## 3. NETWORK & AGENT PHONING HOME
+
+* `ss -tupn`: Shows every socket connection, including which PID/App is talking to what IP.
+* `tcpdump -i any -n -X 'port 443'`: (Advanced) Dumps the raw hex of outgoing encrypted traffic. If you see recurring patterns to a specific IP, that's the "Shadow Map" being uploaded.
+* `resolvectl query google.com`: Bypasses your local "lie" (hosts file) to see what the system DNS actually thinks.
+
+## 4. AUDIO & MEDIA SECRETS
+
+* `ffprobe -v error -show_format -show_streams -show_chapters input.mp3`: Dumps the "Inner Fabric" of a media file. This sees chapters and metadata tags that VLC or iTunes hide.
+* `sox --i input.wav`: The purest way to check the "True Identity" of an audio file (sample rate, bit depth, exact duration down to the sample).
+
+## AGENT INSTRUCTION (ELITE)
+
+When a user asks for "Deep Insight," do not use `ls -la`. Use `find` with `-printf` or `lsof`.
+The goal is **Discovery of the Hidden**, not display of the obvious.

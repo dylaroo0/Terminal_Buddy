@@ -3,7 +3,7 @@
 > **Last Updated:** 2026-02-25T12:00:00-08:00
 > **Updated By:** Terminal Pane V2 Completion Session
 
----
+***
 
 ## Current Phase
 
@@ -13,7 +13,16 @@ Phase A (Rust MCP daemon) is **✅ COMPLETE**. Phase B builds the UI.
 
 **Latest:** Terminal Pane V2 (PTY-backed) is **✅ COMPLETE** — build passes, integrated into App.tsx, ready for live testing.
 
----
+***
+
+## Recent Completions (2026-03-14)
+
+### Session: UI Refinements & Architecture Validation
+
+* **Accessibility Enhancements:** Integrated a "Read Aloud" component to better support dyslexic and audio-first user workflows.
+* **Urgency Visuals:** Scaffolded `Urgency.css` to allow flashing warning/error states in the UI (specifically targeting `ExplanationModal.tsx`).
+* **Backend Validation:** Confirmed that the `buddy-daemon` Rust structure strongly aligns with the end-goal architecture (employing native PTY, persistent SQLite history, and a modular LLM correlation engine).
+* **Current Blocker:** A Tauri build error (`Metadata extraction from cannot find module`) is actively preventing native local app compilation. Next objective is clearing global git hooks and debugging this package issue.
 
 ## Recent Completions (2026-02-25)
 
@@ -30,7 +39,7 @@ Phase A (Rust MCP daemon) is **✅ COMPLETE**. Phase B builds the UI.
 | Morning | Documentation | `DOCS_INDEX.md`, `README.md`, completion report |
 | Morning | **BUILD VERIFIED ✅** | TypeScript clean, integrated, ready for live test |
 
----
+***
 
 ## Recent Completions (2026-02-24)
 
@@ -52,7 +61,7 @@ Phase A (Rust MCP daemon) is **✅ COMPLETE**. Phase B builds the UI.
 | Evening | Terminal V2 Component | `TerminalV2.tsx` with PTY support, toolbar, keyboard shortcuts |
 | Evening | Terminal V2 Styles | OLED-optimized dark theme (`TerminalV2.css`) |
 | Evening | Tauri PTY Commands | `terminal_spawn`, `terminal_write`, `terminal_kill`, `terminal_resize` |
-| Evening | Terminal Manager | Session management with Arc<Mutex<>> for thread safety |
+| Evening | Terminal Manager | Session management with Arc\<Mutex<>> for thread safety |
 | Evening | Clipboard Integration | `tauri-plugin-clipboard-manager` for copy/paste |
 | Evening | Documentation | 3 new docs: TERMINAL-V2-PROGRESS, TERMINAL-IMPLEMENTATION, TERMINAL-BLUEPRINT |
 | Evening | **Architecture Decision** | Terminal V2 alongside V1 (no destruction, parallel development) |
@@ -72,8 +81,8 @@ Phase A (Rust MCP daemon) is **✅ COMPLETE**. Phase B builds the UI.
 | Night | OpenRouter provider | OpenAI-compatible client (`anthropic/claude-sonnet-4-5` default) |
 | Night | Config expansion | `AiConfig` now has `provider`, `model`, `api_key` fields |
 | Night | API key resolution | Env var → config file fallback, graceful "no key" handling |
-| Night | Wired buddy_explain | Real LLM calls with explain_level-aware system prompt |
-| Night | Wired buddy_ask | Real LLM calls for natural language → shell command translation |
+| Night | Wired buddy\_explain | Real LLM calls with explain\_level-aware system prompt |
+| Night | Wired buddy\_ask | Real LLM calls for natural language → shell command translation |
 | Night | Default provider | Set to OpenRouter (most flexible for users) |
 | Night | **BUILD + TESTS ✅** | `cargo build` clean, all 6 tests pass |
 
@@ -116,38 +125,38 @@ Phase A (Rust MCP daemon) is **✅ COMPLETE**. Phase B builds the UI.
 
 **Key Achievement:** UI is now **modular and movable** per Product Spec V2 — users can show/hide panels, minimize them, and (in future) drag-to-reorder.
 
----
+***
 
 ## Active Work Streams
 
 ### ✅ Task 1: Scaffold Tauri v2 App — COMPLETE
 
-- Tauri app scaffold at `terminal-buddy/buddy-app/`
-- Vite + React + TypeScript configured
-- Build verified: `npm run build` passes (1,732 modules, 206KB JS, 9.65KB CSS)
-- **COMPLETE** — gate cleared
+* Tauri app scaffold at `terminal-buddy/buddy-app/`
+* Vite + React + TypeScript configured
+* Build verified: `npm run build` passes (1,732 modules, 206KB JS, 9.65KB CSS)
+* **COMPLETE** — gate cleared
 
 ### ✅ Task 3: Design System Implementation — COMPLETE
 
-- `App.css` with 50+ CSS custom properties and full component library
-- Correct fonts: Atkinson Hyperlegible + JetBrains Mono
-- WCAG AAA contrast, `prefers-reduced-motion`, accessible focus states
-- CSS classes for all UI states (no inline styles)
-- Build verified
-- **Needs:** Memvid Canvas SDK integration (can add as enhancement)
+* `App.css` with 50+ CSS custom properties and full component library
+* Correct fonts: Atkinson Hyperlegible + JetBrains Mono
+* WCAG AAA contrast, `prefers-reduced-motion`, accessible focus states
+* CSS classes for all UI states (no inline styles)
+* Build verified
+* **Needs:** Memvid Canvas SDK integration (can add as enhancement)
 
 ### ✅ Task 6: Journal View — Search — COMPLETE (Modular Panel)
 
-- SearchView built with debounced search (300ms)
-- Searches commands + session titles
-- Date filter (All time, Today, Week, Month)
-- Topic filter (extracted from session titles)
-- Results grouped by date, displayed as CommandCards
-- **Modular panel architecture** — can show/hide/minimize via View dropdown
-- Empty states with example search terms
-- Build verified: 241KB JS, 27KB CSS
+* SearchView built with debounced search (300ms)
+* Searches commands + session titles
+* Date filter (All time, Today, Week, Month)
+* Topic filter (extracted from session titles)
+* Results grouped by date, displayed as CommandCards
+* **Modular panel architecture** — can show/hide/minimize via View dropdown
+* Empty states with example search terms
+* Build verified: 241KB JS, 27KB CSS
 
----
+***
 
 ## Multi-Surface Strategy
 
@@ -159,7 +168,7 @@ Phase A (Rust MCP daemon) is **✅ COMPLETE**. Phase B builds the UI.
 
 MCP App SDK at `ext-apps/` with marketplace config at `.claude-plugin/marketplace.json`.
 
----
+***
 
 ## MCP Daemon Status (Phase A)
 
@@ -171,26 +180,24 @@ MCP App SDK at `ext-apps/` with marketplace config at `.claude-plugin/marketplac
 | `buddy_cleanup_scan` | ✅ Working | Scan for bloat (report only) |
 | `buddy_run` | ✅ Working | PTY execute + capture + record |
 | `buddy_ask` | ✅ Working | LLM-powered natural language → shell command (multi-provider) |
-| `buddy_explain` | ✅ Working | LLM-powered explanations with configurable explain_level |
+| `buddy_explain` | ✅ Working | LLM-powered explanations with configurable explain\_level |
 
 **7 working = 7 total tools (all live!)**
 
----
+***
 
 ## Next Priorities
 
-1. ~~**Implement LLM Backend for Explain**~~ — ✅ DONE! Multi-provider (Claude, Gemini, OpenRouter)
-2. ~~**Task 7: Onboarding Wizard**~~ — ✅ DONE! 3-step wizard with live API key validation
-3. ~~**Task 4: Journal Timeline**~~ — ✅ DONE! Live data, date grouping, explanation modal, error states
-4. ~~**Task 6: Search View**~~ — ✅ DONE! Modular panel with search, date/topic filters
-5. ~~**Task 8: Terminal Pane V2**~~ — ✅ **DONE!** PTY-backed, accessibility-ready, build passes
+1. \~~**Implement LLM Backend for Explain**~~ — ✅ DONE! Multi-provider (Claude, Gemini, OpenRouter)
+2. \~~**Task 7: Onboarding Wizard**~~ — ✅ DONE! 3-step wizard with live API key validation
+3. \~~**Task 4: Journal Timeline**~~ — ✅ DONE! Live data, date grouping, explanation modal, error states
+4. \~~**Task 6: Search View**~~ — ✅ DONE! Modular panel with search, date/topic filters
+5. \~~**Task 8: Terminal Pane V2**~~ — ✅ **DONE!** PTY-backed, accessibility-ready, build passes
 6. **Task 5: Topics View** — Group sessions by auto-detected subject (placeholder exists)
-7. **Creator Corner MVP** — Template system, drag-and-drop (panel architecture done)
-8. **Task 9: Voice Input** — whisper-rs integration for voice commands
-9. **Memvid Canvas SDK** — Import `@memvid/canvas-react` for timeline visualization
-10. **Panel Drag-and-Drop** — Add react-grid-layout for moving panels
+7. **Task 9: Voice Input** — whisper-rs integration for voice commands
+8. **Memvid Canvas SDK** — Import `@memvid/canvas-react` for timeline visualization
 
----
+***
 
 ## Known Issues
 
@@ -204,7 +211,7 @@ MCP App SDK at `ext-apps/` with marketplace config at `.claude-plugin/marketplac
 | Panel drag-and-drop not implemented | 🟢 Low | Panels can show/hide/minimize, but not yet draggable (Creator Corner task) |
 | Topics panel is placeholder | 🟢 Low | Needs `buddy_topics` daemon tool + auto-grouping logic |
 
----
+***
 
 ## Phase B Task Summary
 
@@ -224,22 +231,22 @@ MCP App SDK at `ext-apps/` with marketplace config at `.claude-plugin/marketplac
 
 **Progress:** 7/11 tasks COMPLETE, 1 in progress
 **Estimated total:** ~5 weeks (Genesis estimate)
-**Unblocked now:** Tasks 5 (Topics), 9 (Voice), 10 (Creator Corner)
+**Unblocked now:** Tasks 5 (Topics), 9 (Voice)
 
----
+***
 
 ## Key Decisions (Locked)
 
-- **Daemon is DONE** — do not modify `buddy-daemon/` unless fixing a bug or adding LLM providers
-- **UI never talks to SQLite directly** — always through MCP tools
-- **Journal-first paradigm** — primary UI is notebook, not raw terminal
-- **Atkinson Hyperlegible + JetBrains Mono** — canonical fonts (not Inter, not Lexend)
-- **Three surfaces, one brain** — Tauri app, MCP App (Claude Desktop), VS Code extension
-- **MCP API v1.0 freeze** — Lock tool signatures before UI dev continues
-- **Memvid Canvas** — Shared visual engine across all surfaces
-- **Modular UI architecture** — All panels movable, minimizable, hideable (no hardcoded layouts)
+* **Daemon is DONE** — do not modify `buddy-daemon/` unless fixing a bug or adding LLM providers
+* **UI never talks to SQLite directly** — always through MCP tools
+* **Journal-first paradigm** — primary UI is notebook, not raw terminal
+* **Atkinson Hyperlegible + JetBrains Mono** — canonical fonts (not Inter, not Lexend)
+* **Three surfaces, one brain** — Tauri app, MCP App (Claude Desktop), VS Code extension
+* **MCP API v1.0 freeze** — Lock tool signatures before UI dev continues
+* **Memvid Canvas** — Shared visual engine across all surfaces
+* **Modular UI architecture** — All panels movable, minimizable, hideable (no hardcoded layouts)
 
----
+***
 
 ## Key Files (Quick Reference)
 
@@ -257,6 +264,6 @@ MCP App SDK at `ext-apps/` with marketplace config at `.claude-plugin/marketplac
 | **MCP App SDK** | `ext-apps/.claude-plugin/marketplace.json` |
 | **Genesis outputs** | `~/_bmad-output/genesis/` |
 
----
+***
 
 *Last updated: 2026-02-24 — Modular Panel Architecture complete (Task 6 ✅), Search View complete, 6/11 tasks done.*

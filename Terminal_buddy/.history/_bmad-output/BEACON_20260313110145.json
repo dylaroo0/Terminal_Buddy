@@ -1,0 +1,10 @@
+{
+  "status": "yellow",
+  "priority": 1,
+  "title": "🧭 TEAM COORDINATION MODE — Shared Whiteboard Active",
+  "content": "Use one shared board to reduce overload. Core terminal reliability is priority #1.",
+  "timestamp": "2026-03-13T00:00:00Z",
+  "beep": true,
+  "actionUrl": "docs/current/TEAM_WHITEBOARD.md",
+  "audioNote": "🔊 Coordination update: one board, one focus, core terminal first. Open TEAM_WHITEBOARD.md for the current plan."
+}

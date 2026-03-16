@@ -1,0 +1,18 @@
+{
+    "sourceFile": "terminal-buddy/buddy-app/src/components/AgentVoiceButton.tsx",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1773606901179,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1773606901179,
+            "name": "Commit-0",
+            "content": "// src/components/AgentVoiceButton.tsx\nimport { useState, useEffect } from 'react';\n\ninterface AgentVoiceButtonProps {\n  text: string;\n  agentId: string;\n  voiceName?: string;\n  label?: string;\n}\n\n// Agent voice profiles\nconst AGENT_VOICES: Record<string, string> = {\n  'whiteport-analyst': 'Google UK English Female',\n  'terminal-buddy': 'Google US English Male',\n  'creator-corner': 'Google US English Female',\n  'memvid-assistant': 'Google UK English Male',\n  'default': 'Google US English'\n};\n\nexport function AgentVoiceButton({ text, agentId, voiceName, label = 'Listen' }: AgentVoiceButtonProps) {\n  const [speaking, setSpeaking] = useState(false);\n  const [voice, setVoice] = useState<SpeechSynthesisVoice | null>(null);\n\n  // Get voice based on agent ID\n  const effectiveVoiceName = voiceName || AGENT_VOICES[agentId] || AGENT_VOICES.default;\n\n  // Load voices on mount\n  useEffect(() => {\n    const loadVoices = () => {\n      const voices = window.speechSynthesis.getVoices();\n      const selectedVoice = voices.find(v => v.name.includes(effectiveVoiceName)) || voices[0];\n      setVoice(selectedVoice || null);\n    };\n\n    loadVoices();\n    \n    if (window.speechSynthesis.onvoiceschanged !== undefined) {\n      window.speechSynthesis.onvoiceschanged = loadVoices;\n    }\n  }, [effectiveVoiceName]);\n\n  const toggleSpeak = () => {\n    if (speaking) {\n      window.speechSynthesis.cancel();\n      setSpeaking(false);\n    } else {\n      window.speechSynthesis.cancel();\n      \n      const utterance = new SpeechSynthesisUtterance(text);\n      if (voice) {\n        utterance.voice = voice;\n      }\n      utterance.rate = 1.0;\n      utterance.pitch = 1.0;\n      utterance.volume = 1.0;\n\n      utterance.onstart = () => setSpeaking(true);\n      utterance.onend = () => setSpeaking(false);\n      utterance.onerror = () => setSpeaking(false);\n\n      window.speechSynthesis.speak(utterance);\n    }\n  };\n\n  return (\n    <button\n      onClick={toggleSpeak}\n      className={`agent-voice-button ${speaking ? 'speaking' : 'idle'}`}\n      title={`${speaking ? 'Stop' : 'Hear'} ${agentId} speak`}\n      style={{\n        display: 'inline-flex',\n        alignItems: 'center',\n        gap: '6px',\n        padding: '6px 12px',\n        borderRadius: '20px',\n        border: 'none',\n        cursor: 'pointer',\n        fontSize: '13px',\n        fontWeight: 500,\n        transition: 'all 0.2s ease',\n        backgroundColor: speaking ? '#EF4444' : '#3B82F6',\n        color: '#FFFFFF',\n        boxShadow: speaking ? '0 0 0 3px rgba(239, 68, 68, 0.3)' : '0 0 0 3px transparent',\n      }}\n    >\n      {speaking ? (\n        <>\n          <span>🔇</span>\n          <span>Stop</span>\n        </>\n      ) : (\n        <>\n          <span>🔊</span>\n          <span>{label}</span>\n        </>\n      )}\n    </button>\n  );\n}\n\n// Export for easy use\nexport default AgentVoiceButton;"
+        }
+    ]
+}

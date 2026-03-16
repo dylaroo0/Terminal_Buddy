@@ -1,0 +1,10 @@
+{
+  "status": "yellow",
+  "priority": 1,
+  "title": "🧭 COMMAND CENTER ACTIVE — Use TEAM_WHITEBOARD Only",
+  "content": "Single source of truth enabled. One active task, one decision queue, one check-in format.",
+  "timestamp": "2026-03-13T00:00:00Z",
+  "beep": true,
+  "actionUrl": "docs/current/TEAM_WHITEBOARD.md",
+  "audioNote": "🔊 Command center update: use TEAM_WHITEBOARD only. One active task, one decision at a time, core terminal first."
+}

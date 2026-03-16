@@ -1,8 +1,0 @@
-{
-  "name": "portable-stories-kitchen-sink/react-vitest-3",
-  "projectType": "application",
-  "targets": {
-    "e2e-ui": {}
-  },
-  "tags": ["ci:normal", "ci:merged", "ci:daily"]
-}

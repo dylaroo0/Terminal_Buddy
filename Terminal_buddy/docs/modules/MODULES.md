@@ -44,7 +44,7 @@ These modules are always enabled and form the foundation of Terminal Buddy:
 
 ---
 
-### 3. **Creator Corner Module** (`creator-corner`)
+### 3.NOT A MODULE!!! A WORKSHOP! **Creator Corner Module** (`creator-corner`)
 **Location:** `buddy-app/src/modules/creator-corner/`  
 **Purpose:** Customization engine - design, customize, and share your experience  
 **Editors:**
@@ -52,12 +52,12 @@ These modules are always enabled and form the foundation of Terminal Buddy:
 - Layout Editor (drag-and-drop module positions)
 - Component Editor (enable/disable components)
 - Template Editor (save, share, install templates)
-
+I have an idea brewing of having different spaces, and in a kind of a gazebo shape, and having each kind of section of the gazebo will have different building materials, like like rust, or Python, and Go, and but they'll have color, only one color schemes like yellow and red in that area.Of that one, so they, and then it goes around in a big circle where the whole spectrum of colors are, but the blocks will be only the Python blocks will only be in that color, but then it could be just kind of a fun. It's a work in progress because I was trying to learn about this stuff.So I think it could be fun.?DYLAROOFEB 26
 📄 [Documentation](./creator-corner-module.md)
 
 ---
 
-### 4. **Component Registry Module** (`component-registry`)
+### 4. **weird name?? i dont know what it means??Component Registry Module** (`component-registry`)
 **Location:** `buddy-app/src/modules/registry/`  
 **Purpose:** Central nervous system - module registration and management  
 **Key Features:**
@@ -75,7 +75,7 @@ These modules are always enabled and form the foundation of Terminal Buddy:
 
 These modules are specified but not yet documented:
 
-### 5. **Voice Input Module** (`voice-input`)
+### 5. **Voice Input Module** (`voice-input`)   WITH SUMMERIZER !
 **Status:** Planned  
 **Purpose:** Voice-to-text input via whisper-rs  
 **Key Features:**
@@ -110,7 +110,7 @@ These modules are specified but not yet documented:
 
 ---
 
-### 8. **MCP App Module** (`mcp-app`)
+### 8. **MCP App Module** (`mcp-app`)Excalidraw MCP App Server
 **Status:** Planned  
 **Purpose:** iframe distribution (embedded in Claude/Cursor)  
 **Key Features:**
@@ -149,7 +149,7 @@ These modules are specified but not yet documented:
 ### Registration Pattern
 
 Each module registers itself with the Component Registry:
-
+??? SEEE NO DIAGRAM?
 ```typescript
 // modules/session/index.ts
 import { registry } from '../registry';
@@ -194,7 +194,7 @@ Modules are arranged in regions:
 |                  |                  |
 +------------------+------------------+
 |                  |
-|    Bottom        |
+|    Bottom        |ANYWAY USER WANTS MANNY TERMINALSSS !! MAYBE 
 |  (Terminal)      |
 |                  |
 +------------------+
@@ -275,7 +275,7 @@ export function MyModulePanel({ config }: MyModulePanelProps) {
 
 Module automatically appears in Creator Corner's component editor.
 
-### Step 5: Test in Storybook
+### Step 5: Test in Storybook DID WE? I WANT TO SOON!
 
 ```tsx
 // modules/my-module/MyModulePanel.stories.tsx

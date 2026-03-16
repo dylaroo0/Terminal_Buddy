@@ -1,0 +1,22 @@
+{
+    "sourceFile": "_bmad-output/BEACON.json",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 1,
+            "patches": [
+                {
+                    "date": 1772433340435,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1773427802636,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,10 +1,10 @@\n {\n-  \"status\": \"active\",\n+  \"status\": \"yellow\",\n   \"priority\": 1,\n-  \"title\": \"🎉 PARTY MODE READY — Press Button to Hear Reports!\",\n-  \"content\": \"Party Mode is active! Audio-style reports are available for the dashboard discussion. Let's get this party started! 🎉\",\n-  \"timestamp\": \"2026-03-01T00:00:00Z\",\n+  \"title\": \"🧭 COMMAND CENTER ACTIVE — Use TEAM_WHITEBOARD Only\",\n+  \"content\": \"Single source of truth enabled. One active task, one decision queue, one check-in format.\",\n+  \"timestamp\": \"2026-03-13T00:00:00Z\",\n   \"beep\": true,\n-  \"actionUrl\": \"docs/current/TASK_LIST_2026-02-26.md\",\n-  \"audioNote\": \"🔊 BEEP! This is your Terminal Buddy Beacon! dylaroo, your team (Qwen + Grok) are ready to build the Dashboard. We've got: (1) Task list created, (2) Outdated docs fixed, (3) UI/UX Pro Max ready to generate designs, (4) Dashboard Framework agents standing by. Just say the word and we'll start building! Over and out! 🎊\"\n-}\n+  \"actionUrl\": \"docs/current/TEAM_WHITEBOARD.md\",\n+  \"audioNote\": \"🔊 Command center update: use TEAM_WHITEBOARD only. One active task, one decision at a time, core terminal first.\"\n+}\n\\ No newline at end of file\n"
+                }
+            ],
+            "date": 1772433340435,
+            "name": "Commit-0",
+            "content": "{\n  \"status\": \"active\",\n  \"priority\": 1,\n  \"title\": \"🎉 PARTY MODE READY — Press Button to Hear Reports!\",\n  \"content\": \"Party Mode is active! Audio-style reports are available for the dashboard discussion. Let's get this party started! 🎉\",\n  \"timestamp\": \"2026-03-01T00:00:00Z\",\n  \"beep\": true,\n  \"actionUrl\": \"docs/current/TASK_LIST_2026-02-26.md\",\n  \"audioNote\": \"🔊 BEEP! This is your Terminal Buddy Beacon! dylaroo, your team (Qwen + Grok) are ready to build the Dashboard. We've got: (1) Task list created, (2) Outdated docs fixed, (3) UI/UX Pro Max ready to generate designs, (4) Dashboard Framework agents standing by. Just say the word and we'll start building! Over and out! 🎊\"\n}\n"
+        }
+    ]
+}

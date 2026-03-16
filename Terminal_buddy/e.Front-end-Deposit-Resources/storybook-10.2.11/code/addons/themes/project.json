@@ -1,8 +1,0 @@
-{
-  "name": "addon-themes",
-  "targets": {
-    "compile": {},
-    "check": {}
-  },
-  "tags": ["library"]
-}

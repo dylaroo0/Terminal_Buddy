@@ -1,0 +1,18 @@
+{
+    "sourceFile": "docs/TERMINAL_GRIMOIRE_WIKI.md",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1773483150495,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1773483150495,
+            "name": "Commit-0",
+            "content": "# THE TERMINAL GRIMIORE (Indexed) ⚡\n\nThis is the \"Deep Discovery\" hub for the Research Lab. These commands are the pulse of our infrastructure.\n\n## ⚡ THE ZAP COMMANDS (Elite Tier)\n\n| Command | The \"Secret\" Power | Agent Priority |\n| :--- | :--- | :--- |\n| **lsof** | **List Open Files** | Finds every file, network socket, and pipe. Use to catch \"Shadow\" watchers. |\n| **rg** | **Ripgrep** | The fastest search engine. Millisecond speed across millions of lines. |\n| **strace** | **System Trace** | Sees the \"thoughts\" of a program as it talks to the Kernel brain. |\n| **fzf** | **Fuzzy Finder** | Turns the terminal into an interactive GUI for our \"giant mess.\" |\n| **awk** | **The Text Scalpel** | Extracts exactly the column or number we need from walls of data. |\n| **stat** | **The Pulse** | Nanosecond-level Birth/Access/Modify timestamps. |\n| **jq** | **JSON Wizard** | Slices and dices the \"Magnet APIs\" and MCP responses. |\n\n## 📁 PRIMARY DATA TYPES\n- `.sh` / `.zsh` / `.bash` (Shell Scripts)\n- `.rs` (Rust Kernel)\n- `.ts` / `.tsx` (Ghost UI Hooks)\n\n## 🗺️ SPATIAL MAP TAGS\n- `[ZAP]` : Deep System Introspection\n- `[MESH]` : Human-AI Entanglement\n- `[GHOST]` : Invisibility / Privacy Layer\n\n---\n*Note: These commands convert the \"giant mess\" into a perfectly tuned GUI.*\n"
+        }
+    ]
+}

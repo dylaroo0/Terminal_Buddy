@@ -1,0 +1,18 @@
+{
+    "sourceFile": "scripts/whiteboard.sh",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1773427802630,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1773427802630,
+            "name": "Commit-0",
+            "content": "#!/usr/bin/env bash\nset -euo pipefail\n\nBOARD=\"/home/dylaroo/projects/Terminal_buddy/docs/current/TEAM_WHITEBOARD.md\"\nTS=\"$(date '+%Y-%m-%d %H:%M')\"\n\nusage() {\n  cat <<'EOF'\nUsage:\n  whiteboard.sh checkin \"done\" \"doing\" \"blocked\" \"need\"\n  whiteboard.sh set-active \"task description\"\n  whiteboard.sh decide \"decision text\"\n\nExamples:\n  ./scripts/whiteboard.sh set-active \"Verify journaling reliability end-to-end\"\n  ./scripts/whiteboard.sh decide \"D-001 approved: impact tracking default OFF\"\n  ./scripts/whiteboard.sh checkin \"Hook mapped\" \"Adding error state\" \"None\" \"Review after patch\"\nEOF\n}\n\nrequire_board() {\n  if [[ ! -f \"$BOARD\" ]]; then\n    echo \"Board not found: $BOARD\"\n    exit 1\n  fi\n}\n\nappend_checkin() {\n  local done=\"$1\"\n  local doing=\"$2\"\n  local blocked=\"$3\"\n  local need=\"$4\"\n\n  cat >> \"$BOARD\" <<EOF\n\n### $TS — Manual Update\n- Done: $done\n- Doing: $doing\n- Blocked: $blocked\n- Need from Dylaroo: $need\nEOF\n\n  echo \"Check-in appended to TEAM_WHITEBOARD.md\"\n}\n\nset_active_task() {\n  local task=\"$1\"\n  python3 - <<PY\nfrom pathlib import Path\np = Path(\"$BOARD\")\ntext = p.read_text()\nneedle = \"- Active Task: **\"\nstart = text.find(needle)\nif start == -1:\n    raise SystemExit(\"Active Task line not found\")\nline_end = text.find(\"\\n\", start)\nnew_line = f\"- Active Task: **{task}**\"\ntext = text[:start] + new_line + text[line_end:]\np.write_text(text)\nprint(\"Active Task updated\")\nPY\n}\n\nappend_decision() {\n  local decision=\"$1\"\n  cat >> \"$BOARD\" <<EOF\n\n- $TS: $decision\nEOF\n  echo \"Decision appended\"\n}\n\nmain() {\n  require_board\n  if [[ $# -lt 1 ]]; then\n    usage\n    exit 1\n  fi\n\n  case \"$1\" in\n    checkin)\n      [[ $# -eq 5 ]] || { usage; exit 1; }\n      append_checkin \"$2\" \"$3\" \"$4\" \"$5\"\n      ;;\n    set-active)\n      [[ $# -eq 2 ]] || { usage; exit 1; }\n      set_active_task \"$2\"\n      ;;\n    decide)\n      [[ $# -eq 2 ]] || { usage; exit 1; }\n      append_decision \"$2\"\n      ;;\n    *)\n      usage\n      exit 1\n      ;;\n  esac\n}\n\nmain \"$@\"\n"
+        }
+    ]
+}

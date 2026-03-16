@@ -1,0 +1,18 @@
+{
+    "sourceFile": "clean_docs.sh",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1773605125789,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1773605125789,
+            "name": "Commit-0",
+            "content": "#!/bin/bash\necho \"Sweeping documents into one clump...\"\nmkdir -p docs/archives\n\n# Move all loose root .md files EXCEPT our core trackers\nfor f in *.md; do\n  if [[ -f \"$f\" && \"$f\" != \"README.md\" && \"$f\" != \"DOCS_INDEX.md\" && \"$f\" != \"PROJECT_STATUS.md\" && \"$f\" != \"NEXT_TASKS.md\" && \"$f\" != \"HANDOFF_2026_03_14.md\" ]]; then\n    mv \"$f\" docs/archives/\n  fi\ndone\n\n# Move all loose .md files inside the docs/ folder\nfor f in docs/*.md; do\n  if [[ -f \"$f\" ]]; then\n    mv \"$f\" docs/archives/\n  fi\ndone\n\necho \"Done! All old docs are safely clumped in docs/archives/.\""
+        }
+    ]
+}

@@ -1,0 +1,49 @@
+import { ApiTool, getFigmaToken } from "../../../lib/tools.ts";
+const executeFunction = async ({ file_key }: any) => {
+  const baseUrl = 'https://api.figma.com';
+  const token = getFigmaToken();
+
+  try {
+    const url = `${baseUrl}/v1/files/${file_key}/component_sets`;
+
+    const headers = {
+      'X-Figma-Token': token
+    };
+
+    const response = await fetch(url, {
+      method: 'GET',
+      headers
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json() as any;
+      throw new Error(`Figma API Error: ${errorData.message || response.statusText}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) { throw error; }
+};
+
+const apiTool: ApiTool = {
+  function: executeFunction,
+  definition: {
+    type: 'function',
+    function: {
+      name: 'list_component_sets',
+      description: 'List all component sets published in a specific Figma file.',
+      parameters: {
+        type: 'object',
+        properties: {
+          file_key: {
+            type: 'string',
+            description: 'The key of the Figma file to retrieve component sets from.'
+          }
+        },
+        required: ['file_key']
+      }
+    }
+  }
+};
+
+export { apiTool };

@@ -1,6 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import { X, Lightbulb } from 'lucide-react';
+import { ReadAloudButton } from './ReadAloudButton';
 import type { Explanation } from '../utils/tauri-mcp';
+
+import './Urgency.css';
 
 interface ExplanationModalProps {
   commandInput: string;
@@ -36,6 +39,7 @@ export const ExplanationModal: React.FC<ExplanationModalProps> = ({
           <div className="explanation-title">
             <Lightbulb size={20} />
             <h3>Explanation</h3>
+            {!loading && <ReadAloudButton text={explanation.explanation} label="Read" />}
           </div>
           <button onClick={onClose} className="explanation-close" aria-label="Close">
             <X size={18} />
@@ -58,7 +62,7 @@ export const ExplanationModal: React.FC<ExplanationModalProps> = ({
         </div>
 
         {!loading && explanation.confidence < 0.5 && (
-          <div className="explanation-warning">
+          <div className="explanation-warning urgency-warning">
             Low confidence — this explanation may be incomplete. Check your API key configuration.
           </div>
         )}

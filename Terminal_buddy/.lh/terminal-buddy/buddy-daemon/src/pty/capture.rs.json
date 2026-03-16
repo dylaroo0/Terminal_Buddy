@@ -1,0 +1,18 @@
+{
+    "sourceFile": "terminal-buddy/buddy-daemon/src/pty/capture.rs",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1773479561229,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1773479561229,
+            "name": "Commit-0",
+            "content": "use portable_pty::{CommandBuilder, NativePtySystem, PtySize, PtySystem};\nuse std::io::Read;\n\npub struct CommandOutput {\n    pub stdout: String,\n    pub exit_code: i32,\n}\n\npub async fn run_command_in_pty(\n    command: &str,\n    working_dir: &str,\n) -> std::io::Result<CommandOutput> {\n    tokio::task::spawn_blocking({\n        let command = command.to_string();\n        let current_dir = working_dir.to_string();\n        move || {\n            let pty_system = NativePtySystem::default();\n            let pair = pty_system\n                .openpty(PtySize {\n                    rows: 24,\n                    cols: 80,\n                    pixel_width: 0,\n                    pixel_height: 0,\n                })\n                .map_err(|e| std::io::Error::new(std::io::ErrorKind::Other, e.to_string()))?;\n\n            let mut cmd = if cfg!(windows) {\n                let mut c = CommandBuilder::new(\"cmd.exe\");\n                c.args([\"/C\", &command]);\n                c\n            } else {\n                let mut c = CommandBuilder::new(\"bash\");\n                c.args([\"-c\", &command]);\n                c\n            };\n            cmd.cwd(current_dir);\n\n            let mut child = pair\n                .slave\n                .spawn_command(cmd)\n                .map_err(|e| std::io::Error::new(std::io::ErrorKind::Other, e.to_string()))?;\n            drop(pair.slave);\n\n            let mut reader = pair\n                .master\n                .try_clone_reader()\n                .map_err(|e| std::io::Error::new(std::io::ErrorKind::Other, e.to_string()))?;\n\n            let mut output = Vec::new();\n            let mut buf = [0u8; 1024];\n            // Potential deadlock fix: Read in a non-blocking way to ensure \n            // the child process buffer doesn't fill up while we wait.            while let Ok(n) = reader.read(&mut buf) {\n                if n == 0 {\n                    break;\n                }\n                output.extend_from_slice(&buf[..n]);\n            }\n\n            let status = child\n                .wait()\n                .map_err(|e| std::io::Error::new(std::io::ErrorKind::Other, e.to_string()))?;\n\n            let exit_code = if status.success() { 0 } else { 1 };\n\n            Ok(CommandOutput {\n                stdout: String::from_utf8_lossy(&output).into_owned(),\n                exit_code,\n            })\n        }\n    })\n    .await\n    .unwrap_or_else(|e| {\n        Err(std::io::Error::new(\n            std::io::ErrorKind::Other,\n            e.to_string(),\n        ))\n    })\n}\n\n#[cfg(test)]\nmod tests {\n    use super::*;\n\n    #[tokio::test]\n    async fn test_run_command() {\n        let out = run_command_in_pty(\"echo hello\", \"/tmp\").await.unwrap();\n        assert!(out.stdout.contains(\"hello\"));\n        assert_eq!(out.exit_code, 0);\n    }\n}\n"
+        }
+    ]
+}

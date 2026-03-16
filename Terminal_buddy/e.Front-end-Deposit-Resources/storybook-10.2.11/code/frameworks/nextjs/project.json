@@ -1,9 +1,0 @@
-{
-  "name": "nextjs",
-  "projectType": "library",
-  "targets": {
-    "compile": {},
-    "check": {}
-  },
-  "tags": ["library"]
-}
