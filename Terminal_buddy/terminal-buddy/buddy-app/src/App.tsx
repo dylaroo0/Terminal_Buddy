@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Settings, BookOpen, Sparkles, AlertCircle, RefreshCw } from 'lucide-react';
+import { Settings, BookOpen, Sparkles, AlertCircle, RefreshCw, CloudSun } from 'lucide-react';
 import './App.css';
 import '@memvid/canvas-react/styles/canvas.css';
 import * as mcp from './utils/tauri-mcp';
@@ -17,6 +17,7 @@ import { CanvasShell } from '@memvid/canvas-react/components';
 import { TerminalV2 } from './components/TerminalV2';
 import { VoiceWidget } from './components/VoiceWidget';
 import { VoiceTerminalProvider } from './contexts/VoiceTerminalContext';
+import { WeatherDashboard } from './components/WeatherDashboard';
 
 /** Group sessions by date string for the timeline view */
 function groupSessionsByDate(sessions: SessionRecord[]): Map<string, SessionRecord[]> {
@@ -36,8 +37,8 @@ function groupSessionsByDate(sessions: SessionRecord[]): Map<string, SessionReco
 }
 
 const App: React.FC = () => {
-  // Top-level navigation: Journal, Creator Corner, or Workshop
-  const [activeView, setActiveView] = useState<'journal' | 'creator' | 'workshop' | 'canvas'>('journal');
+  // Top-level navigation: Journal, Creator Corner, Workshop, Canvas, or Weather
+  const [activeView, setActiveView] = useState<'journal' | 'creator' | 'workshop' | 'canvas' | 'weather'>('journal');
 
   // Panel state - modular, movable panels
   const [panels, setPanels] = useState<PanelConfig[]>([
@@ -210,6 +211,9 @@ const App: React.FC = () => {
           </button>
           <button onClick={() => setActiveView('workshop')} className={`nav-tab ${activeView === 'workshop' ? 'active' : ''}`}>
             <Settings size={16} /> Workshop
+          </button>
+          <button onClick={() => setActiveView('weather')} className={`nav-tab ${activeView === 'weather' ? 'active' : ''}`}>
+            <CloudSun size={16} /> Weather
           </button>
         </div>
         <div className="nav-right">
@@ -471,6 +475,10 @@ const App: React.FC = () => {
           </div>
         ) : activeView === 'workshop' ? (
           <CreatorCornerWorkshop />
+        ) : activeView === 'weather' ? (
+          <div className="weather-view" style={{ overflowY: 'auto', height: '100%', padding: '1rem 0' }}>
+            <WeatherDashboard />
+          </div>
         ) : (
           <CreatorCorner />
         )}
