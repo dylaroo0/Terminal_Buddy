@@ -49,7 +49,8 @@ pub async fn run_command_in_pty(
             let mut output = Vec::new();
             let mut buf = [0u8; 1024];
             // Potential deadlock fix: Read in a non-blocking way to ensure 
-            // the child process buffer doesn't fill up while we wait.            while let Ok(n) = reader.read(&mut buf) {
+            // the child process buffer doesn't fill up while we wait.
+            while let Ok(n) = reader.read(&mut buf) {
                 if n == 0 {
                     break;
                 }
@@ -60,7 +61,7 @@ pub async fn run_command_in_pty(
                 .wait()
                 .map_err(|e| std::io::Error::new(std::io::ErrorKind::Other, e.to_string()))?;
 
-            let exit_code = if status.success() { 0 } else { 1 };
+            let exit_code = status.exit_code() as i32;
 
             Ok(CommandOutput {
                 stdout: String::from_utf8_lossy(&output).into_owned(),
